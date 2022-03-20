@@ -1,0 +1,39 @@
+.content {
+    width: calc(100% - 20px);
+    height: 100%;
+}
+
+.nav {
+    display: flex;
+}
+
+.container {
+    height: calc(100% - 166px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+
+.list {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 24px;
+    row-gap: 32px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.card {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+}

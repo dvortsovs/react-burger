@@ -1,3 +1,22 @@
-.app {
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2F2F37;
+}
 
+::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
+
+.app {
+    height: 100vh;
+}
+
+.main {
+    height: calc(100vh - 88px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    grid-template-rows: calc(100vh - 88px);
+    max-width: 1240px;
+    margin: 0 auto;
 }
