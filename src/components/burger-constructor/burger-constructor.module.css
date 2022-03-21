@@ -1,0 +1,21 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style-type: none;
+    height: calc(100% - 180px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.item {
+
+}
