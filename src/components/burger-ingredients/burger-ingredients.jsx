@@ -1,9 +1,9 @@
 import React from 'react';
-import {Tab, Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from './burger-ingredients.module.css'
+import IngredientList from "../ingredient-list/ingredient-list";
 
 function BurgerIngredients({data}) {
-
     const [currentIngredients, setCurrentIngredients] = React.useState('bun')
 
     return (
@@ -19,66 +19,9 @@ function BurgerIngredients({data}) {
                      onClick={setCurrentIngredients}>Начинки</Tab>
             </nav>
             <div className={`${burgerIngredientsStyles.container}`}>
-                <article>
-                    <h2 className={`mt-10 mb-6 text text_type_main-medium`}>Булки</h2>
-                    <ul className={`${burgerIngredientsStyles.list} ml-4 mr-4`}>
-                        {data.map((ingredient) => {
-                            if (ingredient.type === 'bun') {
-                                return (
-                                    <li className={`${burgerIngredientsStyles.card}`} key={ingredient._id}>
-                                        <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
-                                        <Counter count={1} />
-                                        <div className={`${burgerIngredientsStyles.price} mt-1 `}>
-                                            <p className={`mr-2 text text_type_digits-default`}>{ingredient.price}</p>
-                                            <CurrencyIcon type={"primary"} />
-                                        </div>
-                                        <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
-                                    </li>
-                                )
-                            } else return null
-                        })}
-                    </ul>
-                </article>
-                <article>
-                    <h2 className={`mt-10 mb-6 text text_type_main-medium`}>Соусы</h2>
-                    <ul className={`${burgerIngredientsStyles.list} ml-4 mr-4`}>
-                        {data.map((ingredient) => {
-                            if (ingredient.type === 'sauce') {
-                                return (
-                                    <li className={`${burgerIngredientsStyles.card}`} key={ingredient._id}>
-                                        <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
-                                        <Counter count={1} />
-                                        <div className={`${burgerIngredientsStyles.price} mt-1 `}>
-                                            <p className={`mr-2 text text_type_digits-default`}>{ingredient.price}</p>
-                                            <CurrencyIcon type={"primary"} />
-                                        </div>
-                                        <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
-                                    </li>
-                                )
-                            } else return null
-                        })}
-                    </ul>
-                </article>
-                <article>
-                    <h2 className={`mt-10 mb-6 text text_type_main-medium`}>Начинки</h2>
-                    <ul className={`${burgerIngredientsStyles.list} ml-4 mr-4`}>
-                        {data.map((ingredient) => {
-                            if (ingredient.type === 'main') {
-                                return (
-                                    <li className={`${burgerIngredientsStyles.card}`} key={ingredient._id}>
-                                        <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
-                                        <Counter count={1} />
-                                        <div className={`${burgerIngredientsStyles.price} mt-1 `}>
-                                            <p className={`mr-2 text text_type_digits-default`}>{ingredient.price}</p>
-                                            <CurrencyIcon type={"primary"} />
-                                        </div>
-                                        <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
-                                    </li>
-                                )
-                            } else return null
-                        })}
-                    </ul>
-                </article>
+                <IngredientList data={data} type={{type: 'bun', title: 'Булки'}} />
+                <IngredientList data={data} type={{type: 'sauce', title: 'Соусы'}} />
+                <IngredientList data={data} type={{type: 'main', title: 'Начинка'}} />
             </div>
         </section>
     )
