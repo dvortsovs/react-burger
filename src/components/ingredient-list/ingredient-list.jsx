@@ -9,7 +9,7 @@ function IngredientList({data, type}) {
             <ul className={`${ingredientListStyle.list} ml-4 mr-4`}>
                 {data.map((ingredient) => {
                     if (ingredient.type === type.type) {
-                        return <IngredientCard ingredient={ingredient} />
+                        return <IngredientCard ingredient={ingredient} key={ingredient._id}/>
                     } else return null
                 })}
             </ul>

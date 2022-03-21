@@ -4,7 +4,7 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 
 function IngredientCard({ingredient}) {
     return(
-        <li className={`${ingredientCardStyle.card}`} key={ingredient._id}>
+        <li className={`${ingredientCardStyle.card}`}>
             <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
             <Counter count={1} />
             <div className={`${ingredientCardStyle.price} mt-1 `}>
