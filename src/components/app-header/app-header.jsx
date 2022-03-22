@@ -10,7 +10,7 @@ function AppHeader() {
                 <nav className={`${appHeaderStyles.nav}`}>
                     <ul className={`${appHeaderStyles.list} mt-4 mb-4`}>
                         <li className={`mr-2`}>
-                            <button type="button" className={`${appHeaderStyles.button} pt-4 pr-5 pb-4 pl-5`}>
+                            <button type="button" className={`${appHeaderStyles.button} pt-4 pr-5 pb-4`}>
                                 <BurgerIcon type={"primary"}/>
                                 <span
                                     className={`text text_type_main-default text_color_primary ml-2`}>Конструктор</span>

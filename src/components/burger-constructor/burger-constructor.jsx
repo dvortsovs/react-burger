@@ -1,66 +1,64 @@
 import React from 'react';
-import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
+import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
-import bun from '../../images/bun-02.png';
-import meat from '../../images/meat-02.png';
-import sauce from '../../images/sauce-03.png';
-import sp from '../../images/sp-1.png';
-import rings from '../../images/mineral-rings.png';
 
-function BurgerConstructor() {
-    return(
+
+function BurgerConstructor({data}) {
+
+    const rolls = data.find(bun => bun.type === 'bun')
+
+    return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
-            <ConstructorElement
-                type="top"
-                isLocked={true}
-                text="Краторная булка N-200i (верх)"
-                price={200}
-                thumbnail={bun}
-            />
-            <ul className={`${burgerConstructorStyles.list}`}>
-                <li className={`${burgerConstructorStyles.item}`}>
-                    <ConstructorElement
-                        text="Соус традиционный галактический"
-                        price={50}
-                        thumbnail={sauce}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.item}`}>
-                    <ConstructorElement
-                        text="Мясо бессмертных моллюсков Protostomia"
-                        price={50}
-                        thumbnail={meat}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.item}`}>
-                    <ConstructorElement
-                        text="Плоды Фалленианского дерева"
-                        price={50}
-                        thumbnail={sp}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.item}`}>
-                    <ConstructorElement
-                        text="Хрустящие минеральные кольца"
-                        price={50}
-                        thumbnail={rings}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.item}`}>
-                    <ConstructorElement
-                        text="Хрустящие минеральные кольца"
-                        price={50}
-                        thumbnail={rings}
-                    />
-                </li>
-            </ul>
-            <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text="Краторная булка N-200i (низ)"
-                price={200}
-                thumbnail={bun}
-            />
+            {
+                <ul className={`${burgerConstructorStyles.ingredients} pl-8`}>
+                    <li className={`${burgerConstructorStyles.ingredient} `}>
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={`${rolls.name} (верх)`}
+                            price={rolls.price}
+                            thumbnail={rolls.image}
+                        />
+                    </li>
+                    <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
+                        <ul className={`${burgerConstructorStyles.list}`}>
+                            {data.map((ingredient) => {
+                                    if (ingredient.type !== 'bun') {
+                                        return (
+                                            <li className={`${burgerConstructorStyles.item} `} key={ingredient._id}>
+                                                <ConstructorElement
+                                                    text={ingredient.name}
+                                                    price={ingredient.price}
+                                                    thumbnail={ingredient.image}
+                                                />
+                                            </li>
+                                        )
+                                    } else return null
+                                }
+                            )}
+                        </ul>
+                    </li>
+                    <li className={`${burgerConstructorStyles.ingredient}`}>
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text={`${rolls.name} (низ)`}
+                            price={rolls.price}
+                            thumbnail={rolls.image}
+                        />
+                    </li>
+                </ul>
+            }
+            <div className={`${burgerConstructorStyles.container} mt-10`}>
+                <p className={`text text_type_digits-medium mr-10`}>
+                    610
+                        <CurrencyIcon type={"primary"}/>
+                </p>
+                <Button
+                type={"primary"} size={"medium"}>
+                Оформить заказ
+            </Button>
+            </div>
         </section>
     )
 }

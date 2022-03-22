@@ -8,7 +8,7 @@ function BurgerIngredients({data}) {
     const [currentIngredients, setCurrentIngredients] = React.useState('bun')
 
     return (
-        <section className={`${burgerIngredientsStyles.content} ml-5`}>
+        <section className={`${burgerIngredientsStyles.content}`}>
             <h1 className={`text text_type_main-large mt-10`}>Соберите бургер</h1>
             <nav className={`${burgerIngredientsStyles.nav} mt-5`}>
                 <Tab active={currentIngredients === 'bun'} value={'bun'} onClick={setCurrentIngredients}>

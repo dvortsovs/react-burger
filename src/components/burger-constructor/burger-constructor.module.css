@@ -1,7 +1,22 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
+}
+
+.ingredients {
+    height: calc(100% - 104px);
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ingredient {
+    display: flex;
+    justify-content: center;
 }
 
 .list {
@@ -9,13 +24,23 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
     list-style-type: none;
-    height: calc(100% - 180px);
+
+}
+
+.ingredient_list {
     overflow-y: auto;
     scrollbar-width: thin;
 }
 
 .item {
+    display: flex;
+    justify-content: center;
+}
 
+.container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
 }
