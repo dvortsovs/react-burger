@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ingredient from "../../constants/ingredient";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from './burger-ingredients.module.css'
 import IngredientList from "../ingredient-list/ingredient-list";
@@ -27,20 +28,6 @@ function BurgerIngredients({data}) {
         </section>
     )
 }
-
-const ingredient = PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number})
 
 BurgerIngredients.propTypes = {
     data: PropTypes.arrayOf(ingredient.isRequired)

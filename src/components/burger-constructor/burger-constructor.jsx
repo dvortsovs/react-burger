@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ingredient from "../../constants/ingredient";
 import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 
@@ -62,20 +63,6 @@ function BurgerConstructor({data}) {
         </section>
     )
 }
-
-const ingredient = PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number})
 
 BurgerConstructor.propTypes = {
     data: PropTypes.arrayOf(ingredient.isRequired)

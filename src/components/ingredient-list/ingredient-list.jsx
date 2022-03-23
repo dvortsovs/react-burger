@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import ingredient from "../../constants/ingredient";
 import ingredientListStyle from './ingredient-list.module.css'
 import IngredientCard from "../ingredient-card/ingredient-card";
 
@@ -15,6 +17,11 @@ function IngredientList({data, type}) {
             </ul>
         </article>
     )
+}
+
+IngredientList.propTypes ={
+    data: PropTypes.arrayOf(ingredient.isRequired),
+    type: PropTypes.objectOf(PropTypes.string)
 }
 
 export default IngredientList

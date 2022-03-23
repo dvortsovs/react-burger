@@ -1,4 +1,5 @@
 import React from 'react';
+import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -14,6 +15,10 @@ function IngredientCard({ingredient}) {
             <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
         </li>
     )
+}
+
+IngredientCard.propTypes = {
+    ingredient: ingredient.isRequired
 }
 
 export default IngredientCard
