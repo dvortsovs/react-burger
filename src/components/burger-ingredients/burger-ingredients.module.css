@@ -1,0 +1,15 @@
+.content {
+    width: 100%;
+    height: 100%;
+}
+
+.nav {
+    display: flex;
+}
+
+.container {
+    height: calc(100% - 166px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
