@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ingredient from "../../constants/ingredient";
-import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 
 function BurgerConstructor({data}) {
@@ -11,8 +11,8 @@ function BurgerConstructor({data}) {
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
             {
-                <ul className={`${burgerConstructorStyles.ingredients} pl-8`}>
-                    <li className={`${burgerConstructorStyles.ingredient} `}>
+                <ul className={`${burgerConstructorStyles.ingredients}`}>
+                    <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                         <ConstructorElement
                             type="top"
                             isLocked={true}
@@ -23,10 +23,11 @@ function BurgerConstructor({data}) {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {data.map((ingredient) => {
+                            {data.map((ingredient, index) => {
                                     if (ingredient.type !== 'bun') {
                                         return (
-                                            <li className={`${burgerConstructorStyles.item} `} key={ingredient._id}>
+                                            <li className={`${burgerConstructorStyles.item} `} key={index}>
+                                                <div className={`${burgerConstructorStyles.holder}`}><DragIcon type={"primary"} /></div>
                                                 <ConstructorElement
                                                     text={ingredient.name}
                                                     price={ingredient.price}
@@ -39,7 +40,7 @@ function BurgerConstructor({data}) {
                             )}
                         </ul>
                     </li>
-                    <li className={`${burgerConstructorStyles.ingredient}`}>
+                    <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
