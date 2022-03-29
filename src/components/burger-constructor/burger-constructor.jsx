@@ -27,7 +27,8 @@ function BurgerConstructor({data}) {
                                     if (ingredient.type !== 'bun') {
                                         return (
                                             <li className={`${burgerConstructorStyles.item} `} key={index}>
-                                                <div className={`${burgerConstructorStyles.holder}`}><DragIcon type={"primary"} /></div>
+                                                <div className={`${burgerConstructorStyles.holder}`}><DragIcon
+                                                    type={"primary"}/></div>
                                                 <ConstructorElement
                                                     text={ingredient.name}
                                                     price={ingredient.price}
@@ -54,12 +55,12 @@ function BurgerConstructor({data}) {
             <div className={`${burgerConstructorStyles.container} mt-10`}>
                 <p className={`text text_type_digits-medium mr-10`}>
                     610
-                        <CurrencyIcon type={"primary"}/>
+                    <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button
-                type={"primary"} size={"medium"}>
-                Оформить заказ
-            </Button>
+                    type={"primary"} size={"medium"}>
+                    Оформить заказ
+                </Button>
             </div>
         </section>
     )
