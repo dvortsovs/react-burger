@@ -9,7 +9,7 @@ function Modal(props) {
 
     React.useEffect(() => {
         document.addEventListener('keydown', handleKeyClose)
-        return(() => {
+        return (() => {
             document.removeEventListener('keydown', handleKeyClose)
         })
     }, [])

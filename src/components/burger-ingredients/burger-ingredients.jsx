@@ -21,9 +21,9 @@ function BurgerIngredients({data, handleModalOpen}) {
                      onClick={setCurrentIngredients}>Начинки</Tab>
             </nav>
             <div className={`${burgerIngredientsStyles.container}`}>
-                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'bun', title: 'Булки'}} />
-                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'sauce', title: 'Соусы'}} />
-                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'main', title: 'Начинка'}} />
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'bun', title: 'Булки'}}/>
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'sauce', title: 'Соусы'}}/>
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'main', title: 'Начинка'}}/>
             </div>
         </section>
     )
