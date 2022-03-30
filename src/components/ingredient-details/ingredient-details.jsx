@@ -1,4 +1,5 @@
 import React from 'react';
+import ingredient from "../../constants/ingredient";
 import ingredientDetailsStyle from './ingredient-details.module.css'
 
 function IngredientDetails({ingredient}) {
@@ -26,6 +27,10 @@ function IngredientDetails({ingredient}) {
                 </ul>
             </div>
     )
+}
+
+IngredientDetails.propTypes = {
+    ingredient: ingredient.isRequired
 }
 
 export default IngredientDetails
