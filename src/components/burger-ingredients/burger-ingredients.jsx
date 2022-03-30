@@ -5,7 +5,7 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from './burger-ingredients.module.css'
 import IngredientList from "../ingredient-list/ingredient-list";
 
-function BurgerIngredients({data, handleIngredientClick}) {
+function BurgerIngredients({data, handleModalOpen}) {
     const [currentIngredients, setCurrentIngredients] = React.useState('bun')
 
     return (
@@ -21,9 +21,9 @@ function BurgerIngredients({data, handleIngredientClick}) {
                      onClick={setCurrentIngredients}>Начинки</Tab>
             </nav>
             <div className={`${burgerIngredientsStyles.container}`}>
-                <IngredientList handleIngredientClick={handleIngredientClick} data={data} type={{type: 'bun', title: 'Булки'}} />
-                <IngredientList handleIngredientClick={handleIngredientClick} data={data} type={{type: 'sauce', title: 'Соусы'}} />
-                <IngredientList handleIngredientClick={handleIngredientClick} data={data} type={{type: 'main', title: 'Начинка'}} />
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'bun', title: 'Булки'}} />
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'sauce', title: 'Соусы'}} />
+                <IngredientList handleModalOpen={handleModalOpen} data={data} type={{type: 'main', title: 'Начинка'}} />
             </div>
         </section>
     )

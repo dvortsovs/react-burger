@@ -4,3 +4,19 @@
     flex-direction: column;
     border-radius: var(--common-border-radius-s);
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: initial;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}

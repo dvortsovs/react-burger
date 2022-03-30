@@ -1,16 +1,10 @@
 import React from 'react';
-import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientDetailsStyle from './ingredient-details.module.css'
 
-function IngredientDetails({ingredient, handleCloseClick}) {
+function IngredientDetails({ingredient}) {
     return (
-        <>
-            <div className={`${ingredientDetailsStyle.header}`}>
-                <h2 className={`text text_type_main-large`}>Детали ингредиента</h2>
-                <button type="button" className={`${ingredientDetailsStyle.close}`} onClick={handleCloseClick}><CloseIcon type={"primary"} /></button>
-            </div>
             <div className={`${ingredientDetailsStyle.card} ml-15 mr-15`}>
-                <img className={``} src={ingredient.image_large} alt={ingredient.name} />
+                <img className={``} src={ingredient.image_large} alt={ingredient.name}/>
                 <p className={`text text_type_main-medium mt-4`}>{ingredient.name}</p>
                 <ul className={`${ingredientDetailsStyle.list} mt-8 mb-5`}>
                     <li className={`${ingredientDetailsStyle.item}`}>
@@ -31,7 +25,6 @@ function IngredientDetails({ingredient, handleCloseClick}) {
                     </li>
                 </ul>
             </div>
-        </>
     )
 }
 

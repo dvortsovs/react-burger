@@ -4,7 +4,7 @@ import ingredient from "../../constants/ingredient";
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 
-function BurgerConstructor({data}) {
+function BurgerConstructor({data, handleModalOpen}) {
 
     const rolls = data.find(bun => bun.type === 'bun')
 
@@ -57,7 +57,7 @@ function BurgerConstructor({data}) {
                     610
                     <CurrencyIcon type={"primary"}/>
                 </p>
-                <Button
+                <Button onClick={() => {handleModalOpen({}, 'order')}}
                     type={"primary"} size={"medium"}>
                     Оформить заказ
                 </Button>

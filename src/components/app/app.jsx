@@ -4,12 +4,21 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import {api} from "../../constants/api";
-import ModalOverlay from "../modal-overlay/modal-overlay";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
 function App() {
 
-    const [state, setState] = React.useState({isLoading: false, isError: false, data: [], modalIngredientVisible: false, modalIngredient: {}})
+    const [state, setState] = React.useState({
+        isLoading: false,
+        isError: false,
+        data: [],
+        modalIsOpen: false,
+        modalIngredientVisible: false,
+        modalOrderDetailsVisible: false,
+        modalIngredient: {}
+    })
 
     React.useEffect(() => {
         setState({...state, isLoading: true});
@@ -22,24 +31,32 @@ function App() {
             })
     }, [])
 
-    const handleIngredientClick = (ingredient) => {
-        setState({...state, modalIngredientVisible: true, modalIngredient: {...ingredient}})
+    const handleModalOpen = (ingredient, modalType) => {
+        if (modalType === "ingredient") {
+            setState({...state, modalIsOpen: true, modalIngredientVisible: true, modalIngredient: {...ingredient}})
+        } else {
+            setState({...state, modalIsOpen: true, modalOrderDetailsVisibleVisible: true})
+        }
     }
 
-    const handleCloseClick = () => {
-        setState({...state, modalIngredientVisible: false})
+    const handleClose = () => {
+        setState({...state, modalIsOpen: false, modalOrderDetailsVisibleVisible: false, modalIngredientVisible: false})
     }
 
-  return (
-    <div className={appStyle.app}>
-        { state.modalIngredientVisible && <ModalOverlay><IngredientDetails handleCloseClick={handleCloseClick} ingredient={state.modalIngredient} /></ModalOverlay>}
-        <AppHeader />
-        <main className={`${appStyle.main}`}>
-            {!state.isLoading && !state.isError && <BurgerIngredients handleIngredientClick={handleIngredientClick} data={state.data}/> }
-            {!state.isLoading && !state.isError && !!state.data.length && <BurgerConstructor data={state.data} /> }
-        </main>
-    </div>
-  );
+    return (
+        <div className={appStyle.app}>
+            {state.modalIsOpen && <Modal title={state.modalIngredientVisible ? "Детали ингредиента" : ""}
+                                         handleClose={handleClose}>{state.modalIngredientVisible ?
+                <IngredientDetails ingredient={state.modalIngredient}/> : <OrderDetails/>}</Modal>}
+            <AppHeader/>
+            <main className={`${appStyle.main}`}>
+                {!state.isLoading && !state.isError &&
+                    <BurgerIngredients handleModalOpen={handleModalOpen} data={state.data}/>}
+                {!state.isLoading && !state.isError && !!state.data.length &&
+                    <BurgerConstructor handleModalOpen={handleModalOpen} data={state.data}/>}
+            </main>
+        </div>
+    );
 }
 
 export default App;

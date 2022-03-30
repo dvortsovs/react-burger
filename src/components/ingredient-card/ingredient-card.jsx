@@ -3,10 +3,10 @@ import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-function IngredientCard({ingredient, handleIngredientClick}) {
+function IngredientCard({ingredient, handleModalOpen}) {
 
     return(
-        <li className={`${ingredientCardStyle.card}`} onClick={() => handleIngredientClick(ingredient)}>
+        <li className={`${ingredientCardStyle.card}`} onClick={() => { handleModalOpen(ingredient, "ingredient")}}>
             <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
             <Counter count={1} />
             <div className={`${ingredientCardStyle.price} mt-1 `}>
