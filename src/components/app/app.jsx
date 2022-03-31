@@ -14,16 +14,20 @@ function App() {
         isLoading: false,
         isError: false,
         data: [],
-        modalIsOpen: false,
         modalIngredientVisible: false,
         modalOrderDetailsVisible: false,
-        modalIngredient: {}
+        modalIngredient: null
     })
 
     React.useEffect(() => {
         setState({...state, isLoading: true});
-        fetch(api)
-            .then(res => res.json())
+        fetch(`${api.baseUrl}${api.ingredients}`)
+            .then((res) => {
+                if (res.ok) {
+                    return res.json()
+                }
+                Promise.reject(res.status)
+            })
             .then(res => setState({...state, data: res.data, isLoading: false}))
             .catch((err) => {
                 setState({...state, isLoading: false, isError: true})
@@ -31,29 +35,32 @@ function App() {
             })
     }, [])
 
-    const handleModalOpen = (ingredient, modalType) => {
-        if (modalType === "ingredient") {
-            setState({...state, modalIsOpen: true, modalIngredientVisible: true, modalIngredient: {...ingredient}})
-        } else {
-            setState({...state, modalIsOpen: true, modalOrderDetailsVisibleVisible: true})
-        }
+    const handleIngredientModalOpen = (ingredient) => {
+        setState({...state, modalIngredientVisible: true, modalIngredient: {...ingredient}})
+    }
+
+    const handleOrderModalOpen = () => {
+        setState({...state, modalOrderDetailsVisible: true})
     }
 
     const handleClose = () => {
-        setState({...state, modalIsOpen: false, modalOrderDetailsVisibleVisible: false, modalIngredientVisible: false})
+        setState({...state, modalOrderDetailsVisible: false, modalIngredientVisible: false})
     }
 
     return (
         <div className={appStyle.app}>
-            {state.modalIsOpen && <Modal title={state.modalIngredientVisible ? "Детали ингредиента" : ""}
-                                         handleClose={handleClose}>{state.modalIngredientVisible ?
-                <IngredientDetails ingredient={state.modalIngredient}/> : <OrderDetails/>}</Modal>}
+            {state.modalIngredientVisible &&
+                <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
+                    ingredient={state.modalIngredient}/></Modal>}
+
+            {state.modalOrderDetailsVisible && <Modal title={""} handleClose={handleClose}><OrderDetails/></Modal>}
+
             <AppHeader/>
             <main className={`${appStyle.main}`}>
                 {!state.isLoading && !state.isError &&
-                    <BurgerIngredients handleModalOpen={handleModalOpen} data={state.data}/>}
+                    <BurgerIngredients handleModalOpen={handleIngredientModalOpen} data={state.data}/>}
                 {!state.isLoading && !state.isError && !!state.data.length &&
-                    <BurgerConstructor handleModalOpen={handleModalOpen} data={state.data}/>}
+                    <BurgerConstructor handleModalOpen={handleOrderModalOpen} data={state.data}/>}
             </main>
         </div>
     );

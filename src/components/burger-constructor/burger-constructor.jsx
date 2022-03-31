@@ -23,20 +23,18 @@ function BurgerConstructor({data, handleModalOpen}) {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {data.map((ingredient, index) => {
-                                    if (ingredient.type !== 'bun') {
-                                        return (
-                                            <li className={`${burgerConstructorStyles.item} `} key={index}>
-                                                <div className={`${burgerConstructorStyles.holder}`}><DragIcon
-                                                    type={"primary"}/></div>
-                                                <ConstructorElement
-                                                    text={ingredient.name}
-                                                    price={ingredient.price}
-                                                    thumbnail={ingredient.image}
-                                                />
-                                            </li>
-                                        )
-                                    } else return null
+                            {data.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+                                    return (
+                                        <li className={`${burgerConstructorStyles.item} `} key={index}>
+                                            <div className={`${burgerConstructorStyles.holder}`}><DragIcon
+                                                type={"primary"}/></div>
+                                            <ConstructorElement
+                                                text={ingredient.name}
+                                                price={ingredient.price}
+                                                thumbnail={ingredient.image}
+                                            />
+                                        </li>
+                                    )
                                 }
                             )}
                         </ul>
@@ -57,8 +55,10 @@ function BurgerConstructor({data, handleModalOpen}) {
                     610
                     <CurrencyIcon type={"primary"}/>
                 </p>
-                <Button onClick={() => {handleModalOpen({}, 'order')}}
-                    type={"primary"} size={"medium"}>
+                <Button onClick={() => {
+                    handleModalOpen(null)
+                }}
+                        type={"primary"} size={"medium"}>
                     Оформить заказ
                 </Button>
             </div>
@@ -67,7 +67,8 @@ function BurgerConstructor({data, handleModalOpen}) {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredient.isRequired)
+    data: PropTypes.arrayOf(ingredient).isRequired,
+    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

@@ -1,1 +1,4 @@
-export const api = 'https://norma.nomoreparties.space/api/ingredients';
+export const api = {
+    baseUrl: 'https://norma.nomoreparties.space/api',
+    ingredients: '/ingredients',
+}

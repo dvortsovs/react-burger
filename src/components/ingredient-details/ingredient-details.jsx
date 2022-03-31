@@ -5,7 +5,7 @@ import ingredientDetailsStyle from './ingredient-details.module.css'
 function IngredientDetails({ingredient}) {
     return (
         <div className={`${ingredientDetailsStyle.card} ml-15 mr-15`}>
-            <img className={``} src={ingredient.image_large} alt={ingredient.name}/>
+            <img src={ingredient.image_large} alt={ingredient.name}/>
             <p className={`text text_type_main-medium mt-4`}>{ingredient.name}</p>
             <ul className={`${ingredientDetailsStyle.list} mt-8 mb-5`}>
                 <li className={`${ingredientDetailsStyle.item}`}>

@@ -30,7 +30,8 @@ function BurgerIngredients({data, handleModalOpen}) {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(ingredient.isRequired)
+    data: PropTypes.arrayOf(ingredient).isRequired,
+    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients

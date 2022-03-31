@@ -21,8 +21,9 @@ function IngredientList({data, type, handleModalOpen}) {
 }
 
 IngredientList.propTypes = {
-    data: PropTypes.arrayOf(ingredient.isRequired),
-    type: PropTypes.objectOf(PropTypes.string)
+    data: PropTypes.arrayOf(ingredient).isRequired,
+    type: PropTypes.objectOf(PropTypes.string),
+    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default IngredientList

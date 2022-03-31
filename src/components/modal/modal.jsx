@@ -8,17 +8,18 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 function Modal(props) {
 
     React.useEffect(() => {
+        const handleKeyClose = (e) => {
+            if (e.key === 'Escape') {
+                props.handleClose()
+            }
+        }
+
         document.addEventListener('keydown', handleKeyClose)
         return (() => {
             document.removeEventListener('keydown', handleKeyClose)
         })
-    }, [])
+    }, [props.handleClose])
 
-    const handleKeyClose = (e) => {
-        if (e.key === 'Escape') {
-            props.handleClose()
-        }
-    }
 
     return ReactDOM.createPortal(
         (
@@ -39,7 +40,8 @@ function Modal(props) {
 
 Modal.propTypes = {
     handleClose: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired
 }
 
 export default Modal
