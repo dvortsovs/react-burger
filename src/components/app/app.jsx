@@ -26,7 +26,7 @@ function App() {
                 if (res.ok) {
                     return res.json()
                 }
-                Promise.reject(res.status)
+                return Promise.reject(res.status)
             })
             .then(res => setState({...state, data: res.data, isLoading: false}))
             .catch((err) => {
