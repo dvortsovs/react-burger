@@ -2,10 +2,12 @@ import React from 'react';
 import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 
-function IngredientCard({ingredient}) {
+function IngredientCard({ingredient, handleModalOpen}) {
+
     return(
-        <li className={`${ingredientCardStyle.card}`}>
+        <li className={`${ingredientCardStyle.card}`} onClick={() => { handleModalOpen(ingredient)}}>
             <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
             <Counter count={1} />
             <div className={`${ingredientCardStyle.price} mt-1 `}>
@@ -18,7 +20,8 @@ function IngredientCard({ingredient}) {
 }
 
 IngredientCard.propTypes = {
-    ingredient: ingredient.isRequired
+    ingredient: ingredient.isRequired,
+    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default IngredientCard

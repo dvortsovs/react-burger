@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ingredient from "../../constants/ingredient";
-import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 
-function BurgerConstructor({data}) {
+function BurgerConstructor({data, handleModalOpen}) {
 
     const rolls = data.find(bun => bun.type === 'bun')
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
             {
-                <ul className={`${burgerConstructorStyles.ingredients} pl-8`}>
-                    <li className={`${burgerConstructorStyles.ingredient} `}>
+                <ul className={`${burgerConstructorStyles.ingredients}`}>
+                    <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                         <ConstructorElement
                             type="top"
                             isLocked={true}
@@ -23,23 +23,23 @@ function BurgerConstructor({data}) {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {data.map((ingredient) => {
-                                    if (ingredient.type !== 'bun') {
-                                        return (
-                                            <li className={`${burgerConstructorStyles.item} `} key={ingredient._id}>
-                                                <ConstructorElement
-                                                    text={ingredient.name}
-                                                    price={ingredient.price}
-                                                    thumbnail={ingredient.image}
-                                                />
-                                            </li>
-                                        )
-                                    } else return null
+                            {data.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+                                    return (
+                                        <li className={`${burgerConstructorStyles.item} `} key={index}>
+                                            <div className={`${burgerConstructorStyles.holder}`}><DragIcon
+                                                type={"primary"}/></div>
+                                            <ConstructorElement
+                                                text={ingredient.name}
+                                                price={ingredient.price}
+                                                thumbnail={ingredient.image}
+                                            />
+                                        </li>
+                                    )
                                 }
                             )}
                         </ul>
                     </li>
-                    <li className={`${burgerConstructorStyles.ingredient}`}>
+                    <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
@@ -53,19 +53,22 @@ function BurgerConstructor({data}) {
             <div className={`${burgerConstructorStyles.container} mt-10`}>
                 <p className={`text text_type_digits-medium mr-10`}>
                     610
-                        <CurrencyIcon type={"primary"}/>
+                    <CurrencyIcon type={"primary"}/>
                 </p>
-                <Button
-                type={"primary"} size={"medium"}>
-                Оформить заказ
-            </Button>
+                <Button onClick={() => {
+                    handleModalOpen(null)
+                }}
+                        type={"primary"} size={"medium"}>
+                    Оформить заказ
+                </Button>
             </div>
         </section>
     )
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredient.isRequired)
+    data: PropTypes.arrayOf(ingredient).isRequired,
+    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor
