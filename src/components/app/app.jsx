@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import appStyle from './app.module.css';
+import {api} from "../../constants/api";
+import {DataContext} from "../../services/data-context";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {api} from "../../constants/api";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
 function App() {
-
+    const [data, setData] = useState([])
     const [state, setState] = React.useState({
         isLoading: false,
         isError: false,
-        data: [],
         modalIngredientVisible: false,
         modalOrderDetailsVisible: false,
         modalIngredient: null
@@ -28,7 +28,10 @@ function App() {
                 }
                 return Promise.reject(res.status)
             })
-            .then(res => setState({...state, data: res.data, isLoading: false}))
+            .then(res => {
+                setState({...state, isLoading: false})
+                setData([...res.data])
+            })
             .catch((err) => {
                 setState({...state, isLoading: false, isError: true})
                 console.log(err)
@@ -49,6 +52,7 @@ function App() {
 
     return (
         <div className={appStyle.app}>
+            <DataContext.Provider value={{ data }}>
             {state.modalIngredientVisible &&
                 <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
                     ingredient={state.modalIngredient}/></Modal>}
@@ -58,10 +62,11 @@ function App() {
             <AppHeader/>
             <main className={`${appStyle.main}`}>
                 {!state.isLoading && !state.isError &&
-                    <BurgerIngredients handleModalOpen={handleIngredientModalOpen} data={state.data}/>}
-                {!state.isLoading && !state.isError && !!state.data.length &&
-                    <BurgerConstructor handleModalOpen={handleOrderModalOpen} data={state.data}/>}
+                    <BurgerIngredients handleModalOpen={handleIngredientModalOpen} />}
+                {!state.isLoading && !state.isError && !!data.length &&
+                    <BurgerConstructor handleModalOpen={handleOrderModalOpen} />}
             </main>
+            </DataContext.Provider>
         </div>
     );
 }

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import ingredient from "../../constants/ingredient";
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
+import {DataContext} from "../../services/data-context";
 
-function BurgerConstructor({data, handleModalOpen}) {
-
+function BurgerConstructor({handleModalOpen}) {
+    const { data } = useContext(DataContext)
     const rolls = data.find(bun => bun.type === 'bun')
 
     return (
@@ -67,7 +67,6 @@ function BurgerConstructor({data, handleModalOpen}) {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredient).isRequired,
     handleModalOpen: PropTypes.func.isRequired
 }
 
