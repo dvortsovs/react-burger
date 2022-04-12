@@ -7,6 +7,7 @@ import {DataContext} from "../../services/data-context";
 function BurgerConstructor({handleModalOpen}) {
     const { data } = useContext(DataContext)
     const rolls = data.find(bun => bun.type === 'bun')
+    const totalPrice = { price: rolls.price * 2 }
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
@@ -24,6 +25,7 @@ function BurgerConstructor({handleModalOpen}) {
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
                             {data.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+                                totalPrice.price += ingredient.price
                                     return (
                                         <li className={`${burgerConstructorStyles.item} `} key={index}>
                                             <div className={`${burgerConstructorStyles.holder}`}><DragIcon
@@ -52,7 +54,7 @@ function BurgerConstructor({handleModalOpen}) {
             }
             <div className={`${burgerConstructorStyles.container} mt-10`}>
                 <p className={`text text_type_digits-medium mr-10`}>
-                    610
+                    {totalPrice.price}
                     <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button onClick={() => {

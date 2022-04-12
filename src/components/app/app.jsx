@@ -52,20 +52,21 @@ function App() {
 
     return (
         <div className={appStyle.app}>
-            <DataContext.Provider value={{ data }}>
-            {state.modalIngredientVisible &&
-                <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
-                    ingredient={state.modalIngredient}/></Modal>}
+            <DataContext.Provider value={{data}}>
+                {state.modalIngredientVisible &&
+                    <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
+                        ingredient={state.modalIngredient}/></Modal>}
 
-            {state.modalOrderDetailsVisible && <Modal title={""} handleClose={handleClose}><OrderDetails/></Modal>}
+                {state.modalOrderDetailsVisible &&
+                    <Modal title={""} handleClose={handleClose}><OrderDetails/></Modal>}
 
-            <AppHeader/>
-            <main className={`${appStyle.main}`}>
-                {!state.isLoading && !state.isError &&
-                    <BurgerIngredients handleModalOpen={handleIngredientModalOpen} />}
-                {!state.isLoading && !state.isError && !!data.length &&
-                    <BurgerConstructor handleModalOpen={handleOrderModalOpen} />}
-            </main>
+                <AppHeader/>
+                <main className={`${appStyle.main}`}>
+                    {!state.isLoading && !state.isError &&
+                        <BurgerIngredients handleModalOpen={handleIngredientModalOpen}/>}
+                    {!state.isLoading && !state.isError && !!data.length &&
+                        <BurgerConstructor handleModalOpen={handleOrderModalOpen}/>}
+                </main>
             </DataContext.Provider>
         </div>
     );
