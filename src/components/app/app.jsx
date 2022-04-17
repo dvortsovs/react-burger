@@ -70,15 +70,15 @@ function App() {
 
     return (
         <div className={appStyle.app}>
+            {state.modalIngredientVisible &&
+                <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
+                    ingredient={state.modalIngredient}/></Modal>}
+
+            {state.modalOrderDetailsVisible &&
+                <Modal title={""} handleClose={handleClose}><OrderDetails orderNumber={state.orderNumber}/></Modal>}
+
+            <AppHeader/>
             <DataContext.Provider value={{data}}>
-                {state.modalIngredientVisible &&
-                    <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
-                        ingredient={state.modalIngredient}/></Modal>}
-
-                {state.modalOrderDetailsVisible &&
-                    <Modal title={""} handleClose={handleClose}><OrderDetails orderNumber={state.orderNumber}/></Modal>}
-
-                <AppHeader/>
                 <main className={`${appStyle.main}`}>
                     {!state.isLoading && !state.isError &&
                         <BurgerIngredients handleModalOpen={handleIngredientModalOpen}/>}

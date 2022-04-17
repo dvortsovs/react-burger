@@ -7,7 +7,18 @@ import {DataContext} from "../../services/data-context";
 function BurgerConstructor({handleModalOpen}) {
     const { data } = useContext(DataContext)
     const rolls = data.find(bun => bun.type === 'bun')
-    const totalPrice = { price: rolls.price * 2 }
+    const [ingredients, setIngredients] = React.useState([])
+    const [totalPrice, setTotalPrice] = React.useState(null)
+    React.useEffect(() => {
+        setIngredients([...data])
+        setTotalPrice(rolls.price * 2 + ingredients.reduce((total, current) => {
+            if (current.type !== 'bun') {
+                return total + current.price
+            } else {
+                return total
+            }
+        }, 0))
+    }, [ingredients])
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
@@ -24,8 +35,7 @@ function BurgerConstructor({handleModalOpen}) {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {data.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
-                                totalPrice.price += ingredient.price
+                            {ingredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
                                     return (
                                         <li className={`${burgerConstructorStyles.item} `} key={index}>
                                             <div className={`${burgerConstructorStyles.holder}`}><DragIcon
@@ -54,7 +64,7 @@ function BurgerConstructor({handleModalOpen}) {
             }
             <div className={`${burgerConstructorStyles.container} mt-10`}>
                 <p className={`text text_type_digits-medium mr-10`}>
-                    {totalPrice.price}
+                    {totalPrice}
                     <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button onClick={() => {
