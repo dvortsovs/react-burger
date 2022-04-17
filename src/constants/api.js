@@ -1,4 +1,10 @@
 export const api = {
-    baseUrl: 'https://norma.nomoreparties.space/api',
-    ingredients: '/ingredients',
+    urls: {
+        baseUrl: 'https://norma.nomoreparties.space/api',
+        ingredients: '/ingredients',
+        orders: '/orders',
+    },
+    headers: {
+        'Content-Type': 'application/json'
+    }
 }

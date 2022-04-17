@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import ingredient from "../../constants/ingredient";
 import ingredientListStyle from './ingredient-list.module.css'
+import {DataContext} from "../../services/data-context";
 import IngredientCard from "../ingredient-card/ingredient-card";
 
-function IngredientList({data, type, handleModalOpen}) {
+
+function IngredientList({ type, handleModalOpen}) {
+    const { data } = useContext(DataContext)
     return (
         <article>
             <h2 className={`mt-10 mb-6 text text_type_main-medium`}>{type.title}</h2>
@@ -21,7 +23,6 @@ function IngredientList({data, type, handleModalOpen}) {
 }
 
 IngredientList.propTypes = {
-    data: PropTypes.arrayOf(ingredient).isRequired,
     type: PropTypes.objectOf(PropTypes.string),
     handleModalOpen: PropTypes.func.isRequired
 }

@@ -1,12 +1,24 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import ingredient from "../../constants/ingredient";
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
+import {DataContext} from "../../services/data-context";
 
-function BurgerConstructor({data, handleModalOpen}) {
-
+function BurgerConstructor({handleModalOpen}) {
+    const { data } = useContext(DataContext)
     const rolls = data.find(bun => bun.type === 'bun')
+    const [ingredients, setIngredients] = React.useState([])
+    const [totalPrice, setTotalPrice] = React.useState(null)
+    React.useEffect(() => {
+        setIngredients([...data])
+        setTotalPrice(rolls.price * 2 + ingredients.reduce((total, current) => {
+            if (current.type !== 'bun') {
+                return total + current.price
+            } else {
+                return total
+            }
+        }, 0))
+    }, [ingredients])
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
@@ -23,7 +35,7 @@ function BurgerConstructor({data, handleModalOpen}) {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {data.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+                            {ingredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
                                     return (
                                         <li className={`${burgerConstructorStyles.item} `} key={index}>
                                             <div className={`${burgerConstructorStyles.holder}`}><DragIcon
@@ -52,11 +64,13 @@ function BurgerConstructor({data, handleModalOpen}) {
             }
             <div className={`${burgerConstructorStyles.container} mt-10`}>
                 <p className={`text text_type_digits-medium mr-10`}>
-                    610
+                    {totalPrice}
                     <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button onClick={() => {
-                    handleModalOpen(null)
+                    handleModalOpen(data.map((ingredient) => {
+                        return ingredient._id
+                    }))
                 }}
                         type={"primary"} size={"medium"}>
                     Оформить заказ
@@ -67,7 +81,6 @@ function BurgerConstructor({data, handleModalOpen}) {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredient).isRequired,
     handleModalOpen: PropTypes.func.isRequired
 }
 
