@@ -16,12 +16,13 @@ function App() {
         isError: false,
         modalIngredientVisible: false,
         modalOrderDetailsVisible: false,
-        modalIngredient: null
+        modalIngredient: null,
+        orderNumber: null
     })
 
     React.useEffect(() => {
         setState({...state, isLoading: true});
-        fetch(`${api.baseUrl}${api.ingredients}`)
+        fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
             .then((res) => {
                 if (res.ok) {
                     return res.json()
@@ -42,8 +43,25 @@ function App() {
         setState({...state, modalIngredientVisible: true, modalIngredient: {...ingredient}})
     }
 
-    const handleOrderModalOpen = () => {
-        setState({...state, modalOrderDetailsVisible: true})
+    const handleOrderModalOpen = (ingredientsList) => {
+        fetch(`${api.urls.baseUrl}${api.urls.orders}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({"ingredients": ingredientsList})
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json()
+                }
+                return Promise.reject(res.status)
+            })
+            .then((res) => {
+                setState({...state, orderNumber: res.order.number, modalOrderDetailsVisible: true})
+            })
+            .catch((err) => {
+                setState({...state, orderNumber: null})
+                console.log(err)
+            })
     }
 
     const handleClose = () => {
@@ -58,7 +76,7 @@ function App() {
                         ingredient={state.modalIngredient}/></Modal>}
 
                 {state.modalOrderDetailsVisible &&
-                    <Modal title={""} handleClose={handleClose}><OrderDetails/></Modal>}
+                    <Modal title={""} handleClose={handleClose}><OrderDetails orderNumber={state.orderNumber}/></Modal>}
 
                 <AppHeader/>
                 <main className={`${appStyle.main}`}>

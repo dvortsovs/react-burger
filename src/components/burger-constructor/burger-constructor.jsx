@@ -58,7 +58,9 @@ function BurgerConstructor({handleModalOpen}) {
                     <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button onClick={() => {
-                    handleModalOpen(null)
+                    handleModalOpen(data.map((ingredient) => {
+                        return ingredient._id
+                    }))
                 }}
                         type={"primary"} size={"medium"}>
                     Оформить заказ
