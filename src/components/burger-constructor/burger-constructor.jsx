@@ -1,18 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_BUN, ADD_INGREDIENT, UPDATE_TOTAL_PRICE} from "../../services/actions/burger-constructor";
+import {getOrderDetails} from "../../services/actions/order-details";
 
 
-function BurgerConstructor({handleModalOpen}) {
+function BurgerConstructor() {
     const ingredientList = useSelector(state => state.ingredientsList.ingredients)
     const dispatch = useDispatch()
+
     React.useEffect(() => {
         dispatch({
-           type: ADD_BUN,
-           bun: ingredientList.find(bun => bun.type === 'bun')
+            type: ADD_BUN,
+            bun: ingredientList.find(bun => bun.type === 'bun')
         })
         dispatch({
             type: ADD_INGREDIENT,
@@ -22,7 +23,11 @@ function BurgerConstructor({handleModalOpen}) {
             type: UPDATE_TOTAL_PRICE
         })
     }, [dispatch])
-    const { ingredients, bun, totalPrice } = useSelector(state => state.constructorList)
+
+    const {ingredients, bun, totalPrice} = useSelector(state => state.constructorList)
+    const openOrderDetails = () => {
+        dispatch(getOrderDetails(ingredients))
+    }
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
@@ -71,21 +76,15 @@ function BurgerConstructor({handleModalOpen}) {
                     {totalPrice}
                     <CurrencyIcon type={"primary"}/>
                 </p>
-                <Button onClick={() => {
-                    handleModalOpen(ingredients.map((ingredient) => {
-                        return ingredient._id
-                    }))
-                }}
+                <Button onClick={openOrderDetails}
                         type={"primary"} size={"medium"}>
                     Оформить заказ
                 </Button>
+
             </div>
         </section>
     )
 }
 
-BurgerConstructor.propTypes = {
-    handleModalOpen: PropTypes.func.isRequired
-}
 
 export default BurgerConstructor

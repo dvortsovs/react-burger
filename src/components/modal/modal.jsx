@@ -4,13 +4,31 @@ import PropTypes from 'prop-types';
 import modalStyles from './modal.module.css'
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch, useSelector} from "react-redux";
+import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
 
 function Modal(props) {
+    const dispatch = useDispatch();
+    const {detailsVisible} = useSelector(state => state.details)
+    const {orderVisible} = useSelector(state => state.order)
+    const closeModal = () => {
+        if (orderVisible) {
+            dispatch({
+                type: CLOSE_ORDER_DETAILS
+            })
+        }
+        if (detailsVisible) {
+            dispatch({
+                type: CLOSE_DETAILS_MODAL
+            })
+        }
+    }
 
     React.useEffect(() => {
         const handleKeyClose = (e) => {
             if (e.key === 'Escape') {
-                props.handleClose()
+                closeModal();
             }
         }
 
@@ -18,16 +36,16 @@ function Modal(props) {
         return (() => {
             document.removeEventListener('keydown', handleKeyClose)
         })
-    }, [props.handleClose])
+    }, [dispatch])
 
 
     return ReactDOM.createPortal(
         (
-            <ModalOverlay onClick={props.handleClose}>
+            <ModalOverlay onClick={closeModal}>
                 <div className={`${modalStyles.modal} p-10`}>
                     <div className={`${modalStyles.header}`}>
                         <h2 className={`text text_type_main-large`}>{props.title}</h2>
-                        <button onClick={props.handleClose} type="button" className={`${modalStyles.close}`}>
+                        <button onClick={closeModal} type="button" className={`${modalStyles.close}`}>
                             <CloseIcon type={"primary"}/></button>
                     </div>
                     {props.children}
@@ -39,7 +57,6 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-    handleClose: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired
 }

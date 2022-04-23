@@ -2,17 +2,26 @@ import React from 'react';
 import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
+import {OPEN_DETAILS_MODAL} from "../../services/actions/ingredient-details";
 
-function IngredientCard({ingredient, handleModalOpen}) {
-
-    return(
-        <li className={`${ingredientCardStyle.card}`} onClick={() => { handleModalOpen(ingredient)}}>
-            <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name} />
-            <Counter count={1} />
+function IngredientCard({ingredient}) {
+    const dispatch = useDispatch();
+    const openDetails = (ingredient) => {
+        dispatch({
+            type: OPEN_DETAILS_MODAL,
+            ingredient: ingredient
+        })
+    }
+    return (
+        <li className={`${ingredientCardStyle.card}`} onClick={() => {
+            openDetails(ingredient)
+        }}>
+            <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name}/>
+            <Counter count={1}/>
             <div className={`${ingredientCardStyle.price} mt-1 `}>
                 <p className={`mr-2 text text_type_digits-default`}>{ingredient.price}</p>
-                <CurrencyIcon type={"primary"} />
+                <CurrencyIcon type={"primary"}/>
             </div>
             <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
         </li>
@@ -21,7 +30,6 @@ function IngredientCard({ingredient, handleModalOpen}) {
 
 IngredientCard.propTypes = {
     ingredient: ingredient.isRequired,
-    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default IngredientCard

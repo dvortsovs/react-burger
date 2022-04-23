@@ -5,7 +5,7 @@ import IngredientCard from "../ingredient-card/ingredient-card";
 import {useSelector} from "react-redux";
 
 
-function IngredientList({ type, handleModalOpen}) {
+function IngredientList({type}) {
     const ingredients = useSelector(state => state.ingredientsList.ingredients)
     return (
         <article>
@@ -13,7 +13,7 @@ function IngredientList({ type, handleModalOpen}) {
             <ul className={`${ingredientListStyle.list} ml-4 mr-4`}>
                 {ingredients.map((ingredient) => {
                     if (ingredient.type === type.type) {
-                        return <IngredientCard handleModalOpen={handleModalOpen} ingredient={ingredient}
+                        return <IngredientCard ingredient={ingredient}
                                                key={ingredient._id}/>
                     } else return null
                 })}
@@ -24,7 +24,6 @@ function IngredientList({ type, handleModalOpen}) {
 
 IngredientList.propTypes = {
     type: PropTypes.objectOf(PropTypes.string),
-    handleModalOpen: PropTypes.func.isRequired
 }
 
 export default IngredientList
