@@ -1,17 +1,17 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ingredientListStyle from './ingredient-list.module.css'
-import {DataContext} from "../../services/data-context";
 import IngredientCard from "../ingredient-card/ingredient-card";
+import {useSelector} from "react-redux";
 
 
 function IngredientList({ type, handleModalOpen}) {
-    const { data } = useContext(DataContext)
+    const ingredients = useSelector(state => state.ingredientsList.ingredients)
     return (
         <article>
             <h2 className={`mt-10 mb-6 text text_type_main-medium`}>{type.title}</h2>
             <ul className={`${ingredientListStyle.list} ml-4 mr-4`}>
-                {data.map((ingredient) => {
+                {ingredients.map((ingredient) => {
                     if (ingredient.type === type.type) {
                         return <IngredientCard handleModalOpen={handleModalOpen} ingredient={ingredient}
                                                key={ingredient._id}/>

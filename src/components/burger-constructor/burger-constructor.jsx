@@ -1,24 +1,28 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
-import {DataContext} from "../../services/data-context";
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_BUN, ADD_INGREDIENT, UPDATE_TOTAL_PRICE} from "../../services/actions/burger-constructor";
+
 
 function BurgerConstructor({handleModalOpen}) {
-    const { data } = useContext(DataContext)
-    const rolls = data.find(bun => bun.type === 'bun')
-    const [ingredients, setIngredients] = React.useState([])
-    const [totalPrice, setTotalPrice] = React.useState(null)
+    const ingredientList = useSelector(state => state.ingredientsList.ingredients)
+    const dispatch = useDispatch()
     React.useEffect(() => {
-        setIngredients([...data])
-        setTotalPrice(rolls.price * 2 + ingredients.reduce((total, current) => {
-            if (current.type !== 'bun') {
-                return total + current.price
-            } else {
-                return total
-            }
-        }, 0))
-    }, [ingredients])
+        dispatch({
+           type: ADD_BUN,
+           bun: ingredientList.find(bun => bun.type === 'bun')
+        })
+        dispatch({
+            type: ADD_INGREDIENT,
+            ingredient: ingredientList.filter(ingredient => ingredient.type !== 'bun')
+        })
+        dispatch({
+            type: UPDATE_TOTAL_PRICE
+        })
+    }, [dispatch])
+    const { ingredients, bun, totalPrice } = useSelector(state => state.constructorList)
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
@@ -28,9 +32,9 @@ function BurgerConstructor({handleModalOpen}) {
                         <ConstructorElement
                             type="top"
                             isLocked={true}
-                            text={`${rolls.name} (верх)`}
-                            price={rolls.price}
-                            thumbnail={rolls.image}
+                            text={`${bun.name} (верх)`}
+                            price={bun.price}
+                            thumbnail={bun.image}
                         />
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
@@ -55,9 +59,9 @@ function BurgerConstructor({handleModalOpen}) {
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
-                            text={`${rolls.name} (низ)`}
-                            price={rolls.price}
-                            thumbnail={rolls.image}
+                            text={`${bun.name} (низ)`}
+                            price={bun.price}
+                            thumbnail={bun.image}
                         />
                     </li>
                 </ul>
@@ -68,7 +72,7 @@ function BurgerConstructor({handleModalOpen}) {
                     <CurrencyIcon type={"primary"}/>
                 </p>
                 <Button onClick={() => {
-                    handleModalOpen(data.map((ingredient) => {
+                    handleModalOpen(ingredients.map((ingredient) => {
                         return ingredient._id
                     }))
                 }}

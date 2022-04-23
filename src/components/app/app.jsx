@@ -1,16 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import appStyle from './app.module.css';
 import {api} from "../../constants/api";
-import {DataContext} from "../../services/data-context";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import {useDispatch, useSelector} from "react-redux";
+import {getIngredients} from "../../services/actions/burger-ingredients";
 
 function App() {
-    const [data, setData] = useState([])
+    const dispatch = useDispatch();
+    const { ingredients, ingredientsRequest, ingredientsRequestFailed } = useSelector(state => state.ingredientsList)
     const [state, setState] = React.useState({
         isLoading: false,
         isError: false,
@@ -19,25 +21,9 @@ function App() {
         modalIngredient: null,
         orderNumber: null
     })
-
     React.useEffect(() => {
-        setState({...state, isLoading: true});
-        fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
-            .then(res => {
-                setState({...state, isLoading: false})
-                setData([...res.data])
-            })
-            .catch((err) => {
-                setState({...state, isLoading: false, isError: true})
-                console.log(err)
-            })
-    }, [])
+        dispatch(getIngredients())
+    },[dispatch])
 
     const handleIngredientModalOpen = (ingredient) => {
         setState({...state, modalIngredientVisible: true, modalIngredient: {...ingredient}})
@@ -78,14 +64,12 @@ function App() {
                 <Modal title={""} handleClose={handleClose}><OrderDetails orderNumber={state.orderNumber}/></Modal>}
 
             <AppHeader/>
-            <DataContext.Provider value={{data}}>
                 <main className={`${appStyle.main}`}>
-                    {!state.isLoading && !state.isError &&
+                    {!ingredientsRequest && !ingredientsRequestFailed &&
                         <BurgerIngredients handleModalOpen={handleIngredientModalOpen}/>}
-                    {!state.isLoading && !state.isError && !!data.length &&
+                    {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
                         <BurgerConstructor handleModalOpen={handleOrderModalOpen}/>}
                 </main>
-            </DataContext.Provider>
         </div>
     );
 }
