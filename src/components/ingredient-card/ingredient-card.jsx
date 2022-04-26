@@ -4,8 +4,13 @@ import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch} from "react-redux";
 import {OPEN_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {useDrag} from "react-dnd";
 
 function IngredientCard({ingredient}) {
+    const [{}, dragRef] = useDrag({
+        type: 'ingredient',
+        id: ingredient._id
+    })
     const dispatch = useDispatch();
     const openDetails = (ingredient) => {
         dispatch({
@@ -14,7 +19,7 @@ function IngredientCard({ingredient}) {
         })
     }
     return (
-        <li className={`${ingredientCardStyle.card}`} onClick={() => {
+        <li ref={dragRef} className={`${ingredientCardStyle.card}`} onClick={() => {
             openDetails(ingredient)
         }}>
             <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name}/>

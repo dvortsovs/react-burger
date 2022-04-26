@@ -8,6 +8,8 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../../services/actions/burger-ingredients";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 function App() {
     const dispatch = useDispatch();
@@ -28,12 +30,14 @@ function App() {
                 <Modal title={""}><OrderDetails/></Modal>}
 
             <AppHeader/>
-            <main className={`${appStyle.main}`}>
-                {!ingredientsRequest && !ingredientsRequestFailed &&
-                    <BurgerIngredients/>}
-                {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
-                    <BurgerConstructor/>}
-            </main>
+            <DndProvider backend={HTML5Backend}>
+                <main className={`${appStyle.main}`}>
+                    {!ingredientsRequest && !ingredientsRequestFailed &&
+                        <BurgerIngredients/>}
+                    {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
+                        <BurgerConstructor/>}
+                </main>
+            </DndProvider>
         </div>
     );
 }

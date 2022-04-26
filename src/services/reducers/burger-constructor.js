@@ -16,7 +16,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         case REMOVE_INGREDIENT: {
             return {
                 ...state,
-                ingredients: [...state.ingredients.filter(item => item._id !== action.id)]
+                ingredients: [...state.ingredients.filter((item, index) => index !== action.index)]
             }
         }
         case ADD_BUN: {

@@ -2,13 +2,19 @@ import React from 'react';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
-import {ADD_BUN, ADD_INGREDIENT, UPDATE_TOTAL_PRICE} from "../../services/actions/burger-constructor";
+import {
+    ADD_BUN,
+    ADD_INGREDIENT,
+    REMOVE_INGREDIENT,
+    UPDATE_TOTAL_PRICE
+} from "../../services/actions/burger-constructor";
 import {getOrderDetails} from "../../services/actions/order-details";
 
 
 function BurgerConstructor() {
-    const ingredientList = useSelector(state => state.ingredientsList.ingredients)
-    const dispatch = useDispatch()
+    const ingredientList = useSelector(state => state.ingredientsList.ingredients);
+    const {ingredients, bun, totalPrice} = useSelector(state => state.constructorList);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         dispatch({
@@ -17,16 +23,25 @@ function BurgerConstructor() {
         })
         dispatch({
             type: ADD_INGREDIENT,
-            ingredient: ingredientList.filter(ingredient => ingredient.type !== 'bun')
+            ingredient: [...ingredientList.filter(ingredient => ingredient.type !== 'bun')]
         })
         dispatch({
             type: UPDATE_TOTAL_PRICE
         })
-    }, [dispatch])
+    }, [dispatch]);
 
-    const {ingredients, bun, totalPrice} = useSelector(state => state.constructorList)
     const openOrderDetails = () => {
         dispatch(getOrderDetails(ingredients))
+    }
+
+    const removeIngredient = (index) => {
+        dispatch({
+            type: REMOVE_INGREDIENT,
+            index: index
+        })
+        dispatch({
+            type: UPDATE_TOTAL_PRICE
+        })
     }
 
     return (
@@ -53,6 +68,7 @@ function BurgerConstructor() {
                                                 text={ingredient.name}
                                                 price={ingredient.price}
                                                 thumbnail={ingredient.image}
+                                                handleClose={() => removeIngredient(index)}
                                             />
                                         </li>
                                     )
