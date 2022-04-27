@@ -9,12 +9,20 @@ import {
     UPDATE_TOTAL_PRICE
 } from "../../services/actions/burger-constructor";
 import {getOrderDetails} from "../../services/actions/order-details";
+import {useDrop} from "react-dnd";
 
 
 function BurgerConstructor() {
     const ingredientList = useSelector(state => state.ingredientsList.ingredients);
     const {ingredients, bun, totalPrice} = useSelector(state => state.constructorList);
     const dispatch = useDispatch();
+
+    const [{}, dropRef] = useDrop({
+        accept: 'ingredient',
+        drop(item) {
+            addIngredient(item.ingredient)
+        }
+    })
 
     React.useEffect(() => {
         dispatch({
@@ -23,7 +31,9 @@ function BurgerConstructor() {
         })
         dispatch({
             type: ADD_INGREDIENT,
-            ingredient: [...ingredientList.filter(ingredient => ingredient.type !== 'bun')]
+            ingredient: []
+            // ingredient: [...ingredientList.filter(ingredient => ingredient.type !== 'bun')]
+
         })
         dispatch({
             type: UPDATE_TOTAL_PRICE
@@ -32,6 +42,23 @@ function BurgerConstructor() {
 
     const openOrderDetails = () => {
         dispatch(getOrderDetails(ingredients))
+    }
+
+    const addIngredient = (ingredient) => {
+        if (ingredient.type === 'bun') {
+            dispatch({
+                type: ADD_BUN,
+                bun: ingredientList.find(item => item._id === ingredient._id)
+            })
+        } else {
+            dispatch({
+                type: ADD_INGREDIENT,
+                ingredient: [ingredientList.find(item => item._id === ingredient._id)]
+            })
+        }
+        dispatch({
+            type: UPDATE_TOTAL_PRICE
+        })
     }
 
     const removeIngredient = (index) => {
@@ -47,7 +74,7 @@ function BurgerConstructor() {
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
             {
-                <ul className={`${burgerConstructorStyles.ingredients}`}>
+                <ul ref={dropRef} className={`${burgerConstructorStyles.ingredients}`}>
                     <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                         <ConstructorElement
                             type="top"

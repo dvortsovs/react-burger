@@ -3,20 +3,20 @@ import {ADD_INGREDIENT, ADD_BUN, REMOVE_INGREDIENT, UPDATE_TOTAL_PRICE} from "..
 const initialState = {
     bun: {},
     ingredients: [],
-    totalPrice: null
+    totalPrice: null,
 }
 export const burgerConstructorReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
             return {
                 ...state,
-                ingredients: [...state.ingredients, ...action.ingredient]
+                ingredients: [...state.ingredients, ...action.ingredient],
             }
         }
         case REMOVE_INGREDIENT: {
             return {
                 ...state,
-                ingredients: [...state.ingredients.filter((item, index) => index !== action.index)]
+                ingredients: [...state.ingredients.filter((item, index) => index !== action.index)],
             }
         }
         case ADD_BUN: {
