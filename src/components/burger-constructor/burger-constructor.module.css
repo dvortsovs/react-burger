@@ -36,16 +36,6 @@
     scrollbar-width: thin;
 }
 
-.item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.holder {
-    margin-right: 8px;
-}
-
 .container {
     display: flex;
     justify-content: right;

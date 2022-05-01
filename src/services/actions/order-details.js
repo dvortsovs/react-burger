@@ -13,7 +13,7 @@ export const getOrderDetails = (ingredientsList) => {
         fetch(`${api.urls.baseUrl}${api.urls.orders}`, {
             method: 'POST',
             headers: api.headers,
-            body: JSON.stringify({"ingredients": ingredientsList})
+            body: JSON.stringify({"ingredients": ingredientsList.map(item => item.data)})
         })
             .then((res) => {
                 if (res.ok) {

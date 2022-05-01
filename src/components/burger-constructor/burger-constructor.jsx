@@ -1,23 +1,23 @@
 import React from 'react';
-import {ConstructorElement, Button, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
     ADD_BUN,
     ADD_INGREDIENT,
-    REMOVE_INGREDIENT,
     UPDATE_TOTAL_PRICE
 } from "../../services/actions/burger-constructor";
 import {getOrderDetails} from "../../services/actions/order-details";
 import {useDrop} from "react-dnd";
+import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 
 
 function BurgerConstructor() {
     const ingredientList = useSelector(state => state.ingredientsList.ingredients);
-    const {ingredients, bun, totalPrice} = useSelector(state => state.constructorList);
+    const {ingredients, bun, totalPrice, counter} = useSelector(state => state.constructorList);
     const dispatch = useDispatch();
 
-    const [{}, dropRef] = useDrop({
+    const [, dropRef] = useDrop({
         accept: 'ingredient',
         drop(item) {
             addIngredient(item.ingredient)
@@ -32,7 +32,6 @@ function BurgerConstructor() {
         dispatch({
             type: ADD_INGREDIENT,
             ingredient: []
-            // ingredient: [...ingredientList.filter(ingredient => ingredient.type !== 'bun')]
 
         })
         dispatch({
@@ -48,24 +47,14 @@ function BurgerConstructor() {
         if (ingredient.type === 'bun') {
             dispatch({
                 type: ADD_BUN,
-                bun: ingredientList.find(item => item._id === ingredient._id)
+                bun: ingredient
             })
         } else {
             dispatch({
                 type: ADD_INGREDIENT,
-                ingredient: [ingredientList.find(item => item._id === ingredient._id)]
+                ingredient: [{id: counter, data: ingredient}]
             })
         }
-        dispatch({
-            type: UPDATE_TOTAL_PRICE
-        })
-    }
-
-    const removeIngredient = (index) => {
-        dispatch({
-            type: REMOVE_INGREDIENT,
-            index: index
-        })
         dispatch({
             type: UPDATE_TOTAL_PRICE
         })
@@ -88,16 +77,7 @@ function BurgerConstructor() {
                         <ul className={`${burgerConstructorStyles.list}`}>
                             {ingredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
                                     return (
-                                        <li className={`${burgerConstructorStyles.item} `} key={index}>
-                                            <div className={`${burgerConstructorStyles.holder}`}><DragIcon
-                                                type={"primary"}/></div>
-                                            <ConstructorElement
-                                                text={ingredient.name}
-                                                price={ingredient.price}
-                                                thumbnail={ingredient.image}
-                                                handleClose={() => removeIngredient(index)}
-                                            />
-                                        </li>
+                                        <ConstructorIngredient ingredient={ingredient.data} index={index} key={ingredient.id} />
                                     )
                                 }
                             )}

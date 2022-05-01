@@ -8,8 +8,7 @@ import {useDrag} from "react-dnd";
 
 function IngredientCard({ingredient}) {
     const {ingredients, bun} = useSelector(state => state.constructorList);
-    const [count, setCount] = useState(null);
-
+    const [count, setCount] = useState(0);
     useEffect(() => {
         ingredient.type === 'bun'
             ? ingredient._id === bun._id
@@ -17,13 +16,13 @@ function IngredientCard({ingredient}) {
                 : setCount(0)
             :
             setCount(ingredients.reduce((acc, item) => {
-                return item._id === ingredient._id
+                return item.data._id === ingredient._id
                     ? acc + 1
                     : acc
             }, 0))
     }, [ingredients, bun])
 
-    const [{}, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
         type: 'ingredient',
         item: {ingredient},
     })
