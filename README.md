@@ -8,5 +8,6 @@
 
 + React
 + Redux
++ React-DND
 + CRA
 + Ya.Praktikum UI

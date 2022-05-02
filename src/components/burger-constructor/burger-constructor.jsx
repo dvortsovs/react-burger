@@ -26,10 +26,6 @@ function BurgerConstructor() {
 
     React.useEffect(() => {
         dispatch({
-            type: ADD_BUN,
-            bun: ingredientList.find(bun => bun.type === 'bun')
-        })
-        dispatch({
             type: ADD_INGREDIENT,
             ingredient: []
 
@@ -60,6 +56,8 @@ function BurgerConstructor() {
         })
     }
 
+    const constructorIngredients = ingredients.filter(ingredient => ingredient.type !== 'bun')
+
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
             {
@@ -75,7 +73,7 @@ function BurgerConstructor() {
                     </li>
                     <li className={`${burgerConstructorStyles.ingredient} ${burgerConstructorStyles.ingredient_list}`}>
                         <ul className={`${burgerConstructorStyles.list}`}>
-                            {ingredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+                            {constructorIngredients.map((ingredient, index) => {
                                     return (
                                         <ConstructorIngredient ingredient={ingredient.data} index={index} key={ingredient.id} />
                                     )

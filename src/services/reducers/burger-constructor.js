@@ -5,9 +5,15 @@ import {
     UPDATE_TOTAL_PRICE,
     REPLACE_INGREDIENT
 } from "../actions/burger-constructor";
+import initialIcon from '../../images/graphics.svg'
 
 const initialState = {
-    bun: {},
+    bun: {
+        price: 0,
+        name: "Перетащите сюда булку",
+        image: initialIcon
+
+    },
     ingredients: [],
     totalPrice: null,
     counter: 0
