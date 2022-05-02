@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ingredientListStyle from './ingredient-list.module.css'
 import IngredientCard from "../ingredient-card/ingredient-card";
 import {useSelector} from "react-redux";
+import ingredientListType from "../../constants/ingredientListType";
 
 
 const IngredientList = React.forwardRef(({type}, ref) => {
@@ -23,7 +23,7 @@ const IngredientList = React.forwardRef(({type}, ref) => {
 })
 
 IngredientList.propTypes = {
-    type: PropTypes.objectOf(PropTypes.string),
+    type: ingredientListType.isRequired,
 }
 
 export default IngredientList
