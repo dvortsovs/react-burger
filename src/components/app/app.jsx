@@ -10,6 +10,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../../services/actions/burger-ingredients";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
 
 function App() {
     const dispatch = useDispatch();
@@ -21,13 +23,25 @@ function App() {
         dispatch(getIngredients());
     }, [dispatch]);
 
+    const closeIngredientDetails = () => {
+        dispatch({
+            type: CLOSE_DETAILS_MODAL
+        })
+    }
+
+    const closeOrderDetails = () => {
+        dispatch({
+            type: CLOSE_ORDER_DETAILS
+        })
+    }
+
     return (
         <div className={appStyle.app}>
             {detailsVisible &&
-                <Modal title={"Детали ингредиента"}><IngredientDetails/></Modal>}
+                <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}><IngredientDetails/></Modal>}
 
             {orderVisible &&
-                <Modal title={""}><OrderDetails/></Modal>}
+                <Modal handleClose={closeOrderDetails} title={""}><OrderDetails/></Modal>}
 
             <AppHeader/>
             <DndProvider backend={HTML5Backend}>
