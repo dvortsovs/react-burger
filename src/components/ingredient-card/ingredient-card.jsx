@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo} from 'react';
 import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,18 +8,21 @@ import {useDrag} from "react-dnd";
 
 function IngredientCard({ingredient}) {
     const {ingredients, bun} = useSelector(state => state.constructorList);
-    const [count, setCount] = useState(0);
-    useEffect(() => {
-        ingredient.type === 'bun'
-            ? ingredient._id === bun._id
-                ? setCount(1)
-                : setCount(0)
-            :
-            setCount(ingredients.reduce((acc, item) => {
+
+    const count = useMemo(() => {
+        if (ingredient.type === 'bun') {
+            if (ingredient._id === bun._id) {
+                return 1
+            } else {
+                return 0
+            }
+        } else {
+            return ingredients.reduce((acc, item) => {
                 return item.data._id === ingredient._id
                     ? acc + 1
                     : acc
-            }, 0))
+            }, 0)
+        }
     }, [ingredients, bun])
 
     const [, dragRef] = useDrag({
@@ -33,6 +36,7 @@ function IngredientCard({ingredient}) {
             ingredient: ingredient
         })
     }
+
     return (
         <li ref={dragRef} className={`${ingredientCardStyle.card}`} onClick={() => {
             openDetails(ingredient)
