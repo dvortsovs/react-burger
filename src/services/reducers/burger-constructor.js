@@ -2,8 +2,8 @@ import {
     ADD_INGREDIENT,
     ADD_BUN,
     REMOVE_INGREDIENT,
-    UPDATE_TOTAL_PRICE,
-    REPLACE_INGREDIENT
+    REPLACE_INGREDIENT,
+    RESET_CONSTRUCTOR_STATE
 } from "../actions/burger-constructor";
 import initialIcon from '../../images/graphics.svg'
 
@@ -12,14 +12,19 @@ const initialState = {
         price: 0,
         name: "Перетащите сюда булку",
         image: initialIcon
-
     },
     ingredients: [],
-    totalPrice: null,
     counter: 0
 }
 export const burgerConstructorReducer = (state = initialState, action) => {
     switch (action.type) {
+        case RESET_CONSTRUCTOR_STATE: {
+            return {
+                ...state,
+                bun: initialState.bun,
+                ingredients: []
+            }
+        }
         case REPLACE_INGREDIENT: {
             return {
                 ...state,
@@ -43,12 +48,6 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 bun: {...action.bun}
-            }
-        }
-        case UPDATE_TOTAL_PRICE: {
-            return {
-                ...state,
-                totalPrice: state.ingredients.reduce((acc, item) => acc + item.data.price, 0) + state.bun.price * 2
             }
         }
         default: {

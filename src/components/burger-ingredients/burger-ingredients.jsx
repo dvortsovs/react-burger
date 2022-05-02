@@ -25,17 +25,17 @@ function BurgerIngredients() {
     const scrollToSection = (section) => {
         switch (section) {
             case 'bun': {
-                bunRef.current.scrollIntoView({behavior: 'smooth', block: 'start', })
+                bunRef.current.scrollIntoView({behavior: 'smooth', block: 'start',})
                 setCurrentIngredients('bun')
                 break
             }
             case 'sauce': {
-                saucesRef.current.scrollIntoView({behavior: 'smooth', block: 'start', })
+                saucesRef.current.scrollIntoView({behavior: 'smooth', block: 'start',})
                 setCurrentIngredients('sauce')
                 break
             }
             case 'main': {
-                mainRef.current.scrollIntoView({behavior: 'smooth', block: 'start', })
+                mainRef.current.scrollIntoView({behavior: 'smooth', block: 'start',})
                 setCurrentIngredients('main')
                 break
             }

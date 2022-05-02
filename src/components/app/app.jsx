@@ -12,6 +12,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
 import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
+import {RESET_CONSTRUCTOR_STATE} from "../../services/actions/burger-constructor";
 
 function App() {
     const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
     }
 
     const closeOrderDetails = () => {
+        dispatch({
+            type: RESET_CONSTRUCTOR_STATE
+        })
         dispatch({
             type: CLOSE_ORDER_DETAILS
         })

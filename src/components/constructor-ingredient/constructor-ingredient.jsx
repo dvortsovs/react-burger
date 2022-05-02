@@ -3,7 +3,6 @@ import constructorIngredientStyles from './constructor-ingredient.module.css'
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
     REMOVE_INGREDIENT, REPLACE_INGREDIENT,
-    UPDATE_TOTAL_PRICE
 } from "../../services/actions/burger-constructor";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
@@ -16,7 +15,7 @@ function ConstructorIngredient({ingredient, index}) {
     const ref = useRef(null)
     const dispatch = useDispatch();
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag({
         type: 'replaceItem',
         item: {ingredient, index},
         collect: (monitor) => ({
@@ -66,26 +65,23 @@ function ConstructorIngredient({ingredient, index}) {
             type: REMOVE_INGREDIENT,
             index: index
         })
-        dispatch({
-            type: UPDATE_TOTAL_PRICE
-        })
     }
 
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
     return (
-             <li style={{opacity}} ref={ref}
-                 className={`${constructorIngredientStyles.item}`}>
-                <div className={`${constructorIngredientStyles.holder}`}><DragIcon
-                    type={"primary"}/></div>
-                <ConstructorElement
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    handleClose={() => removeIngredient(index)}
-                />
-            </li>
+        <li style={{opacity}} ref={ref}
+            className={`${constructorIngredientStyles.item}`}>
+            <div className={`${constructorIngredientStyles.holder}`}><DragIcon
+                type={"primary"}/></div>
+            <ConstructorElement
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image}
+                handleClose={() => removeIngredient(index)}
+            />
+        </li>
     )
 }
 

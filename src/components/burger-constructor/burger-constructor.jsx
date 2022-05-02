@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
     ADD_BUN,
     ADD_INGREDIENT,
-    UPDATE_TOTAL_PRICE
 } from "../../services/actions/burger-constructor";
 import {getOrderDetails} from "../../services/actions/order-details";
 import {useDrop} from "react-dnd";
@@ -13,8 +12,7 @@ import ConstructorIngredient from "../constructor-ingredient/constructor-ingredi
 
 
 function BurgerConstructor() {
-    const ingredientList = useSelector(state => state.ingredientsList.ingredients);
-    const {ingredients, bun, totalPrice, counter} = useSelector(state => state.constructorList);
+    const {ingredients, bun, counter} = useSelector(state => state.constructorList);
     const dispatch = useDispatch();
 
     const [, dropRef] = useDrop({
@@ -24,19 +22,8 @@ function BurgerConstructor() {
         }
     })
 
-    React.useEffect(() => {
-        dispatch({
-            type: ADD_INGREDIENT,
-            ingredient: []
-
-        })
-        dispatch({
-            type: UPDATE_TOTAL_PRICE
-        })
-    }, [dispatch]);
-
     const openOrderDetails = () => {
-        dispatch(getOrderDetails(ingredients))
+        dispatch(getOrderDetails(ingredients, bun))
     }
 
     const addIngredient = (ingredient) => {
@@ -51,10 +38,13 @@ function BurgerConstructor() {
                 ingredient: [{id: counter, data: ingredient}]
             })
         }
-        dispatch({
-            type: UPDATE_TOTAL_PRICE
-        })
     }
+
+    const totalPrice = useMemo(() => {
+        return ingredients.reduce((acc, item) => {
+            return acc + item.data.price
+        }, 0) + bun.price * 2
+    }, [ingredients, bun])
 
     const constructorIngredients = ingredients.filter(ingredient => ingredient.type !== 'bun')
 
@@ -75,7 +65,8 @@ function BurgerConstructor() {
                         <ul className={`${burgerConstructorStyles.list}`}>
                             {constructorIngredients.map((ingredient, index) => {
                                     return (
-                                        <ConstructorIngredient ingredient={ingredient.data} index={index} key={ingredient.id} />
+                                        <ConstructorIngredient ingredient={ingredient.data} index={index}
+                                                               key={ingredient.id}/>
                                     )
                                 }
                             )}
