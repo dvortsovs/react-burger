@@ -1,91 +1,61 @@
-import React, {useState} from 'react';
+import React from 'react';
 import appStyle from './app.module.css';
-import {api} from "../../constants/api";
-import {DataContext} from "../../services/data-context";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import {useDispatch, useSelector} from "react-redux";
+import {getIngredients} from "../../services/actions/burger-ingredients";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
+import {RESET_CONSTRUCTOR_STATE} from "../../services/actions/burger-constructor";
 
 function App() {
-    const [data, setData] = useState([])
-    const [state, setState] = React.useState({
-        isLoading: false,
-        isError: false,
-        modalIngredientVisible: false,
-        modalOrderDetailsVisible: false,
-        modalIngredient: null,
-        orderNumber: null
-    })
+    const dispatch = useDispatch();
+    const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useSelector(state => state.ingredientsList);
+    const {detailsVisible} = useSelector(state => state.details)
+    const {orderVisible} = useSelector(state => state.order)
 
     React.useEffect(() => {
-        setState({...state, isLoading: true});
-        fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
-            .then(res => {
-                setState({...state, isLoading: false})
-                setData([...res.data])
-            })
-            .catch((err) => {
-                setState({...state, isLoading: false, isError: true})
-                console.log(err)
-            })
-    }, [])
+        dispatch(getIngredients());
+    }, [dispatch]);
 
-    const handleIngredientModalOpen = (ingredient) => {
-        setState({...state, modalIngredientVisible: true, modalIngredient: {...ingredient}})
-    }
-
-    const handleOrderModalOpen = (ingredientsList) => {
-        fetch(`${api.urls.baseUrl}${api.urls.orders}`, {
-            method: 'POST',
-            headers: api.headers,
-            body: JSON.stringify({"ingredients": ingredientsList})
+    const closeIngredientDetails = () => {
+        dispatch({
+            type: CLOSE_DETAILS_MODAL
         })
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
-            .then((res) => {
-                setState({...state, orderNumber: res.order.number, modalOrderDetailsVisible: true})
-            })
-            .catch((err) => {
-                setState({...state, orderNumber: null})
-                console.log(err)
-            })
     }
 
-    const handleClose = () => {
-        setState({...state, modalOrderDetailsVisible: false, modalIngredientVisible: false})
+    const closeOrderDetails = () => {
+        dispatch({
+            type: RESET_CONSTRUCTOR_STATE
+        })
+        dispatch({
+            type: CLOSE_ORDER_DETAILS
+        })
     }
 
     return (
         <div className={appStyle.app}>
-            {state.modalIngredientVisible &&
-                <Modal title={"Детали ингредиента"} handleClose={handleClose}><IngredientDetails
-                    ingredient={state.modalIngredient}/></Modal>}
+            {detailsVisible &&
+                <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}><IngredientDetails/></Modal>}
 
-            {state.modalOrderDetailsVisible &&
-                <Modal title={""} handleClose={handleClose}><OrderDetails orderNumber={state.orderNumber}/></Modal>}
+            {orderVisible &&
+                <Modal handleClose={closeOrderDetails} title={""}><OrderDetails/></Modal>}
 
             <AppHeader/>
-            <DataContext.Provider value={{data}}>
+            <DndProvider backend={HTML5Backend}>
                 <main className={`${appStyle.main}`}>
-                    {!state.isLoading && !state.isError &&
-                        <BurgerIngredients handleModalOpen={handleIngredientModalOpen}/>}
-                    {!state.isLoading && !state.isError && !!data.length &&
-                        <BurgerConstructor handleModalOpen={handleOrderModalOpen}/>}
+                    {!ingredientsRequest && !ingredientsRequestFailed &&
+                        <BurgerIngredients/>}
+                    {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
+                        <BurgerConstructor/>}
                 </main>
-            </DataContext.Provider>
+            </DndProvider>
         </div>
     );
 }

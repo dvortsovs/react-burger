@@ -10,7 +10,7 @@ function Modal(props) {
     React.useEffect(() => {
         const handleKeyClose = (e) => {
             if (e.key === 'Escape') {
-                props.handleClose()
+                props.handleClose();
             }
         }
 
