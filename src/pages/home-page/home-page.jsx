@@ -1,17 +1,17 @@
 import React from 'react';
 import appStyle from './home-page.module.css';
-import BurgerIngredients from "../components/burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../components/burger-constructor/burger-constructor";
-import IngredientDetails from "../components/ingredient-details/ingredient-details";
-import Modal from "../components/modal/modal";
-import OrderDetails from "../components/order-details/order-details";
+import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
+import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import Modal from "../../components/modal/modal";
+import OrderDetails from "../../components/order-details/order-details";
 import {useDispatch, useSelector} from "react-redux";
-import {getIngredients} from "../services/actions/burger-ingredients";
+import {getIngredients} from "../../services/actions/burger-ingredients";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {CLOSE_DETAILS_MODAL} from "../services/actions/ingredient-details";
-import {CLOSE_ORDER_DETAILS} from "../services/actions/order-details";
-import {RESET_CONSTRUCTOR_STATE} from "../services/actions/burger-constructor";
+import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
+import {RESET_CONSTRUCTOR_STATE} from "../../services/actions/burger-constructor";
 
 function HomePage() {
     const dispatch = useDispatch();
