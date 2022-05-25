@@ -1,18 +1,25 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import loginPageStyles from './login-page.module.css'
+import registerPageStyles from './register-page.module.css'
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const [value, setValue] = useState('')
     // const inputRef = useRef(null)
     return (
-        <div className={`${loginPageStyles.main}`}>
-            <div className={`${loginPageStyles.container}`}>
+        <div className={`${registerPageStyles.main}`}>
+            <div className={`${registerPageStyles.container}`}>
                 <h1 className={`text text_type_main-medium mb-6`}>
-                    Вход
+                    Регистрация
                 </h1>
-                <form className={`${loginPageStyles.form}`}>
+                <form className={`${registerPageStyles.form}`}>
+                    <Input
+                        type='text'
+                        placeholder='Имя'
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        size='default'
+                    />
                     <Input
                         type='email'
                         placeholder='E-mail'
@@ -31,25 +38,16 @@ export default function LoginPage() {
                         icon='ShowIcon'
                     />
                     <Button type='primary' size='medium'>
-                        Войти
+                        Зарегистрироваться
                     </Button>
                 </form>
                 <p className={`text text_type_main-default text_color_inactive mt-20`}>
-                    Вы — новый пользователь?
+                    Уже зарегистрированы?
                     <Link
-                        to='/register'
-                        className={`${loginPageStyles.link} text text_type_main-default ml-2`}
+                        to='/login'
+                        className={`${registerPageStyles.link} text text_type_main-default ml-2`}
                     >
-                        Зарегистрироваться
-                    </Link>
-                </p>
-                <p className={`text text_type_main-default text_color_inactive mt-4`}>
-                    Забыли пароль?
-                    <Link
-                        to='/forgot-password'
-                        className={`${loginPageStyles.link} text text_type_main-default ml-2`}
-                    >
-                        Восстановить пароль
+                        Войти
                     </Link>
                 </p>
             </div>
