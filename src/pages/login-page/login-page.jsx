@@ -1,58 +1,43 @@
 import React, {useState} from 'react';
-import {Link} from "react-router-dom";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import loginPageStyles from './login-page.module.css'
+import Form from "../../components/form/form";
 
 export default function LoginPage() {
-    const [value, setValue] = useState('')
+    const [emailValue, setEmailValue] = useState('')
+    const [passwordValue, setPasswordValue] = useState('')
+    const [passwordHideState, setPasswordHideState] = useState('password')
     // const inputRef = useRef(null)
+
+
     return (
-        <div className={`${loginPageStyles.main}`}>
-            <div className={`${loginPageStyles.container}`}>
-                <h1 className={`text text_type_main-medium mb-6`}>
-                    Вход
-                </h1>
-                <form className={`${loginPageStyles.form}`}>
-                    <Input
-                        type='email'
-                        placeholder='E-mail'
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        errorText='error'
-                        error={false}
-                        size='default'
-                    />
-                    <Input
-                        type='password'
-                        placeholder='Пароль'
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        size='default'
-                        icon='ShowIcon'
-                    />
-                    <Button type='primary' size='medium'>
-                        Войти
-                    </Button>
-                </form>
-                <p className={`text text_type_main-default text_color_inactive mt-20`}>
-                    Вы — новый пользователь?
-                    <Link
-                        to='/register'
-                        className={`${loginPageStyles.link} text text_type_main-default ml-2`}
-                    >
-                        Зарегистрироваться
-                    </Link>
-                </p>
-                <p className={`text text_type_main-default text_color_inactive mt-4`}>
-                    Забыли пароль?
-                    <Link
-                        to='/forgot-password'
-                        className={`${loginPageStyles.link} text text_type_main-default ml-2`}
-                    >
-                        Восстановить пароль
-                    </Link>
-                </p>
-            </div>
-        </div>
+        <section className={`${loginPageStyles.main}`}>
+            <Form title='Вход' links={[
+                {title: 'Вы — новый пользователь?', link: '/register', linkTitle: 'Зарегистрироваться'},
+                {title: 'Забыли пароль?', link: '/forgot-password', linkTitle: 'Восстановить пароль'}
+            ]}>
+                <Input
+                    type='email'
+                    placeholder='E-mail'
+                    value={emailValue}
+                    onChange={(e) => setEmailValue(e.target.value)}
+                    errorText='error'
+                    error={false}
+                    size='default'
+                />
+                <Input
+                    type={passwordHideState}
+                    placeholder='Пароль'
+                    icon={"ShowIcon"}
+                    onIconClick={() => passwordHideState === 'password' ? setPasswordHideState('text') : setPasswordHideState('password')}
+                    value={passwordValue}
+                    onChange={(e) => setPasswordValue(e.target.value)}
+                    errorText='error'
+                    error={false}
+                    size='default'
+                />
+                <Button>Войти</Button>
+            </Form>
+        </section>
     )
 }
