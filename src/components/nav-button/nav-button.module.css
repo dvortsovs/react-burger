@@ -1,0 +1,11 @@
+.button {
+    display: flex;
+    align-items: center;
+    background-color: initial;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.personal {
+    margin-left: auto;
+}

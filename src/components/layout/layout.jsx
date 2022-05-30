@@ -1,7 +1,8 @@
 import React from 'react';
 import {Outlet} from "react-router-dom";
-import {Logo, BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Logo} from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeaderStyles from './layout.module.css';
+import NavButton from "../nav-button/nav-button";
 
 function Layout() {
 
@@ -12,27 +13,15 @@ function Layout() {
                     <nav className={`${appHeaderStyles.nav}`}>
                         <ul className={`${appHeaderStyles.list} mt-4 mb-4`}>
                             <li className={`mr-2`}>
-                                <button type="button" className={`${appHeaderStyles.button} pt-4 pr-5 pb-4`}>
-                                    <BurgerIcon type={"primary"}/>
-                                    <span
-                                        className={`text text_type_main-default text_color_primary ml-2`}>Конструктор</span>
-                                </button>
+                                <NavButton to={'/'} icon={'burger'} title={'Конструктор'} styles={"pt-4 pr-5 pb-4"} />
                             </li>
                             <li className={``}>
-                                <button type="button" className={`${appHeaderStyles.button} pt-4 pr-5 pb-4 pl-5`}>
-                                    <ListIcon type={"secondary"}/>
-                                    <span
-                                        className={`text text_type_main-default text_color_inactive ml-2`}>Лента заказов</span>
-                                </button>
+                                <NavButton to={'/order-list'} icon={'list'} title={'Лента заказов'} styles={"pt-4 pr-5 pb-4 pl-5"}/>
                             </li>
                         </ul>
                     </nav>
                     <Logo/>
-                    <button type="button"
-                            className={`${appHeaderStyles.button} ${appHeaderStyles.personal} pt-4 pr-5 pb-4 pl-5`}>
-                        <ProfileIcon type={"secondary"}/>
-                        <span className={`text text_type_main-default text_color_inactive ml-2`}>Личный кабинет</span>
-                    </button>
+                    <NavButton to={'/profile'} personal={true} icon={'profile'} title={'Личный кабинет'} styles={"pt-4 pb-4 pl-5"}/>
                 </div>
             </header>
             <main>
