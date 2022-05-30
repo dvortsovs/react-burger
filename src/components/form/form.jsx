@@ -2,12 +2,12 @@ import React from 'react';
 import formStyles from './form.module.css'
 import {Link} from "react-router-dom";
 
-export default function Form({title, children, links}) {
+export default function Form({title, children, links, styles}) {
     return (
-        <div className={`${formStyles.container}`}>
-            <h1 className={`text text_type_main-medium mb-6`}>
+        <div className={`${formStyles.container}`} style={styles ? {...styles} : null}>
+            {title ? <h1 className={`text text_type_main-medium mb-6`}>
                 {title}
-            </h1>
+            </h1> : null}
             <form className={`${formStyles.form}`}>
                 {children}
             </form>
