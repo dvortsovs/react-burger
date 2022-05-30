@@ -4,12 +4,3 @@
     align-items: center;
     justify-content: center;
 }
-
-.link {
-    text-decoration: none;
-    color: var(--colors-interface-accent);
-}
-
-.link:hover {
-    text-decoration: underline;
-}
