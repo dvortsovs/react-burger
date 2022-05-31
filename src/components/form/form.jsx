@@ -2,13 +2,13 @@ import React from 'react';
 import formStyles from './form.module.css'
 import {Link} from "react-router-dom";
 
-export default function Form({title, children, links, styles}) {
+export default function Form({title, children, links, styles, onSubmit}) {
     return (
         <div className={`${formStyles.container}`} style={styles ? {...styles} : null}>
             {title ? <h1 className={`text text_type_main-medium mb-6`}>
                 {title}
             </h1> : null}
-            <form className={`${formStyles.form}`}>
+            <form onSubmit={onSubmit} className={`${formStyles.form}`}>
                 {children}
             </form>
             {links ? links.map((item, index) => {
