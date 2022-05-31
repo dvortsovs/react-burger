@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
-import profilePageStyles from './profile-page.module.css'
 import Form from "../../components/form/form";
 import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import NavProfile from "../../components/nav-profile/nav-profile";
 
 export default function ProfilePage() {
     const [emailValue, setEmailValue] = useState('')
     const [nameValue, setNameValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
     return (
-        <section className={`${profilePageStyles.main}`}>
-            <NavProfile caption={'В этом разделе вы можете изменить свои персональные данные'}/>
+        <>
             <Form styles={{justifyContent: 'start'}}>
                 <Input
                     type='text'
@@ -41,6 +38,6 @@ export default function ProfilePage() {
                     size='default'
                 />
             </Form>
-        </section>
+        </>
     )
 }

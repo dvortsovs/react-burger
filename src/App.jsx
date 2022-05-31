@@ -7,9 +7,11 @@ import {
     RegisterPage,
     ForgotPasswordPage,
     ResetPasswordPage,
-    ProfilePage
+    ProfilePage,
+    OrdersPage
 } from './pages';
 import Layout from "./components/layout/layout";
+import ProfileLayout from "./components/profile-layout/profile-layout";
 
 
 export default function App() {
@@ -21,7 +23,11 @@ export default function App() {
                 <Route path='register' element={<RegisterPage />} />
                 <Route path='forgot-password' element={<ForgotPasswordPage />} />
                 <Route path='reset-password' element={<ResetPasswordPage />} />
-                <Route path='profile' element={<ProfilePage />} />
+                <Route path='profile' element={<ProfileLayout />} >
+                    <Route index element={<ProfilePage />} />
+                    <Route path='orders' element={<OrdersPage />} />
+                    <Route path='logout' element={null} />
+                </Route>
                 <Route path='*' element={<NotFoundPage />} />
             </Route>
         </Routes>
