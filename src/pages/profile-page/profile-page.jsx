@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Form from "../../components/form/form";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import profilePageStyles from './profile-page.module.css'
+import {validateForm} from "../../services/utils";
 
 export default function ProfilePage() {
     const [emailValue, setEmailValue] = useState('fane28@mail.ru');
@@ -10,6 +11,9 @@ export default function ProfilePage() {
     const [nameEdit, setNameEdit] = useState(false);
     const [emailEdit, setEmailEdit] = useState(false);
     const [passEdit, setPassEdit] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [passError, setPassError] = useState(false);
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -24,7 +28,9 @@ export default function ProfilePage() {
                     value={nameValue}
                     icon={nameEdit ? 'CloseIcon' : 'EditIcon'}
                     onIconClick={() => setNameEdit(!nameEdit)}
-                    onChange={(e) => setNameValue(e.target.value)}
+                    onChange={(e) => validateForm(e, 'name', setNameValue, setNameError)}
+                    errorText='Поле не должно быть пустым'
+                    error={nameError}
                     size='default'
                     disabled={!nameEdit}
                 />
@@ -34,9 +40,9 @@ export default function ProfilePage() {
                     value={emailValue}
                     icon={emailEdit ? 'CloseIcon' : 'EditIcon'}
                     onIconClick={() => setEmailEdit(!emailEdit)}
-                    onChange={(e) => setEmailValue(e.target.value)}
-                    errorText='error'
-                    error={false}
+                    onChange={(e) => validateForm(e, 'email', setEmailValue, setEmailError)}
+                    errorText='Некорректный e-mail'
+                    error={emailError}
                     size='default'
                     disabled={!emailEdit}
                 />
@@ -46,9 +52,9 @@ export default function ProfilePage() {
                     icon={passEdit ? 'CloseIcon' : 'EditIcon'}
                     onIconClick={() => setPassEdit(!passEdit)}
                     value={passwordValue}
-                    onChange={(e) => setPasswordValue(e.target.value)}
-                    errorText='error'
-                    error={false}
+                    onChange={(e) => validateForm(e, 'pass', setPasswordValue, setPassError)}
+                    errorText='Поле не должно быть пустым'
+                    error={passError}
                     size='default'
                     disabled={!passEdit}
                 />
