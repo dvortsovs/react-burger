@@ -5,11 +5,7 @@ const validateForm = (e, type, setValue, setError) => {
             const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
             setError(!reg.test(e.target.value))
             break
-        case 'pass':
-            setValue(e.target.value)
-            setError(e.target.value === '')
-            break
-        case 'name':
+        case 'text':
             setValue(e.target.value)
             setError(e.target.value === '')
             break

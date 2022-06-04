@@ -6,6 +6,7 @@ import {orderDetailsReducer} from "./order-details";
 import {authReducer} from "./auth-provider";
 import {registrationReducer} from "./regstration-page";
 import {signInReducer} from "./login-page";
+import {apiRequestReducer} from "./api-request";
 import thunk from "redux-thunk";
 
 const composeEnhancers =
@@ -16,6 +17,7 @@ const composeEnhancers =
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 
 const rootReducer = combineReducers({
+    api: apiRequestReducer,
     ingredientsList: ingredientsReducer,
     constructorList: burgerConstructorReducer,
     details: ingredientDetailsReducer,

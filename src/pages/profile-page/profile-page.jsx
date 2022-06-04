@@ -35,7 +35,7 @@ export default function ProfilePage() {
                     value={nameValue}
                     icon={nameEdit ? 'CloseIcon' : 'EditIcon'}
                     onIconClick={() => setNameEdit(!nameEdit)}
-                    onChange={(e) => validateForm(e, 'name', setNameValue, setNameError)}
+                    onChange={(e) => validateForm(e, 'text', setNameValue, setNameError)}
                     errorText='Поле не должно быть пустым'
                     error={nameError}
                     size='default'
@@ -59,7 +59,7 @@ export default function ProfilePage() {
                     icon={passEdit ? 'CloseIcon' : 'EditIcon'}
                     onIconClick={() => setPassEdit(!passEdit)}
                     value={passwordValue}
-                    onChange={(e) => validateForm(e, 'pass', setPasswordValue, setPassError)}
+                    onChange={(e) => validateForm(e, 'text', setPasswordValue, setPassError)}
                     errorText='Поле не должно быть пустым'
                     error={passError}
                     size='default'

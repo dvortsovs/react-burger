@@ -19,21 +19,21 @@ export default function RegisterPage() {
     // const inputRef = useRef(null)
     const dispatch = useDispatch();
 
-    const handlerSubmit = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
         dispatch(getRegistration(nameValue, emailValue, passwordValue, () => navigate('/', {replace: true})));
     }
 
     return (
         <section className={`${registerPageStyles.main}`}>
-            <Form onSubmit={handlerSubmit} title='Регистрация' links={[
+            <Form onSubmit={submitHandler} title='Регистрация' links={[
                 {title: 'Уже зарегистрированы?', link: '/login', linkTitle: 'Войти'},
             ]}>
                 <Input
                     type='text'
                     placeholder='Имя'
                     value={nameValue}
-                    onChange={(e) => validateForm(e, 'name', setNameValue, setNameError)}
+                    onChange={(e) => validateForm(e, 'text', setNameValue, setNameError)}
                     size='default'
                     error={nameError}
                     errorText='Поле не должно быть пустым'
@@ -55,7 +55,7 @@ export default function RegisterPage() {
                         ? setPasswordHideState('text')
                         : setPasswordHideState('password')}
                     value={passwordValue}
-                    onChange={(e) => validateForm(e, 'pass', setPasswordValue, setPassError)}
+                    onChange={(e) => validateForm(e, 'text', setPasswordValue, setPassError)}
                     errorText='Поле не должно быть пустым'
                     error={passError}
                     size='default'
