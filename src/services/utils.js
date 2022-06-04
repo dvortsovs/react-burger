@@ -3,7 +3,6 @@ const validateForm = (e, type, setValue, setError) => {
         case 'email':
             setValue(e.target.value)
             const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-            console.log(reg.test(e.target.value))
             setError(!reg.test(e.target.value))
             break
         case 'pass':

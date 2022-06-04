@@ -1,19 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Form from "../../components/form/form";
+import {useSelector} from "react-redux";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import profilePageStyles from './profile-page.module.css'
 import {validateForm} from "../../services/utils";
 
 export default function ProfilePage() {
-    const [emailValue, setEmailValue] = useState('fane28@mail.ru');
-    const [nameValue, setNameValue] = useState('vasya');
-    const [passwordValue, setPasswordValue] = useState('123123');
+    const {user} = useSelector(state => state.auth)
+    const [emailValue, setEmailValue] = useState('');
+    const [nameValue, setNameValue] = useState('');
+    const [passwordValue, setPasswordValue] = useState('');
     const [nameEdit, setNameEdit] = useState(false);
     const [emailEdit, setEmailEdit] = useState(false);
     const [passEdit, setPassEdit] = useState(false);
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
+
+    useEffect(() => {
+        setNameValue(user.name)
+        setEmailValue(user.email)
+    }, [user])
 
     const onSubmit = (e) => {
         e.preventDefault()

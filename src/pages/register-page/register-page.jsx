@@ -2,9 +2,13 @@ import React, {useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import registerPageStyles from './register-page.module.css'
 import Form from "../../components/form/form";
+import {useDispatch} from "react-redux";
 import {validateForm} from "../../services/utils";
+import {getRegistration} from "../../services/actions/registration-page";
+import {useNavigate} from "react-router-dom";
 
 export default function RegisterPage() {
+    const navigate = useNavigate();
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -13,14 +17,16 @@ export default function RegisterPage() {
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
     // const inputRef = useRef(null)
+    const dispatch = useDispatch();
 
-    const onSubmit = (e) => {
+    const handlerSubmit = (e) => {
         e.preventDefault();
+        dispatch(getRegistration(nameValue, emailValue, passwordValue, () => navigate('/', {replace: true})));
     }
 
     return (
         <section className={`${registerPageStyles.main}`}>
-            <Form onSubmit={onSubmit} title='Регистрация' links={[
+            <Form onSubmit={handlerSubmit} title='Регистрация' links={[
                 {title: 'Уже зарегистрированы?', link: '/login', linkTitle: 'Войти'},
             ]}>
                 <Input
