@@ -5,7 +5,7 @@ export const api = {
         orders: '/orders',
         registration: '/auth/register',
         forgotPassword: '/password-reset',
-        reset: '/reset',
+        resetPassword: '/reset',
         login: '/auth/login',
         logout: '/auth/logout',
         updateToken: '/auth/token',

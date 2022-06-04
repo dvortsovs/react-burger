@@ -4,9 +4,8 @@ import resetPasswordPageStyles from './reset-password-page.module.css'
 import {validateForm} from "../../services/utils";
 import Form from "../../components/form/form";
 import {useDispatch} from "react-redux";
-import {apiRequest} from "../../services/actions/api-request";
-import {api} from "../../constants/api";
 import {useNavigate} from "react-router-dom";
+import {resetPasswordRequest} from "../../services/actions/reset-password-page";
 
 export default function ResetPasswordPage() {
     const dispatch = useDispatch();
@@ -20,16 +19,7 @@ export default function ResetPasswordPage() {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(apiRequest(
-            `${api.urls.baseUrl}${api.urls.forgotPassword}${api.urls.reset}`,
-            'POST',
-            api.headers,
-            {
-                "password": passwordValue,
-                "token": codeValue
-            },
-            () => navigate('/login', {replace: true})
-        ))
+        dispatch(resetPasswordRequest(passwordValue, codeValue, () => navigate('/login', {replace: true})))
     }
 
     return (

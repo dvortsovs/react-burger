@@ -1,20 +1,18 @@
 import {api} from "../../constants/api";
 
-export const FORGOT_PASSWORD_REQUEST = 'GET_REGISTRATION_REQUEST';
-export const FORGOT_PASSWORD_SUCCESS = 'GET_REGISTRATION_SUCCESS';
-export const FORGOT_PASSWORD_FAILED = 'GET_REGISTRATION_FAILED';
+export const GET_FORGOT_PASSWORD_REQUEST = 'GET_FORGOT_PASSWORD_REQUEST';
+export const GET_FORGOT_PASSWORD_SUCCESS = 'GET_FORGOT_PASSWORD_SUCCESS';
+export const GET_FORGOT_PASSWORD_FAILED = 'GET_FORGOT_PASSWORD_FAILED';
 
 export const forgotPasswordRequest = (email, replaceToCallback) => {
     return dispatch => {
         dispatch({
-            type: FORGOT_PASSWORD_REQUEST
+            type: GET_FORGOT_PASSWORD_REQUEST
         })
         fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}`, {
             method: 'POST',
             headers: api.headers,
-            body: JSON.stringify({
-                "email": email
-            })
+            body: JSON.stringify({"email": email})
         })
             .then((res) => {
                 if (res.ok) {
@@ -24,13 +22,13 @@ export const forgotPasswordRequest = (email, replaceToCallback) => {
             })
             .then((res) => {
                 dispatch({
-                    type: FORGOT_PASSWORD_SUCCESS
+                    type: GET_FORGOT_PASSWORD_SUCCESS,
                 })
                 replaceToCallback()
             })
             .catch(() => {
                 dispatch({
-                    type: FORGOT_PASSWORD_FAILED,
+                    type: GET_FORGOT_PASSWORD_FAILED,
                 })
             })
     }

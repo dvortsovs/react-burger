@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {api} from "../../constants/api";
 import forgotPasswordPageStyles from './forgot-password-page.module.css'
 import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {apiRequest} from "../../services/actions/api-request";
+import {forgotPasswordRequest} from "../../services/actions/forgot-password-page";
 
 
 export default function ForgotPasswordPage() {
@@ -18,13 +17,7 @@ export default function ForgotPasswordPage() {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(apiRequest(
-            `${api.urls.baseUrl}${api.urls.forgotPassword}`,
-            'POST',
-            api.headers,
-            {"email": emailValue},
-            () => navigate('/reset-password')
-            ))
+        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password')))
     }
 
     return (

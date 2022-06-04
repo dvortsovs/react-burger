@@ -1,30 +1,30 @@
 import {
-    GET_FORGOT_PASSWORD_SUCCESS,
-    GET_FORGOT_PASSWORD_FAILED,
-    GET_FORGOT_PASSWORD_REQUEST
-} from "../actions/forgot-password-page";
+    GET_RESET_PASSWORD_REQUEST,
+    GET_RESET_PASSWORD_SUCCESS,
+    GET_RESET_PASSWORD_FAILED
+} from "../actions/reset-password-page";
 
 const initialState = {
-    forgotRequest: false,
-    forgotRequestFailed: false,
+    resetRequest: false,
+    resetRequestFailed: false,
 }
 
-export const forgotPasswordPageReducer = (state = initialState, action) => {
+export const resetPasswordPageReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_FORGOT_PASSWORD_REQUEST: {
+        case GET_RESET_PASSWORD_REQUEST: {
             return {
                 ...state,
                 forgotRequest: true
             }
         }
-        case GET_FORGOT_PASSWORD_SUCCESS: {
+        case GET_RESET_PASSWORD_SUCCESS: {
             return {
                 ...state,
                 forgotRequest: false,
                 forgotRequestFailed: false
             }
         }
-        case GET_FORGOT_PASSWORD_FAILED: {
+        case GET_RESET_PASSWORD_FAILED: {
             return {
                 ...state,
                 forgotRequest: false,
