@@ -1,5 +1,6 @@
 import {api} from "../../constants/api";
 import {LOGIN} from "./auth-provider";
+import {setTokens} from "../utils";
 
 export const GET_SIGNIN_REQUEST = 'GET_SIGNIN_REQUEST';
 export const GET_SIGNIN_SUCCESS = 'GET_SIGNIN_SUCCESS';
@@ -31,9 +32,8 @@ export const signIn = (email, password, replaceToCallback) => {
                 dispatch({
                     type: LOGIN,
                     user: res.user,
-                    accessToken: res.accessToken,
-                    refreshToken: res.refreshToken
                 })
+                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken)
                 replaceToCallback()
             })
             .catch(() => {

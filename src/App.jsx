@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import {
     HomePage,
@@ -13,9 +14,18 @@ import {
 import Layout from "./components/layout/layout";
 import ProfileLayout from "./components/profile-layout/profile-layout";
 import ProtectedRoute from "./components/protected-route/protected-route";
+import {getIngredients} from "./services/actions/burger-ingredients";
+import {updateUserInfoRequest} from "./services/actions/auth-provider";
 
 
 export default function App() {
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(getIngredients());
+        dispatch(updateUserInfoRequest())
+    }, [dispatch]);
+
     return (
         <Routes>
             <Route path='/' element={<Layout />}>

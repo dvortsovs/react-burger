@@ -9,6 +9,7 @@ export const api = {
         login: '/auth/login',
         logout: '/auth/logout',
         updateToken: '/auth/token',
+        user: '/auth/user'
     },
     headers: {
         'Content-Type': 'application/json'

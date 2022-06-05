@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import Form from "../../components/form/form";
-import {useSelector} from "react-redux";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import profilePageStyles from './profile-page.module.css'
 import {validateForm} from "../../services/utils";
+import {changeUserInfoRequest, updateUserInfoRequest} from "../../services/actions/auth-provider";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function ProfilePage() {
+    const dispatch = useDispatch();
     const {user} = useSelector(state => state.auth)
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
@@ -18,17 +20,34 @@ export default function ProfilePage() {
     const [passError, setPassError] = useState(false);
 
     useEffect(() => {
-        setNameValue(user.name)
-        setEmailValue(user.email)
-    }, [user])
+        dispatch(updateUserInfoRequest());
+    }, [dispatch]);
 
-    const onSubmit = (e) => {
-        e.preventDefault()
+    useEffect(() => {
+        setNameValue(user.name);
+        setEmailValue(user.email);
+    }, [user]);
+
+    const cancelButtonHandler = () => {
+        setNameEdit(false);
+        setPassEdit(false);
+        setEmailEdit(false);
+        setNameValue(user.name);
+        setEmailValue(user.email);
+        setPasswordValue('');
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        setNameEdit(false);
+        setPassEdit(false);
+        setEmailEdit(false);
+        dispatch(changeUserInfoRequest(nameValue, emailValue, passwordValue));
     }
 
     return (
         <>
-            <Form onSubmit={onSubmit} styles={{justifyContent: 'start'}}>
+            <Form onSubmit={submitHandler} styles={{justifyContent: 'start'}}>
                 <Input
                     type='text'
                     placeholder='Имя'
@@ -67,12 +86,8 @@ export default function ProfilePage() {
                 />
                 {nameEdit || emailEdit || passEdit
                     ? <div className={`${profilePageStyles.container}`}>
-                        <Button onClick={() => {
-                         setNameEdit(false);
-                         setPassEdit(false);
-                         setEmailEdit(false);
-                        }} type='secondary'>Отмена</Button>
-                        <Button onClick={() => console.log('api req')}>Сохранить</Button>
+                        <Button onClick={cancelButtonHandler} type='secondary'>Отмена</Button>
+                        <Button>Сохранить</Button>
                 </div>
                     : null}
             </Form>

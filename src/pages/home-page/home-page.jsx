@@ -6,7 +6,6 @@ import IngredientDetails from "../../components/ingredient-details/ingredient-de
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
 import {useDispatch, useSelector} from "react-redux";
-import {getIngredients} from "../../services/actions/burger-ingredients";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {CLOSE_DETAILS_MODAL} from "../../services/actions/ingredient-details";
@@ -18,10 +17,6 @@ function HomePage() {
     const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useSelector(state => state.ingredientsList);
     const {detailsVisible} = useSelector(state => state.details)
     const {orderVisible} = useSelector(state => state.order)
-
-    React.useEffect(() => {
-        dispatch(getIngredients());
-    }, [dispatch]);
 
     const closeIngredientDetails = () => {
         dispatch({
