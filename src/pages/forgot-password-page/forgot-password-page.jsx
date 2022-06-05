@@ -4,20 +4,21 @@ import forgotPasswordPageStyles from './forgot-password-page.module.css'
 import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {forgotPasswordRequest} from "../../services/actions/auth-provider";
 
 
 export default function ForgotPasswordPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const [emailValue, setEmailValue] = useState('');
     const [emailError, setEmailError] = useState(false);
     // const inputRef = useRef(null)
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password')))
+        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password', {state:{from: location}})));
     }
 
     return (

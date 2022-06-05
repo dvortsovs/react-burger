@@ -30,27 +30,43 @@ export default function App() {
         <Routes>
             <Route path='/' element={<Layout />}>
                 <Route index element={<HomePage />} />
-                <Route path='login' element={<LoginPage />} />
-                <Route path='register' element={<RegisterPage />} />
-                <Route path='forgot-password' element={<ForgotPasswordPage />} />
-                <Route path='reset-password' element={<ResetPasswordPage />} />
+                <Route path='login' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <LoginPage />
+                    </ProtectedRoute>
+                } />
+                <Route path='register' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <RegisterPage />
+                    </ProtectedRoute>
+                } />
+                <Route path='forgot-password' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <ForgotPasswordPage />
+                    </ProtectedRoute>
+                } />
+                <Route path='reset-password' element={
+                    <ProtectedRoute protectFromAuth={true} toResetPassword={true}>
+                        <ResetPasswordPage />
+                    </ProtectedRoute>
+                } />
                 <Route path='profile' element={
-                    <ProtectedRoute>
+                    <ProtectedRoute protectFromAuth={false}>
                         <ProfileLayout />
                     </ProtectedRoute>
                 } >
                     <Route index element={
-                        <ProtectedRoute>
+                        <ProtectedRoute protectFromAuth={false}>
                             <ProfilePage />
                         </ProtectedRoute>
                     } />
                     <Route path='orders' element={
-                        <ProtectedRoute>
+                        <ProtectedRoute protectFromAuth={false}>
                             <OrdersPage />
                         </ProtectedRoute>
                     } />
                     <Route path='logout' element={
-                        <ProtectedRoute>
+                        <ProtectedRoute protectFromAuth={false}>
                             <Navigate to='/login' replace />
                         </ProtectedRoute>
                     } />
