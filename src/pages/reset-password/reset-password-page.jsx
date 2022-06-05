@@ -5,7 +5,7 @@ import {validateForm} from "../../services/utils";
 import Form from "../../components/form/form";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {resetPasswordRequest} from "../../services/actions/reset-password-page";
+import {resetPasswordRequest} from "../../services/actions/auth-provider";
 
 export default function ResetPasswordPage() {
     const dispatch = useDispatch();

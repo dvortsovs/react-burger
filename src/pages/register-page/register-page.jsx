@@ -4,8 +4,8 @@ import registerPageStyles from './register-page.module.css'
 import Form from "../../components/form/form";
 import {useDispatch} from "react-redux";
 import {validateForm} from "../../services/utils";
-import {getRegistration} from "../../services/actions/registration-page";
 import {useNavigate} from "react-router-dom";
+import {getRegistration} from "../../services/actions/auth-provider";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function RegisterPage() {
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
-    // const inputRef = useRef(null)
+
     const dispatch = useDispatch();
 
     const submitHandler = (e) => {

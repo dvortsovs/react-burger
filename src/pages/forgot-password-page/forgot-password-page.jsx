@@ -5,7 +5,7 @@ import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {forgotPasswordRequest} from "../../services/actions/forgot-password-page";
+import {forgotPasswordRequest} from "../../services/actions/auth-provider";
 
 
 export default function ForgotPasswordPage() {

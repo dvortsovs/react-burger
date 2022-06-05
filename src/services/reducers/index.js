@@ -4,9 +4,6 @@ import {burgerConstructorReducer} from "./burger-constructor";
 import {ingredientDetailsReducer} from "./ingredient-details";
 import {orderDetailsReducer} from "./order-details";
 import {authReducer} from "./auth-provider";
-import {registrationReducer} from "./regstration-page";
-import {signInReducer} from "./login-page";
-import {forgotPasswordPageReducer} from "./forgot-password-page";
 import thunk from "redux-thunk";
 
 const composeEnhancers =
@@ -22,9 +19,6 @@ const rootReducer = combineReducers({
     details: ingredientDetailsReducer,
     order: orderDetailsReducer,
     auth: authReducer,
-    registrationRequest: registrationReducer,
-    signInRequest: signInReducer,
-    forgotRequest: forgotPasswordPageReducer
 })
 
 export const store = createStore(rootReducer, enhancer);

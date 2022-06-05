@@ -1,17 +1,55 @@
 import {api} from "../../constants/api";
-import {getCookie, fetchWithRefresh, removeTokens, checkResponse} from "../utils";
+import {getCookie, fetchWithRefresh, removeTokens, checkResponse, setTokens} from "../utils";
 
-export const LOGIN = 'LOGIN'
-export const UPDATE_USER_INFO_REQUEST = 'UPDATE_USER_INFO_REQUEST'
-export const UPDATE_USER_INFO_SUCCESS = 'UPDATE_USER_INFO_SUCCESS'
-export const UPDATE_USER_INFO_FAILED = 'UPDATE_USER_INFO_FAILED'
-export const CHANGE_USER_INFO_REQUEST = 'CHANGE_USER_INFO_REQUEST'
-export const CHANGE_USER_INFO_SUCCESS = 'CHANGE_USER_INFO_SUCCESS'
-export const CHANGE_USER_INFO_FAILED = 'CHANGE_USER_INFO_FAILED'
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-export const LOGOUT_FAILED = 'LOGOUT_FAILED'
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const UPDATE_USER_INFO_REQUEST = 'UPDATE_USER_INFO_REQUEST';
+export const UPDATE_USER_INFO_SUCCESS = 'UPDATE_USER_INFO_SUCCESS';
+export const UPDATE_USER_INFO_FAILED = 'UPDATE_USER_INFO_FAILED';
+export const CHANGE_USER_INFO_REQUEST = 'CHANGE_USER_INFO_REQUEST';
+export const CHANGE_USER_INFO_SUCCESS = 'CHANGE_USER_INFO_SUCCESS';
+export const CHANGE_USER_INFO_FAILED = 'CHANGE_USER_INFO_FAILED';
+export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
+export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
+export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 
+export const login = (email, password, replaceToCallback) => {
+    return dispatch => {
+        dispatch({
+            type: LOGIN_REQUEST
+        })
+        fetch(`${api.urls.baseUrl}${api.urls.login}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({
+                "email": email,
+                "password": password,
+            })
+        })
+            .then(checkResponse)
+            .then((res) => {
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    user: res.user
+                })
+                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken)
+                replaceToCallback()
+            })
+            .catch((err) => {
+                dispatch({
+                    type: LOGIN_FAILED,
+                    error: err
+                })
+            })
+    }
+}
 
 export const logout = () => {
     return dispatch => {
@@ -26,13 +64,100 @@ export const logout = () => {
             .then(checkResponse)
             .then(() => {
                 dispatch({
-                    type: LOGOUT_SUCCESS
+                    type: LOGOUT_SUCCESS,
                 })
                 removeTokens();
             })
             .catch((err) => {
                 dispatch({
                     type: LOGOUT_FAILED,
+                    error: err
+                })
+            })
+    }
+}
+
+export const getRegistration = (name, email, password, replaceToCallback) => {
+    return dispatch => {
+        dispatch({
+            type: LOGIN_REQUEST
+        })
+        fetch(`${api.urls.baseUrl}${api.urls.registration}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({
+                "email": email,
+                "password": password,
+                "name": name
+            })
+        })
+            .then(checkResponse)
+            .then((res) => {
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    user: res.user
+                })
+                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken)
+                replaceToCallback()
+            })
+            .catch((err) => {
+                dispatch({
+                    type: LOGIN_FAILED,
+                    error: err
+                })
+            })
+    }
+}
+
+export const forgotPasswordRequest = (email, replaceToCallback) => {
+    return dispatch => {
+        dispatch({
+            type: FORGOT_PASSWORD_REQUEST
+        })
+        fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({"email": email})
+        })
+            .then(checkResponse)
+            .then(() => {
+                dispatch({
+                    type: FORGOT_PASSWORD_SUCCESS,
+                })
+                replaceToCallback()
+            })
+            .catch((err) => {
+                dispatch({
+                    type: FORGOT_PASSWORD_FAILED,
+                    error: err
+                })
+            })
+    }
+}
+
+export const resetPasswordRequest = (password, token, replaceToCallback) => {
+    return dispatch => {
+        dispatch({
+            type: RESET_PASSWORD_REQUEST
+        })
+        fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}${api.urls.resetPassword}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({
+                "password": password,
+                "token": token
+            })
+        })
+            .then(checkResponse)
+            .then(() => {
+                dispatch({
+                    type: RESET_PASSWORD_SUCCESS,
+                })
+                replaceToCallback()
+            })
+            .catch((err) => {
+                dispatch({
+                    type: RESET_PASSWORD_FAILED,
                     error: err
                 })
             })
@@ -49,7 +174,6 @@ export const updateUserInfoRequest = () => {
             headers: {
                 ...api.headers,
                 Authorization: `Bearer ${getCookie('accessToken')}`
-                // Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOWI1YmRlZmE3NDdlMDAxYmQ0ZGIwZiIsImlhdCI6MTY1NDQ0OTE2MCwiZXhwIjoxNjU0NDUwMzYwfQ.lkuWo4nYxqBi7UTirdjRaBDRRhSQo5wskt7BTB9t4h0'
             }
         })
             .then((res) => {

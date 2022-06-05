@@ -1,6 +1,4 @@
 import {
-    LOGIN,
-    LOGOUT,
     CHANGE_USER_INFO_SUCCESS,
     CHANGE_USER_INFO_FAILED,
     CHANGE_USER_INFO_REQUEST,
@@ -9,7 +7,16 @@ import {
     UPDATE_USER_INFO_SUCCESS,
     LOGOUT_FAILED,
     LOGOUT_SUCCESS,
-    LOGOUT_REQUEST
+    LOGOUT_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED,
+    LOGIN_REQUEST,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_FAILED,
+    FORGOT_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAILED,
+    RESET_PASSWORD_REQUEST,
 } from "../actions/auth-provider";
 
 const initialState = {
@@ -22,6 +29,74 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
+        case RESET_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: false,
+                error: null,
+            }
+        }
+        case RESET_PASSWORD_REQUEST: {
+            return {
+                ...state,
+                apiRequest: true
+            }
+        }
+        case RESET_PASSWORD_FAILED: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: true,
+                error: action.error
+            }
+        }
+        case FORGOT_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: false,
+                error: null,
+            }
+        }
+        case FORGOT_PASSWORD_FAILED: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: true,
+                error: action.error
+            }
+        }
+        case FORGOT_PASSWORD_REQUEST: {
+            return {
+                ...state,
+                apiRequest: true
+            }
+        }
+        case LOGIN_REQUEST: {
+            return {
+                ...state,
+                apiRequest: true
+            }
+        }
+        case LOGIN_SUCCESS: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: false,
+                error: null,
+                auth: true,
+                user: action.user
+            }
+        }
+        case LOGIN_FAILED: {
+            return {
+                ...state,
+                apiRequest: false,
+                apiRequestFailed: true,
+                error: action.error
+            }
+        }
         case LOGOUT_FAILED: {
             return {
                 ...state,
@@ -89,13 +164,6 @@ export const authReducer = (state = initialState, action) => {
                 apiRequest: false,
                 apiRequestFailed: true,
                 error: action.error
-            }
-        }
-        case LOGIN: {
-            return {
-                ...state,
-                auth: true,
-                user: action.user,
             }
         }
         default: {

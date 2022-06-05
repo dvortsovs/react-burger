@@ -5,7 +5,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 import loginPageStyles from './login-page.module.css'
 import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
-import {signIn} from "../../services/actions/login-page";
+import {login} from "../../services/actions/auth-provider";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
@@ -16,13 +16,12 @@ export default function LoginPage() {
     const [passwordHideState, setPasswordHideState] = useState('password')
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
-    // const inputRef = useRef(null)
 
     const fromPage = location.state?.from?.pathname || '/';
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(signIn(emailValue, passwordValue, () => navigate(fromPage, {replace: true})));
+        dispatch(login(emailValue, passwordValue, () => navigate(fromPage, {replace: true})));
     }
 
     return (
