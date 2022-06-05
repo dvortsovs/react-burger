@@ -10,7 +10,7 @@ export default function ProtectedRoute({children, protectFromAuth, toResetPasswo
     }
 
     if (auth && protectFromAuth) {
-        return <Navigate to='/' replace />
+        if (!location.state?.from?.pathname === "/logout") return <Navigate to='/' replace />
     }
 
     if (toResetPassword) {

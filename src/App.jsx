@@ -67,7 +67,7 @@ export default function App() {
                     } />
                     <Route path='logout' element={
                         <ProtectedRoute protectFromAuth={false}>
-                            <Navigate to='/login' replace />
+                            <Navigate to='/login' replace state={{from: '/logout'}}/>
                         </ProtectedRoute>
                     } />
                 </Route>
