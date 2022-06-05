@@ -1,12 +1,19 @@
 import React, {useState} from 'react';
 import {NavLink, Outlet} from "react-router-dom";
 import profileLayoutStyles from './profile-layout.module.css'
+import {useDispatch} from "react-redux";
+import {logout} from "../../services/actions/auth-provider";
 
 const profileCaption = 'В этом разделе вы можете изменить свои персональные данные';
 const ordersCaption = 'В этом разделе вы можете просмотреть свою историю заказов';
 
 export default function ProfileLayout() {
     const [caption, setCaption] = useState(profileCaption);
+    const dispatch = useDispatch();
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
 
     return (
         <section className={`${profileLayoutStyles.main}`}>
@@ -28,7 +35,7 @@ export default function ProfileLayout() {
                                 История заказов</NavLink>
                         </li>
                         <li className={`${profileLayoutStyles.item}`}>
-                            <NavLink to={'logout'} onClick={() => setCaption('')}
+                            <NavLink to={'logout'} onClick={logoutHandler}
                                      className={({isActive}) => isActive
                                          ? `${profileLayoutStyles.link} text text_type_main-medium text_color_primary`
                                          : `${profileLayoutStyles.link} text text_type_main-medium text_color_inactive`}>

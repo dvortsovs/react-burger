@@ -1,15 +1,43 @@
 import {api} from "../../constants/api";
-import {getCookie, fetchWithRefresh} from "../utils";
+import {getCookie, fetchWithRefresh, removeTokens, checkResponse} from "../utils";
 
 export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
 export const UPDATE_USER_INFO_REQUEST = 'UPDATE_USER_INFO_REQUEST'
 export const UPDATE_USER_INFO_SUCCESS = 'UPDATE_USER_INFO_SUCCESS'
 export const UPDATE_USER_INFO_FAILED = 'UPDATE_USER_INFO_FAILED'
 export const CHANGE_USER_INFO_REQUEST = 'CHANGE_USER_INFO_REQUEST'
 export const CHANGE_USER_INFO_SUCCESS = 'CHANGE_USER_INFO_SUCCESS'
 export const CHANGE_USER_INFO_FAILED = 'CHANGE_USER_INFO_FAILED'
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const LOGOUT_FAILED = 'LOGOUT_FAILED'
 
+
+export const logout = () => {
+    return dispatch => {
+        dispatch({
+            type: LOGOUT_REQUEST
+        })
+        fetch(`${api.urls.baseUrl}${api.urls.logout}`, {
+            method: 'POST',
+            headers: api.headers,
+            body: JSON.stringify({"token": `${localStorage.getItem('refreshToken')}`})
+        })
+            .then(checkResponse)
+            .then(() => {
+                dispatch({
+                    type: LOGOUT_SUCCESS
+                })
+                removeTokens();
+            })
+            .catch((err) => {
+                dispatch({
+                    type: LOGOUT_FAILED,
+                    error: err
+                })
+            })
+    }
+}
 
 export const updateUserInfoRequest = () => {
     return dispatch => {
@@ -30,9 +58,10 @@ export const updateUserInfoRequest = () => {
                     user: res.user,
                 })
             })
-            .catch(() => {
+            .catch((err) => {
                 dispatch({
                     type: UPDATE_USER_INFO_FAILED,
+                    error: err
                 })
             })
     }
@@ -61,9 +90,10 @@ export const changeUserInfoRequest = (name, email, password) => {
                     user: res.user,
                 })
             })
-            .catch(() => {
+            .catch((err) => {
                 dispatch({
                     type: CHANGE_USER_INFO_FAILED,
+                    error: err
                 })
             })
     }

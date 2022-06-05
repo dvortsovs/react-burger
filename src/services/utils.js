@@ -50,8 +50,13 @@ function deleteCookie(name) {
 }
 
 function setTokens(accessToken, refreshToken) {
-    setCookie('accessToken', accessToken)
-    localStorage.setItem('refreshToken', refreshToken)
+    setCookie('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+}
+
+function removeTokens() {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
 }
 
 function checkResponse(res) {
@@ -91,4 +96,4 @@ async function fetchWithRefresh(url, options) {
     }
 }
 
-export {validateForm, setCookie, deleteCookie, getCookie, setTokens, checkResponse, fetchWithRefresh}
+export {validateForm, setCookie, deleteCookie, getCookie, setTokens, checkResponse, fetchWithRefresh, removeTokens}

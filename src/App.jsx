@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate} from "react-router-dom";
 import {
     HomePage,
     NotFoundPage,
@@ -51,7 +51,7 @@ export default function App() {
                     } />
                     <Route path='logout' element={
                         <ProtectedRoute>
-                            {null}
+                            <Navigate to='/login' replace />
                         </ProtectedRoute>
                     } />
                 </Route>
