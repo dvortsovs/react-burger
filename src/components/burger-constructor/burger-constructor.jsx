@@ -9,11 +9,15 @@ import {
 import {getOrderDetails} from "../../services/actions/order-details";
 import {useDrop} from "react-dnd";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 function BurgerConstructor() {
     const {ingredients, bun, counter} = useSelector(state => state.constructorList);
+    const {auth} = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [, dropRef] = useDrop({
         accept: 'ingredient',
@@ -23,7 +27,9 @@ function BurgerConstructor() {
     })
 
     const openOrderDetails = () => {
-        dispatch(getOrderDetails(ingredients, bun))
+        if (!auth) {
+            navigate('/login', {state:{from: location}})
+        } else dispatch(getOrderDetails(ingredients, bun))
     }
 
     const addIngredient = (ingredient) => {
