@@ -3,11 +3,13 @@ import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {OPEN_DETAILS_MODAL} from "../../services/actions/ingredient-details";
+import {OPEN_DETAILS} from "../../services/actions/ingredient-details";
 import {useDrag} from "react-dnd";
+import {Link, useLocation} from "react-router-dom";
 
 function IngredientCard({ingredient}) {
     const {ingredients, bun} = useSelector(state => state.constructorList);
+    const location = useLocation();
 
     const count = useMemo(() => {
         if (ingredient.type === 'bun') {
@@ -31,16 +33,19 @@ function IngredientCard({ingredient}) {
     })
     const dispatch = useDispatch();
     const openDetails = (ingredient) => {
+
         dispatch({
-            type: OPEN_DETAILS_MODAL,
+            type: OPEN_DETAILS,
             ingredient: ingredient
         })
     }
 
     return (
-        <li ref={dragRef} className={`${ingredientCardStyle.card}`} onClick={() => {
-            openDetails(ingredient)
-        }}>
+        <Link onClick={() => openDetails(ingredient)}
+              state={{background: location, ingredient: ingredient}}
+              to={`/ingredients/${ingredient._id}`}
+              ref={dragRef}
+              className={`${ingredientCardStyle.card}`}>
             <img className={`ml-4 mr-4`} src={ingredient.image} alt={ingredient.name}/>
             {count ? <Counter count={count}/> : null}
             <div className={`${ingredientCardStyle.price} mt-1 `}>
@@ -48,7 +53,7 @@ function IngredientCard({ingredient}) {
                 <CurrencyIcon type={"primary"}/>
             </div>
             <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
-        </li>
+        </Link>
     )
 }
 

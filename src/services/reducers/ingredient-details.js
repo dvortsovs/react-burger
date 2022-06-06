@@ -1,24 +1,24 @@
-import {OPEN_DETAILS_MODAL, CLOSE_DETAILS_MODAL} from "../actions/ingredient-details";
+import {
+    OPEN_DETAILS,
+    CLOSE_DETAILS
+} from "../actions/ingredient-details";
 
 const initialState = {
-    ingredientDetails: {},
-    detailsVisible: false
+    ingredientDetails: {}
 }
 
 export const ingredientDetailsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case OPEN_DETAILS_MODAL: {
+        case CLOSE_DETAILS: {
             return {
                 ...state,
-                ingredientDetails: {...action.ingredient},
-                detailsVisible: true
+                ingredientDetails: {}
             }
         }
-        case CLOSE_DETAILS_MODAL: {
+        case OPEN_DETAILS: {
             return {
                 ...state,
-                detailsVisible: false,
-                ingredientDetails: {}
+                ingredientDetails: {...action.ingredient}
             }
         }
         default: {
