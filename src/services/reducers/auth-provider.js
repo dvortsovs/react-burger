@@ -20,7 +20,7 @@ import {
 } from "../actions/auth-provider";
 
 const initialState = {
-    auth: false,
+    auth: null,
     user: null,
     apiRequest: false,
     apiRequestFailed: false,
@@ -139,6 +139,7 @@ export const authReducer = (state = initialState, action) => {
         case UPDATE_USER_INFO_FAILED: {
             return {
                 ...state,
+                auth: false,
                 apiRequest: false,
                 apiRequestFailed: true,
                 error: action.error

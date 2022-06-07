@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {NavLink, Outlet} from "react-router-dom";
+import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import profileLayoutStyles from './profile-layout.module.css'
 import {useDispatch} from "react-redux";
 import {logout} from "../../services/actions/auth-provider";
@@ -10,9 +10,10 @@ const ordersCaption = 'В этом разделе вы можете просмо
 export default function ProfileLayout() {
     const [caption, setCaption] = useState(profileCaption);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const logoutHandler = () => {
-        dispatch(logout())
+        dispatch(logout(() => navigate('/login', {replace: true})))
     }
 
     return (

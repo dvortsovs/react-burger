@@ -1,6 +1,6 @@
 import React from 'react';
-import {useDispatch} from "react-redux";
-import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import {
     HomePage,
     NotFoundPage,
@@ -26,6 +26,7 @@ export default function App() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const {auth} = useSelector(state => state.auth)
     const background = location.state?.background;
     const ingredient = location.state?.ingredient;
 
@@ -48,62 +49,62 @@ export default function App() {
     }, [dispatch]);
 
     return (
-        <>
-            <Routes location={background || location}>
-                <Route path='/' element={<Layout />}>
-                    <Route index element={<HomePage />} />
-                    <Route path='ingredients/:id' element={<IngredientDetailsPage />} />
-                    <Route path='login' element={
-                        <ProtectedRoute protectFromAuth={true}>
-                            <LoginPage />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='register' element={
-                        <ProtectedRoute protectFromAuth={true}>
-                            <RegisterPage />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='forgot-password' element={
-                        <ProtectedRoute protectFromAuth={true}>
-                            <ForgotPasswordPage />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='reset-password' element={
-                        <ProtectedRoute protectFromAuth={true} toResetPassword={true}>
-                            <ResetPasswordPage />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='profile' element={
+        (auth === false || auth === true) && <>
+        <Routes location={background || location}>
+            <Route path='/' element={<Layout/>}>
+                <Route index element={<HomePage/>}/>
+                <Route path='ingredients/:id' element={<IngredientDetailsPage/>}/>
+                <Route path='login' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <LoginPage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='register' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <RegisterPage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='forgot-password' element={
+                    <ProtectedRoute protectFromAuth={true}>
+                        <ForgotPasswordPage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='reset-password' element={
+                    <ProtectedRoute protectFromAuth={true} toResetPassword={true}>
+                        <ResetPasswordPage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='profile' element={
+                    <ProtectedRoute protectFromAuth={false}>
+                        <ProfileLayout/>
+                    </ProtectedRoute>
+                }>
+                    <Route index element={
                         <ProtectedRoute protectFromAuth={false}>
-                            <ProfileLayout />
+                            <ProfilePage/>
                         </ProtectedRoute>
-                    } >
-                        <Route index element={
-                            <ProtectedRoute protectFromAuth={false}>
-                                <ProfilePage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path='orders' element={
-                            <ProtectedRoute protectFromAuth={false}>
-                                <OrdersPage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path='logout' element={
-                            <ProtectedRoute protectFromAuth={false}>
-                                <Navigate to='/login' replace state={{from: '/logout'}}/>
-                            </ProtectedRoute>
-                        } />
-                    </Route>
-                    <Route path='*' element={<NotFoundPage />} />
+                    }/>
+                    <Route path='orders' element={
+                        <ProtectedRoute protectFromAuth={false}>
+                            <OrdersPage/>
+                        </ProtectedRoute>
+                    }/>
+                    <Route path='logout' element={
+                        <ProtectedRoute protectFromAuth={false}>
+                            {null}
+                        </ProtectedRoute>
+                    }/>
                 </Route>
-            </Routes>
-             {background && <Routes>
-                 <Route path='ingredients/:id' element={
-                     <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
-                         <IngredientDetails/>
-                     </Modal>
-                 } />
-             </Routes>}
-        </>
+                <Route path='*' element={<NotFoundPage/>}/>
+            </Route>
+        </Routes>
+        {background && <Routes>
+            <Route path='ingredients/:id' element={
+                <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
+                    <IngredientDetails/>
+                </Modal>
+            }/>
+        </Routes>}
+    </>
     )
 }

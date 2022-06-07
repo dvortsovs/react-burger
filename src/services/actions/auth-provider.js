@@ -39,8 +39,8 @@ export const login = (email, password, replaceToCallback) => {
                     type: LOGIN_SUCCESS,
                     user: res.user
                 })
-                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken)
-                replaceToCallback()
+                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken);
+                replaceToCallback();
             })
             .catch((err) => {
                 dispatch({
@@ -51,7 +51,7 @@ export const login = (email, password, replaceToCallback) => {
     }
 }
 
-export const logout = () => {
+export const logout = (replaceCallback) => {
     return dispatch => {
         dispatch({
             type: LOGOUT_REQUEST
@@ -67,6 +67,7 @@ export const logout = () => {
                     type: LOGOUT_SUCCESS,
                 })
                 removeTokens();
+                replaceCallback();
             })
             .catch((err) => {
                 dispatch({
