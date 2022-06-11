@@ -7,10 +7,6 @@
     background-color: #8585AD;
 }
 
-.app {
-    height: 100vh;
-}
-
 .main {
     height: calc(100vh - 88px);
     display: grid;

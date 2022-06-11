@@ -1,0 +1,26 @@
+.main {
+    max-width: 1240px;
+    margin: 120px auto 0;
+    display: flex;
+}
+
+.list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.item {
+    width: 320px;
+    height: 64px;
+}
+
+.link {
+    text-decoration: none;
+
+}
+
+.caption {
+    max-width: 320px;
+    opacity: 0.4;
+}
