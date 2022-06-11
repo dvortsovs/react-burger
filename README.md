@@ -12,3 +12,5 @@
 + React-DND
 + CRA
 + Ya.Praktikum UI
+---
+[Проект на github-pages](https://dvortsovs.github.io/react-burger/)
