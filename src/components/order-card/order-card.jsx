@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientIcon from "../ingredient-icon/ingredient-icon";
 
-export default function OrderCard() {
+export default function OrderCard({to}) {
     return (
-        <Link to='/' className={`${orderCardStyles.container} p-6 mb-4`}>
+        <Link to={to} className={`${orderCardStyles.container} p-6 mb-4`}>
             <p className={`text text_type_digits-default`}>#123151</p>
             <p className={`${orderCardStyles.time} text text_type_main-default text_color_inactive`}>
                 Сегодня, 16:20 i-GMT+3

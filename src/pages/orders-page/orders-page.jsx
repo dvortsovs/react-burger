@@ -5,7 +5,7 @@ import OrderList from "../../components/order-list/order-list";
 export default function OrdersPage() {
     return (
         <section className={`${ordersPageStyles.main}`}>
-            <OrderList />
+            <OrderList to={'123'} />
         </section>
     )
 }

@@ -9,7 +9,7 @@ import {
     ForgotPasswordPage,
     ResetPasswordPage,
     ProfilePage,
-    OrdersPage, FeedPage
+    OrdersPage, FeedPage, FeedDetailsPage
 } from './pages';
 import Layout from "./components/layout/layout";
 import ProfileLayout from "./components/profile-layout/profile-layout";
@@ -20,6 +20,7 @@ import IngredientDetails from "./components/ingredient-details/ingredient-detail
 import IngredientDetailsPage from "./pages/ingredient-details-page/ingredient-details-page";
 import Modal from "./components/modal/modal";
 import {CLOSE_DETAILS, OPEN_DETAILS} from "./services/actions/ingredient-details";
+import FeedDetails from "./components/feed-details/feed-details";
 
 
 export default function App() {
@@ -54,6 +55,7 @@ export default function App() {
             <Route path='/' element={<Layout/>}>
                 <Route index element={<HomePage/>}/>
                 <Route path='feed' element={<FeedPage />}/>
+                <Route path='feed/:id' element={<FeedDetailsPage />}/>
                 <Route path='ingredients/:id' element={<IngredientDetailsPage/>}/>
                 <Route path='login' element={
                     <ProtectedRoute protectFromAuth={true}>
@@ -73,6 +75,11 @@ export default function App() {
                 <Route path='reset-password' element={
                     <ProtectedRoute protectFromAuth={true} toResetPassword={true}>
                         <ResetPasswordPage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='profile/orders/:id' element={
+                    <ProtectedRoute protectFromAuth={false}>
+                        <FeedDetailsPage />
                     </ProtectedRoute>
                 }/>
                 <Route path='profile' element={
@@ -104,6 +111,18 @@ export default function App() {
                 <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
                     <IngredientDetails/>
                 </Modal>
+            }/>
+            <Route path='feed/:id' element={
+                <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
+                    <FeedDetails/>
+                </Modal>
+            }/>
+            <Route path='profile/orders/:id' element={
+                <ProtectedRoute protectFromAuth={false}>
+                    <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
+                        <FeedDetails/>
+                    </Modal>
+                </ProtectedRoute>
             }/>
         </Routes>}
     </>
