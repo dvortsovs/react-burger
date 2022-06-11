@@ -6,10 +6,10 @@ export default function ProtectedRoute({children, protectFromAuth, toResetPasswo
     const location = useLocation();
 
     if (!auth && !protectFromAuth) {
-        return <Navigate to='/login' state={{from: location}} />
+        return <Navigate to='/login' state={{from: location}} replace />
     }
 
-    if (auth && protectFromAuth) {
+    if (auth && protectFromAuth && !location.state) {
         return <Navigate to='/' replace />
     }
 

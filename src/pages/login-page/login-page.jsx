@@ -17,7 +17,7 @@ export default function LoginPage() {
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
 
-    const fromPage = location.state?.from?.pathname || '/';
+    const fromPage = location.state?.from?.pathname === '/profile/logout' ? '/' : location.state?.from?.pathname || '/';
 
     const submitHandler = (e) => {
         e.preventDefault();
