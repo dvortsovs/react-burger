@@ -8,6 +8,7 @@
 
 + React
 + Redux
++ React-router
 + React-DND
 + CRA
 + Ya.Praktikum UI

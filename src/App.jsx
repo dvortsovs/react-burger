@@ -45,7 +45,7 @@ export default function App() {
                 type: OPEN_DETAILS,
                 ingredient: ingredient
         })
-        };
+        }
     }, [dispatch]);
 
     return (
