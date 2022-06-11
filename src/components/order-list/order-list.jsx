@@ -7,6 +7,12 @@ export default function OrderList() {
             <ul className={`${orderListStyles.list}`}>
                 <li className={`${orderListStyles.item}`}>
                     <OrderCard />
+                    <OrderCard /><OrderCard />
+                    <OrderCard />
+                    <OrderCard /><OrderCard />
+
+
+
                 </li>
             </ul>
     )
