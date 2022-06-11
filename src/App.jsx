@@ -9,7 +9,7 @@ import {
     ForgotPasswordPage,
     ResetPasswordPage,
     ProfilePage,
-    OrdersPage
+    OrdersPage, FeedPage
 } from './pages';
 import Layout from "./components/layout/layout";
 import ProfileLayout from "./components/profile-layout/profile-layout";
@@ -53,6 +53,7 @@ export default function App() {
         <Routes location={background || location}>
             <Route path='/' element={<Layout/>}>
                 <Route index element={<HomePage/>}/>
+                <Route path='feed' element={<FeedPage />}/>
                 <Route path='ingredients/:id' element={<IngredientDetailsPage/>}/>
                 <Route path='login' element={
                     <ProtectedRoute protectFromAuth={true}>

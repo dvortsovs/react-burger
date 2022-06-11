@@ -16,7 +16,7 @@ function Layout() {
                                 <NavButton to={'/'} icon={'burger'} title={'Конструктор'} styles={"pt-4 pr-5 pb-4"} />
                             </li>
                             <li className={``}>
-                                <NavButton to={'/order-list'} icon={'list'} title={'Лента заказов'} styles={"pt-4 pr-5 pb-4 pl-5"}/>
+                                <NavButton to={'/feed'} icon={'list'} title={'Лента заказов'} styles={"pt-4 pr-5 pb-4 pl-5"}/>
                             </li>
                         </ul>
                     </nav>

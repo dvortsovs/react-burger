@@ -6,5 +6,6 @@ import ForgotPasswordPage from "./forgot-password-page/forgot-password-page";
 import ResetPasswordPage from "./reset-password/reset-password-page";
 import ProfilePage from "./profile-page/profile-page";
 import OrdersPage from "./orders-page/orders-page";
+import FeedPage from "./feed-page/feed-page";
 
-export { NotFoundPage, HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage }
+export { NotFoundPage, HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage }
