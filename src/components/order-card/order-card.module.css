@@ -15,6 +15,7 @@
 
 .time {
     margin-left: auto;
+    white-space: nowrap;
 }
 
 .price {
@@ -27,5 +28,6 @@
 .figure {
     margin: 0;
     padding: 0;
-
+    display: flex;
+    width: 304px;
 }

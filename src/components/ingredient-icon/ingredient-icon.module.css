@@ -1,11 +1,15 @@
-.image {
+.container {
     width: 64px;
     height: 64px;
-    object-position: center;
-    object-fit: cover;
+    background: var(--background);
+    position: relative;
     border-radius: 100%;
     box-sizing: border-box;
     border: solid 2px #4C4CFF;
-    background: var(--background);
-    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 }

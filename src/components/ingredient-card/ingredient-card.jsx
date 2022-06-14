@@ -33,7 +33,6 @@ function IngredientCard({ingredient}) {
     })
     const dispatch = useDispatch();
     const openDetails = (ingredient) => {
-
         dispatch({
             type: OPEN_DETAILS,
             ingredient: ingredient

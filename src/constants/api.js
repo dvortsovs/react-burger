@@ -1,8 +1,10 @@
 export const api = {
     urls: {
         baseUrl: 'https://norma.nomoreparties.space/api',
+        wsUrl: 'wss://norma.nomoreparties.space',
         ingredients: '/ingredients',
         orders: '/orders',
+        allOrders: '/orders/all',
         registration: '/auth/register',
         forgotPassword: '/password-reset',
         resetPassword: '/reset',

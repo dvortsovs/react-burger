@@ -21,6 +21,7 @@ import IngredientDetailsPage from "./pages/ingredient-details-page/ingredient-de
 import Modal from "./components/modal/modal";
 import {CLOSE_DETAILS, OPEN_DETAILS} from "./services/actions/ingredient-details";
 import FeedDetails from "./components/feed-details/feed-details";
+import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "./services/actions/feed-details";
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
     const {auth} = useSelector(state => state.auth)
     const background = location.state?.background;
     const ingredient = location.state?.ingredient;
+    const order = location.state?.order;
 
     const closeIngredientDetails = () => {
         dispatch({
@@ -38,14 +40,27 @@ export default function App() {
         navigate(background.pathname, {replace: true})
     }
 
+    const closeFeedDetails = () => {
+        dispatch({
+            type: CLOSE_FEED_DETAILS
+        })
+        navigate(background.pathname, {replace: true})
+    }
+
     React.useEffect(() => {
         dispatch(getIngredients());
         dispatch(updateUserInfoRequest());
-        if (ingredient){
+        if (ingredient) {
             dispatch({
                 type: OPEN_DETAILS,
                 ingredient: ingredient
         })
+        }
+        if (order) {
+            dispatch({
+                type: OPEN_FEED_DETAILS,
+                order: order
+            })
         }
     }, [dispatch]);
 
@@ -113,13 +128,15 @@ export default function App() {
                 </Modal>
             }/>
             <Route path='feed/:id' element={
-                <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
-                    <FeedDetails/>
+                <Modal handleClose={closeFeedDetails} title={""}>
+                    <div style={{height: '620px'}}>
+                        <FeedDetails/>
+                    </div>
                 </Modal>
             }/>
             <Route path='profile/orders/:id' element={
                 <ProtectedRoute protectFromAuth={false}>
-                    <Modal handleClose={closeIngredientDetails} title={"Детали ингредиента"}>
+                    <Modal handleClose={closeFeedDetails} title={""}>
                         <FeedDetails/>
                     </Modal>
                 </ProtectedRoute>
