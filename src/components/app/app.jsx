@@ -10,18 +10,18 @@ import {
     ResetPasswordPage,
     ProfilePage,
     OrdersPage, FeedPage, FeedDetailsPage
-} from './pages';
-import Layout from "./components/layout/layout";
-import ProfileLayout from "./components/profile-layout/profile-layout";
-import ProtectedRoute from "./components/protected-route/protected-route";
-import {getIngredients} from "./services/actions/burger-ingredients";
-import {updateUserInfoRequest} from "./services/actions/auth-provider";
-import IngredientDetails from "./components/ingredient-details/ingredient-details";
-import IngredientDetailsPage from "./pages/ingredient-details-page/ingredient-details-page";
-import Modal from "./components/modal/modal";
-import {CLOSE_DETAILS, OPEN_DETAILS} from "./services/actions/ingredient-details";
-import FeedDetails from "./components/feed-details/feed-details";
-import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "./services/actions/feed-details";
+} from '../../pages';
+import Layout from "../layout/layout";
+import ProfileLayout from "../profile-layout/profile-layout";
+import ProtectedRoute from "../protected-route/protected-route";
+import {getIngredients} from "../../services/actions/burger-ingredients";
+import {updateUserInfoRequest} from "../../services/actions/auth-provider";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import IngredientDetailsPage from "../../pages/ingredient-details-page/ingredient-details-page";
+import Modal from "../modal/modal";
+import {CLOSE_DETAILS, OPEN_DETAILS} from "../../services/actions/ingredient-details";
+import FeedDetails from "../feed-details/feed-details";
+import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
 
 
 export default function App() {
@@ -34,17 +34,17 @@ export default function App() {
     const order = location.state?.order;
 
     const closeIngredientDetails = () => {
+        navigate(background.pathname, {replace: true})
         dispatch({
             type: CLOSE_DETAILS
         })
-        navigate(background.pathname, {replace: true})
     }
 
     const closeFeedDetails = () => {
+        navigate(background.pathname, {replace: true})
         dispatch({
             type: CLOSE_FEED_DETAILS
         })
-        navigate(background.pathname, {replace: true})
     }
 
     React.useEffect(() => {

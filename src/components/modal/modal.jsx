@@ -7,13 +7,14 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 function Modal(props) {
 
-    React.useEffect(() => {
-        const handleKeyClose = (e) => {
-            if (e.key === 'Escape') {
-                props.handleClose();
-            }
-        }
 
+    const handleKeyClose = (e) => {
+        if (e.key === 'Escape') {
+            props.handleClose();
+        }
+    }
+
+    React.useEffect(() => {
         document.addEventListener('keydown', handleKeyClose)
         return (() => {
             document.removeEventListener('keydown', handleKeyClose)
