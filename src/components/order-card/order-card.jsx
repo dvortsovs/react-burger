@@ -6,7 +6,7 @@ import IngredientIcon from "../ingredient-icon/ingredient-icon";
 import {useDispatch, useSelector} from "react-redux";
 import {OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
 
-export default function OrderCard({to, order}) {
+export default function OrderCard({to, order, withStatus = false}) {
     const {ingredients} = useSelector(state => state.ingredientsList);
     const location = useLocation();
     const dispatch = useDispatch();
@@ -43,6 +43,14 @@ export default function OrderCard({to, order}) {
         }, 0)
     }, [order.price])
 
+    const status = order.status === 'done'
+        ? 'Выполнен'
+        : order.status === 'pending'
+            ? 'Готовится'
+            : order.status === 'created'
+                ? 'Создан'
+                : ''
+
     return (
         <Link
             onClick={openDetails}
@@ -53,9 +61,18 @@ export default function OrderCard({to, order}) {
             <p className={`${orderCardStyles.time} text text_type_main-default text_color_inactive`}>
                 {`${day}, ${parsedCreatedDate.getHours()}:${parsedCreatedDate.getMinutes()} i-GMT+3`}
             </p>
-            <h3 className={`${orderCardStyles.title} text text_type_main-medium`}>
-                {order.name}
-            </h3>
+            <div className={`${orderCardStyles.box}`}>
+                <h3 className={`text text_type_main-medium`}>
+                    {order.name}
+                </h3>
+                {withStatus &&
+                    <p className={`${order.status === 'done'
+                        ? orderCardStyles.success
+                        : ''} text text_type_main-default mt-2`}>
+                        {status}
+                    </p>
+                }
+            </div>
             <figure className={`${orderCardStyles.figure}`}>
                 {order.ingredients.map((ingredient, index, array) => {
                     if (ingredient !== null) {

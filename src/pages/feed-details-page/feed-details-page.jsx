@@ -3,23 +3,46 @@ import feedDetailsPageStyles from './feed-details-page.module.css'
 import FeedDetails from "../../components/feed-details/feed-details";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {WS_CONNECTION_CLIENT_CLOSED, WS_CONNECTION_START} from "../../services/actions/web-socket";
+import {
+    WS_AUTH_CONNECTION_CLIENT_CLOSED,
+    WS_AUTH_CONNECTION_START,
+    WS_CONNECTION_CLIENT_CLOSED,
+    WS_CONNECTION_START
+} from "../../services/actions/web-socket";
 import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
+import {useLocation} from "react-router-dom";
+import {getCookie} from "../../services/utils";
 
 export default function FeedDetailsPage() {
     const {id} = useParams()
     const dispatch = useDispatch()
+    const location = useLocation();
     const {messages} = useSelector(state => state.ws)
     const {isOpenDetails} = useSelector(state => state.feedDetails)
 
     useEffect(() => {
-        dispatch({
-            type: WS_CONNECTION_START
-        })
+        if (location.pathname === `/feed/${id}`) {
+            dispatch({
+                type: WS_CONNECTION_START
+            })
+        }
+        if (location.pathname === `/profile/orders/${id}`) {
+            dispatch({
+                type: WS_AUTH_CONNECTION_START,
+                payload: `?token=${getCookie('accessToken')}`
+            })
+        }
         return (() => {
-                dispatch({
-                    type: WS_CONNECTION_CLIENT_CLOSED
-                })
+                if (location.pathname === `/feed/${id}`) {
+                    dispatch({
+                        type: WS_CONNECTION_CLIENT_CLOSED
+                    })
+                }
+                if (location.pathname === `/profile/orders/${id}`) {
+                    dispatch({
+                        type: WS_AUTH_CONNECTION_CLIENT_CLOSED
+                    })
+                }
             }
         )
     }, [dispatch])
@@ -40,7 +63,7 @@ export default function FeedDetailsPage() {
 
     return (isOpenDetails &&
         <section className={`${feedDetailsPageStyles.main}`}>
-            <FeedDetails />
+            <FeedDetails/>
         </section>
     )
 }

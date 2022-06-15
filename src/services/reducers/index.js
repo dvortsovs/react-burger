@@ -12,7 +12,15 @@ import {
     WS_CONNECTION_START,
     WS_CONNECTION_CLOSED,
     WS_SEND_MESSAGE,
-    WS_CONNECTION_ERROR, WS_CONNECTION_CLIENT_CLOSED
+    WS_CONNECTION_ERROR,
+    WS_CONNECTION_CLIENT_CLOSED,
+    WS_AUTH_CONNECTION_START,
+    WS_AUTH_SEND_MESSAGE,
+    WS_AUTH_CONNECTION_CLIENT_CLOSED,
+    WS_AUTH_CONNECTION_SUCCESS,
+    WS_AUTH_CONNECTION_CLOSED,
+    WS_AUTH_CONNECTION_ERROR,
+    WS_AUTH_GET_MESSAGE
 } from "../actions/web-socket";
 import socketMiddleware from "../middleware/socket-middleware";
 import thunk from "redux-thunk";
@@ -28,13 +36,24 @@ const wsActions = {
     onMessage: WS_GET_MESSAGE
 };
 
+const wsWithAuthActions = {
+    wsInit: WS_AUTH_CONNECTION_START,
+    wsSendMessage: WS_AUTH_SEND_MESSAGE,
+    wsClose: WS_AUTH_CONNECTION_CLIENT_CLOSED,
+    onOpen: WS_AUTH_CONNECTION_SUCCESS,
+    onClose: WS_AUTH_CONNECTION_CLOSED,
+    onError: WS_AUTH_CONNECTION_ERROR,
+    onMessage: WS_AUTH_GET_MESSAGE
+};
+
 const composeEnhancers =
     typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
         ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
         : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(thunk,
-    socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions)));
+    socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions),
+    socketMiddleware(`${api.urls.wsUrl}${api.urls.orders}`, wsWithAuthActions)));
 
 const rootReducer = combineReducers({
     ingredientsList: ingredientsReducer,

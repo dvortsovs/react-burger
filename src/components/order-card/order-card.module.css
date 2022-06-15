@@ -9,8 +9,12 @@
     color: var(--text-primary-color);
 }
 
-.title {
+.box {
     grid-column: 1/3;
+}
+
+.success {
+    color: var(--colors-interface-success);
 }
 
 .time {
