@@ -29,6 +29,8 @@ export default function App() {
     const location = useLocation();
     const navigate = useNavigate();
     const {auth} = useSelector(state => state.auth)
+    const {ingredients} = useSelector(state => state.ingredientsList)
+    const feedDetailsStore = useSelector(state => state.feedDetails)
     const background = location.state?.background;
     const ingredient = location.state?.ingredient;
     const order = location.state?.order;
@@ -130,7 +132,10 @@ export default function App() {
                 <Route path='feed/:id' element={
                     <Modal handleClose={closeFeedDetails} title={""}>
                         <div style={{height: '620px'}}>
-                            <FeedDetails/>
+                            {
+                                !!ingredients.length && feedDetailsStore.order &&
+                                <FeedDetails/>
+                            }
                         </div>
                     </Modal>
                 }/>
@@ -138,7 +143,10 @@ export default function App() {
                     <ProtectedRoute protectFromAuth={false}>
                         <Modal handleClose={closeFeedDetails} title={""}>
                             <div style={{height: '620px'}}>
-                                <FeedDetails/>
+                                {
+                                    !!ingredients.length && feedDetailsStore.order &&
+                                    <FeedDetails/>
+                                }
                             </div>
                         </Modal>
                     </ProtectedRoute>
