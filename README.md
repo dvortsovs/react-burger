@@ -10,6 +10,7 @@
 + Redux
 + React-router
 + React-DND
++ WebSocket
 + CRA
 + Ya.Praktikum UI
 ---
