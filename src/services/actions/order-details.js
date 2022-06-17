@@ -1,4 +1,5 @@
 import {api} from "../../constants/api";
+import {fetchWithRefresh, getCookie} from "../utils";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
@@ -14,17 +15,14 @@ export const getOrderDetails = (ingredientsList, bun) => {
         dispatch({
             type: GET_ORDER_REQUEST
         })
-        fetch(`${api.urls.baseUrl}${api.urls.orders}`, {
+        fetchWithRefresh(`${api.urls.baseUrl}${api.urls.orders}`, {
             method: 'POST',
-            headers: api.headers,
+            headers: {
+                ...api.headers,
+                Authorization: `Bearer ${getCookie('accessToken')}`
+            },
             body: JSON.stringify({"ingredients": ingredients})
         })
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
             .then((res) => {
                 dispatch({
                     type: GET_ORDER_SUCCESS,
