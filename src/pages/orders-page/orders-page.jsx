@@ -7,6 +7,7 @@ import {
     WS_AUTH_CONNECTION_START,
 } from "../../services/actions/web-socket";
 import {getCookie} from "../../services/utils";
+import Loader from "../../components/loader/loader";
 
 export default function OrdersPage() {
     const dispatch = useDispatch();
@@ -24,20 +25,19 @@ export default function OrdersPage() {
             }
         )
     }, [dispatch])
-
-    return (messages &&
-        <section className={`${ordersPageStyles.main}`}>
-            <ul className={`${ordersPageStyles.orders}`}>
-                {
-                    messages.orders.map((order, index) => {
-                        return (
-                            <li key={index} className={`${ordersPageStyles.order}`}>
-                                <OrderCard withStatus={true} order={order} to={`/profile/orders/${order.number}`}/>
-                            </li>
-                        )
-                    }).reverse()
-                }
-            </ul>
-        </section>
+    return (messages ?
+            <section className={`${ordersPageStyles.main}`}>
+                <ul className={`${ordersPageStyles.orders}`}>
+                    {
+                        messages.orders.map((order, index) => {
+                            return (
+                                <li key={index} className={`${ordersPageStyles.order}`}>
+                                    <OrderCard withStatus={true} order={order} to={`/profile/orders/${order.number}`}/>
+                                </li>
+                            )
+                        }).reverse()
+                    }
+                </ul>
+            </section> : <Loader stateDone={!messages}/>
     )
 }

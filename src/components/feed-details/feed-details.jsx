@@ -3,15 +3,19 @@ import feedDetailsStyles from './feed-details.module.css'
 import IngredientIcon from "../ingredient-icon/ingredient-icon";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
+import {defineDay} from "../../services/utils";
 
 export default function FeedDetails() {
     const {order} = useSelector(state => state.feedDetails)
     const {ingredients} = useSelector(state => state.ingredientsList)
+    const parsedCreatedDate = new Date(order.createdAt)
     const totalPrice = useMemo(() => {
         return order.ingredients.reduce((sum, current) => {
             return ingredients.find(item => item._id === current).price + sum
         }, 0)
     }, [order])
+
+    const day = defineDay(parsedCreatedDate)
 
     const status = order.status === 'done'
         ? 'Выполнен'
@@ -33,7 +37,7 @@ export default function FeedDetails() {
                         <li key={index} className={`${feedDetailsStyles.item} mb-4`}>
                             <IngredientIcon
                                 styles={{marginRight: '16px'}}
-                                src={`${ingredients.find(item => item._id === ingredient).image}`} />
+                                src={`${ingredients.find(item => item._id === ingredient).image}`}/>
                             <p className={`${feedDetailsStyles.name} text text_type_main-default`}>
                                 {ingredients.find(item => item._id === ingredient).name}
                             </p>
@@ -43,12 +47,16 @@ export default function FeedDetails() {
                                 </p>
                                 <CurrencyIcon type={"primary"}/></div>
                         </li>
-                        )
+                    )
                 })}
             </ul>
             <div className={`${feedDetailsStyles.total}`}>
-                <p className={`text text_type_main-default text_color_inactive`}>Вчера, 13:50 i-GMT+3</p>
-                <div className={`${feedDetailsStyles.price}`}><p className={`text text_type_digits-default mr-2`}>{totalPrice}</p><CurrencyIcon type={"primary"}/></div>
+                <p className={`text text_type_main-default text_color_inactive`}>
+                    {`${day}, ${parsedCreatedDate.getHours()}:${parsedCreatedDate.getMinutes()} i-GMT+3`}
+                </p>
+                <div className={`${feedDetailsStyles.price}`}><p
+                    className={`text text_type_digits-default mr-2`}>{totalPrice}</p><CurrencyIcon type={"primary"}/>
+                </div>
             </div>
         </div>
     )

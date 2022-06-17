@@ -9,11 +9,12 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
 import {RESET_CONSTRUCTOR_STATE} from "../../services/actions/burger-constructor";
+import Loader from "../../components/loader/loader";
 
 function HomePage() {
     const dispatch = useDispatch();
     const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useSelector(state => state.ingredientsList);
-    const {orderVisible} = useSelector(state => state.order)
+    const {orderVisible, orderRequest} = useSelector(state => state.order)
 
     const closeOrderDetails = () => {
         dispatch({
@@ -26,6 +27,7 @@ function HomePage() {
 
     return (
         <>
+            <Loader stateDone={orderRequest}/>
             {orderVisible &&
                 <Modal handleClose={closeOrderDetails} title={""}><OrderDetails/></Modal>}
 

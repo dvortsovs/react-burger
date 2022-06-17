@@ -5,12 +5,12 @@ import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientIcon from "../ingredient-icon/ingredient-icon";
 import {useDispatch, useSelector} from "react-redux";
 import {OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
+import {defineDay} from "../../services/utils";
 
 export default function OrderCard({to, order, withStatus = false}) {
     const {ingredients} = useSelector(state => state.ingredientsList);
     const location = useLocation();
     const dispatch = useDispatch();
-    const date = new Date()
     const parsedCreatedDate = new Date(order.createdAt)
 
     const openDetails = () => {
@@ -20,22 +20,7 @@ export default function OrderCard({to, order, withStatus = false}) {
         })
     }
 
-    const defineDay = () => {
-        const dayDifference = date.getDate() - parsedCreatedDate.getDate()
-        if (dayDifference === 0) {
-            return 'Сегодня'
-        }
-        if (dayDifference === 1) {
-            return 'Вчера'
-        }
-        if (dayDifference < 5) {
-            return `${dayDifference} дня назад`
-        }
-        if (5 < dayDifference < 21) {
-            return `${dayDifference} дней назад`
-        }
-    }
-    const day = useMemo(() => defineDay(), [date])
+    const day = defineDay(parsedCreatedDate)
 
     const totalPrice = useMemo(() => {
         return order.ingredients.reduce((sum, current) => {
