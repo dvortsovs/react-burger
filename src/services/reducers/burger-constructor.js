@@ -5,13 +5,10 @@ import {
     REPLACE_INGREDIENT,
     RESET_CONSTRUCTOR_STATE
 } from "../actions/burger-constructor";
-import initialIcon from '../../images/graphics.svg'
 
 const initialState = {
     bun: {
-        price: 0,
-        name: "Перетащите сюда булку",
-        image: initialIcon
+        price: 0
     },
     ingredients: [],
     counter: 0

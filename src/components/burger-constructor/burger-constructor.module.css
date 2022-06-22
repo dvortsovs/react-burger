@@ -41,3 +41,30 @@
     justify-content: right;
     align-items: center;
 }
+
+.emptyBox {
+    margin-left: 32px;
+    height: calc(100% - 104px);
+    box-sizing: border-box;
+    border: 5px rgba(255, 255, 255, 0.2) dashed;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyBox_bun {
+    padding: 15px;
+    border: 5px rgba(255, 255, 255, 0.2) dashed;
+    border-radius: 30px;
+}
+
+.emptyBox_hover {
+    border: 5px rgba(255, 255, 255, 0.4) solid;
+}
+
+.emptyTitle {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
