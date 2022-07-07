@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./services/reducers";
 
+//todo: add redux-toolkit
+
 ReactDOM.render(
     <React.StrictMode>
         <Router>

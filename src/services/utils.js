@@ -120,7 +120,7 @@ function defineDay(createdAt) {
     } else if (5 * timePieces.month < difference < 12 * timePieces.month) {
         return `${Math.floor(difference / timePieces.month)} месяцев назад`
     } else return 'Более года назад'
-}
+} //todo not valid days
 
 export {
     validateForm,

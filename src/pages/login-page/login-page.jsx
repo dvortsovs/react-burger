@@ -25,7 +25,7 @@ export default function LoginPage() {
         e.preventDefault();
         dispatch(login(emailValue, passwordValue, () => navigate(fromPage, {replace: true})));
     }
-
+//todo: add on login error modal
     return (
         <>
             <Loader stateDone={apiRequest}/>

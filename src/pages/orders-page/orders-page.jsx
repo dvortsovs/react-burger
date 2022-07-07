@@ -25,7 +25,7 @@ export default function OrdersPage() {
             }
         )
     }, [dispatch])
-    return (messages ?
+    return (messages ? //todo fail when reload page
             <section className={`${ordersPageStyles.main}`}>
                 <ul className={`${ordersPageStyles.orders}`}>
                     {

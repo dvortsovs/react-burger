@@ -1,6 +1,11 @@
 import loaderStyle from './loader.module.css'
+import {FC} from "react";
 
-export default function Loader({stateDone}) {
+type TLoaderProps = {
+    stateDone: boolean;
+}
+
+const Loader: FC<TLoaderProps> = ({stateDone}) => {
 
     return (
         <div className={`${!stateDone ? loaderStyle.done : ''} ${loaderStyle.background}`}>
@@ -8,3 +13,5 @@ export default function Loader({stateDone}) {
         </div>
     )
 }
+
+export default Loader
