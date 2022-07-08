@@ -2,7 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import ingredientsReducer from "./burger-ingredients";
 import burgerConstructorReducer from "./burger-constructor";
 import ingredientDetailsReducer from "./ingredient-details";
-import {orderDetailsReducer} from "./order-details";
+import bookingDetailsReducer from "./booking-details";
 import authReducer from "./auth-provider";
 import apiRequestsReducer from "./api-requests"
 import {wsReducer} from "./web-socket";
@@ -50,7 +50,7 @@ const rootReducer = combineReducers({
     ingredientsList: ingredientsReducer,
     constructorList: burgerConstructorReducer,
     details: ingredientDetailsReducer,
-    order: orderDetailsReducer,
+    booking: bookingDetailsReducer,
     auth: authReducer,
     apiRequests: apiRequestsReducer,
     ws: wsReducer,

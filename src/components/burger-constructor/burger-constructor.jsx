@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrderDetails} from "../../services/actions/order-details";
+import {getBookingDetails} from "../../services/actions/booking-details";
 import {useDrop} from "react-dnd";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -26,10 +26,10 @@ function BurgerConstructor() {
         }
     })
 
-    const openOrderDetails = () => {
+    const openBookingDetails = () => {
         if (!auth) {
             navigate('/login', {state:{from: location}})
-        } else dispatch(getOrderDetails(ingredients, bun))
+        } else dispatch(getBookingDetails(ingredients, bun))
     }
 
     const addIngredient = (ingredient) => {
@@ -123,7 +123,7 @@ function BurgerConstructor() {
                     {totalPrice}
                     <CurrencyIcon type={"primary"}/>
                 </p>
-                <Button onClick={openOrderDetails}
+                <Button onClick={openBookingDetails}
                         type={"primary"} size={"medium"}>
                     Оформить заказ
                 </Button>
