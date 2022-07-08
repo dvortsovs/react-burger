@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import ingredientsReducer from "./burger-ingredients";
 import burgerConstructorReducer from "./burger-constructor";
 import ingredientDetailsReducer from "./ingredient-details";
@@ -47,19 +47,17 @@ const wsWithAuthActions = {
     onMessage: wsAuthConnectionGetMessage
 };
 
-const rootReducer = combineReducers({
-    ingredientsList: ingredientsReducer,
-    constructorList: burgerConstructorReducer,
-    details: ingredientDetailsReducer,
-    booking: bookingDetailsReducer,
-    auth: authReducer,
-    apiRequests: apiRequestsReducer,
-    ws: wsReducer,
-    feedDetails: feedDetailsReducer
-})
-
 export const store = configureStore({
-    reducer: rootReducer,
+    reducer: {
+        ingredientsList: ingredientsReducer,
+        constructorList: burgerConstructorReducer,
+        details: ingredientDetailsReducer,
+        booking: bookingDetailsReducer,
+        auth: authReducer,
+        apiRequests: apiRequestsReducer,
+        ws: wsReducer,
+        feedDetails: feedDetailsReducer
+    },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: {
             ignoreActions: [...Object.values(wsActions), ...Object.values(wsWithAuthActions)]
