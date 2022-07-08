@@ -1,14 +1,9 @@
 import {api} from "../../constants/api";
-
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+import {ingredientsFailed, ingredientsRequest, ingredientsSuccess} from "../reducers/burger-ingredients";
 
 export const getIngredients = () => {
     return dispatch => {
-        dispatch({
-            type: GET_INGREDIENTS_REQUEST
-        })
+        dispatch(ingredientsRequest())
         fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
             .then((res) => {
                 if (res.ok) {
@@ -17,15 +12,10 @@ export const getIngredients = () => {
                 return Promise.reject(res.status)
             })
             .then(res => {
-                dispatch({
-                    type: GET_INGREDIENTS_SUCCESS,
-                    ingredients: res.data
-                })
+                dispatch(ingredientsSuccess(res.data))
             })
             .catch(() => {
-                dispatch({
-                    type: GET_INGREDIENTS_FAILED
-                })
+                dispatch(ingredientsFailed())
             })
     }
 }

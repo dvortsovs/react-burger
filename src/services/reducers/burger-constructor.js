@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-export const burgerConstructorReducer = createSlice({
+const burgerConstructorReducer = createSlice({
     name: 'burgerConstructor',
     initialState: {
         bun: {

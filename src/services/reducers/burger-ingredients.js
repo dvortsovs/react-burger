@@ -1,38 +1,28 @@
-import {GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS} from "../actions/burger-ingredients";
+import {createSlice} from "@reduxjs/toolkit";
 
-
-const initialState = {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsRequestFailed: false
-}
-
-export const ingredientsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case GET_INGREDIENTS_REQUEST: {
-            return {
-                ...state,
-                ingredientsRequest: true
-            }
-        }
-        case GET_INGREDIENTS_SUCCESS: {
-            return {
-                ...state,
-                ingredientsRequest: false,
-                ingredientsRequestFailed: false,
-                ingredients: [...action.ingredients]
-            }
-        }
-        case GET_INGREDIENTS_FAILED: {
-            return {
-                ...state,
-                ingredients: [],
-                ingredientsRequestFailed: true,
-                ingredientsRequest: false
-            }
-        }
-        default: {
-            return state
+const ingredientsReducer = createSlice({
+    name: 'ingredientsList',
+    initialState: {
+        ingredients: [],
+        ingredientsRequest: false,
+        ingredientsRequestFailed: false
+    },
+    reducers: {
+        ingredientsRequest(state) {
+            state.ingredientsRequest = true
+        },
+        ingredientsSuccess(state, action) {
+            state.ingredients = action.payload
+            state.ingredientsRequest = false
+            state.ingredientsRequestFailed = false
+        },
+        ingredientsFailed(state) {
+            state.ingredients = []
+            state.ingredientsRequest = false
+            state.ingredientsRequestFailed = true
         }
     }
-}
+})
+
+export default ingredientsReducer.reducer
+export const {ingredientsRequest, ingredientsSuccess, ingredientsFailed} = ingredientsReducer.actions
