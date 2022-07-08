@@ -2,11 +2,11 @@ import React, {useEffect} from 'react';
 import feedPageStyles from './feed-page.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {
-    WS_CONNECTION_CLIENT_CLOSED,
     WS_CONNECTION_START
 } from "../../services/actions/web-socket";
 import OrderCard from "../../components/order-card/order-card";
 import Loader from "../../components/loader/loader";
+import {wsConnectionClientClosed} from "../../services/reducers/web-socket";
 
 
 export default function FeedPage() {
@@ -18,9 +18,7 @@ export default function FeedPage() {
             type: WS_CONNECTION_START
         })
         return (() => {
-                dispatch({
-                    type: WS_CONNECTION_CLIENT_CLOSED
-                })
+                dispatch(wsConnectionClientClosed())
             }
         )
     }, [dispatch])

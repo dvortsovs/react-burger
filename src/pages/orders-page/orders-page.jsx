@@ -3,11 +3,11 @@ import ordersPageStyles from './orders-page.module.css'
 import OrderCard from "../../components/order-card/order-card";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    WS_AUTH_CONNECTION_CLIENT_CLOSED,
     WS_AUTH_CONNECTION_START,
 } from "../../services/actions/web-socket";
 import {getCookie} from "../../services/utils";
 import Loader from "../../components/loader/loader";
+import {wsAuthConnectionClientClosed} from "../../services/reducers/web-socket";
 
 export default function OrdersPage() {
     const dispatch = useDispatch();
@@ -26,9 +26,7 @@ export default function OrdersPage() {
             payload: `?token=${getCookie('accessToken')}`
         })
         return (() => {
-                dispatch({
-                    type: WS_AUTH_CONNECTION_CLIENT_CLOSED
-                })
+                dispatch(wsAuthConnectionClientClosed())
             }
         )
     }, [dispatch])

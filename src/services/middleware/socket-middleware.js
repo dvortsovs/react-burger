@@ -12,30 +12,18 @@ export default function socketMiddleware(wsUrl, wsActions) {
             }
             if (socket) {
                 socket.onopen = event => {
-                    dispatch({
-                        type: onOpen,
-                        payload: event
-                    })
+                    dispatch(onOpen(event))
                 }
                 socket.onerror = event => {
-                    dispatch({
-                        type: onError,
-                        payload: event
-                    })
+                    dispatch(onError(event))
                 }
                 socket.onmessage = event => {
                     const {data} = event
                     const parsedData = JSON.parse(data)
-                    dispatch({
-                        type: onMessage,
-                        payload: parsedData
-                    })
+                    dispatch(onMessage(parsedData))
                 }
                 socket.onclose = event => {
-                    dispatch({
-                        type: onClose,
-                        payload: event
-                    })
+                    dispatch(onClose(event))
                 }
                 if (type === wsSendMessage) {
                     const message = {...payload}
