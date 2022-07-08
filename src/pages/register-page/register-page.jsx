@@ -10,7 +10,7 @@ import Loader from "../../components/loader/loader";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
-    const {apiRequest} = useSelector(state => state.auth);
+    const {apiRequest} = useSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');

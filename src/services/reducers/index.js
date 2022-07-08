@@ -3,7 +3,8 @@ import ingredientsReducer from "./burger-ingredients";
 import burgerConstructorReducer from "./burger-constructor";
 import {ingredientDetailsReducer} from "./ingredient-details";
 import {orderDetailsReducer} from "./order-details";
-import {authReducer} from "./auth-provider";
+import authReducer from "./auth-provider";
+import apiRequestsReducer from "./api-requests"
 import {wsReducer} from "./web-socket";
 import {feedDetailsReducer} from "./feed-details";
 import {
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
     details: ingredientDetailsReducer,
     order: orderDetailsReducer,
     auth: authReducer,
+    apiRequests: apiRequestsReducer,
     ws: wsReducer,
     feedDetails: feedDetailsReducer
 })

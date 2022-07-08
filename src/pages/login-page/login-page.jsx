@@ -12,7 +12,7 @@ export default function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const {apiRequest} = useSelector(state => state.auth);
+    const {apiRequest} = useSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordHideState, setPasswordHideState] = useState('password');

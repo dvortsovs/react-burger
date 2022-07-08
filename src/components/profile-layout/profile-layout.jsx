@@ -6,11 +6,11 @@ import {logout} from "../../services/actions/auth-provider";
 import Loader from "../loader/loader";
 
 const profileCaption = 'В этом разделе вы можете изменить свои персональные данные';
-const ordersCaption = 'В этом разделе вы можете просмотреть свою историю заказов';
+const ordersCaption = 'В этом разделе вы можете просмотреть свою историю заказов'; //todo refactor logic with urls
 
 export default function ProfileLayout() {
     const [caption, setCaption] = useState(profileCaption);
-    const {apiRequest} = useSelector(state => state.auth);
+    const {apiRequest} = useSelector(state => state.apiRequests);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

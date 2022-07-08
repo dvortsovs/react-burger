@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const {apiRequest} = useSelector(state => state.auth);
+    const {apiRequest} = useSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [emailError, setEmailError] = useState(false);
 

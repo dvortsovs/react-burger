@@ -11,7 +11,7 @@ import Loader from "../../components/loader/loader";
 export default function ResetPasswordPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {apiRequest} = useSelector(state => state.auth);
+    const {apiRequest} = useSelector(state => state.apiRequests);
     const [codeValue, setCodeValue] = useState('')
     const [codeError, setCodeError] = useState(false)
     const [passwordValue, setPasswordValue] = useState('')
