@@ -9,9 +9,9 @@ import {
     WS_CONNECTION_CLIENT_CLOSED,
     WS_CONNECTION_START
 } from "../../services/actions/web-socket";
-import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
 import {useLocation} from "react-router-dom";
 import {getCookie} from "../../services/utils";
+import {closeFeedDetails, openFeedDetails} from "../../services/reducers/feed-details";
 
 export default function FeedDetailsPage() {
     const {id} = useParams()
@@ -49,15 +49,10 @@ export default function FeedDetailsPage() {
 
     useEffect(() => {
         if (messages) {
-            dispatch({
-                type: OPEN_FEED_DETAILS,
-                order: messages.orders.find(item => item.number === Number(id))
-            })
+            dispatch(openFeedDetails(messages.orders.find(item => item.number === Number(id))))
         }
         return () => {
-            dispatch({
-                type: CLOSE_FEED_DETAILS
-            })
+            dispatch(closeFeedDetails())
         }
     }, [dispatch, messages])
 

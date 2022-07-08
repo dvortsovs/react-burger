@@ -4,8 +4,8 @@ import {Link, useLocation} from "react-router-dom";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientIcon from "../ingredient-icon/ingredient-icon";
 import {useDispatch, useSelector} from "react-redux";
-import {OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
 import {defineDay} from "../../services/utils";
+import {openFeedDetails} from "../../services/reducers/feed-details";
 
 export default function OrderCard({to, order, withStatus = false}) {
     const {ingredients} = useSelector(state => state.ingredientsList);
@@ -14,10 +14,7 @@ export default function OrderCard({to, order, withStatus = false}) {
     const parsedCreatedDate = new Date(order.createdAt)
 
     const openDetails = () => {
-        dispatch({
-            type: OPEN_FEED_DETAILS,
-            order: order
-        })
+        dispatch(openFeedDetails(order))
     }
 
     const day = defineDay(parsedCreatedDate)

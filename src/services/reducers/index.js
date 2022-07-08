@@ -6,7 +6,7 @@ import {orderDetailsReducer} from "./order-details";
 import authReducer from "./auth-provider";
 import apiRequestsReducer from "./api-requests"
 import {wsReducer} from "./web-socket";
-import {feedDetailsReducer} from "./feed-details";
+import feedDetailsReducer from "./feed-details";
 import {
     WS_GET_MESSAGE,
     WS_CONNECTION_SUCCESS,

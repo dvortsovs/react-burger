@@ -21,7 +21,7 @@ import IngredientDetailsPage from "../../pages/ingredient-details-page/ingredien
 import Modal from "../modal/modal";
 import {CLOSE_DETAILS, OPEN_DETAILS} from "../../services/actions/ingredient-details";
 import FeedDetails from "../feed-details/feed-details";
-import {CLOSE_FEED_DETAILS, OPEN_FEED_DETAILS} from "../../services/actions/feed-details";
+import {closeFeedDetails as close, openFeedDetails} from "../../services/reducers/feed-details";
 
 
 export default function App() {
@@ -44,9 +44,7 @@ export default function App() {
 
     const closeFeedDetails = () => {
         navigate(background.pathname, {replace: true})
-        dispatch({
-            type: CLOSE_FEED_DETAILS
-        })
+        dispatch(close())
     }
 
     React.useEffect(() => {
@@ -59,10 +57,7 @@ export default function App() {
             })
         }
         if (order) {
-            dispatch({
-                type: OPEN_FEED_DETAILS,
-                order: order
-            })
+            dispatch(openFeedDetails(order))
         }
     }, [dispatch]);
 
