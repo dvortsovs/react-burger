@@ -13,7 +13,12 @@ export default function OrdersPage() {
     const dispatch = useDispatch();
     const {messages} = useSelector(state => state.ws)
 
-    console.log(messages)
+    const refreshSocketConnection = () => {
+        dispatch({
+            type: WS_AUTH_CONNECTION_START,
+            payload: `?token=${getCookie('accessToken')}`
+        })
+    }
 
     useEffect(() => {
         dispatch({
@@ -27,19 +32,23 @@ export default function OrdersPage() {
             }
         )
     }, [dispatch])
-    return (messages ? //todo fail when reload page
-            <section className={`${ordersPageStyles.main}`}>
-                <ul className={`${ordersPageStyles.orders}`}>
-                    {
-                        messages.orders.map((order, index) => {
-                            return (
-                                <li key={index} className={`${ordersPageStyles.order}`}>
-                                    <OrderCard withStatus={true} order={order} to={`/profile/orders/${order.number}`}/>
-                                </li>
-                            )
-                        }).reverse()
-                    }
-                </ul>
-            </section> : <Loader stateDone={!messages}/>
-    )
+    if (messages) {
+        if (messages.success) {
+            return (//todo fail when reload page
+                    <section className={`${ordersPageStyles.main}`}>
+                        <ul className={`${ordersPageStyles.orders}`}>
+                            {
+                                messages.orders.map((order, index) => {
+                                    return (
+                                        <li key={index} className={`${ordersPageStyles.order}`}>
+                                            <OrderCard withStatus={true} order={order} to={`/profile/orders/${order.number}`}/>
+                                        </li>
+                                    )
+                                }).reverse()
+                            }
+                        </ul>
+                    </section>
+            )
+        } else refreshSocketConnection()
+    } else return <Loader stateDone={!messages}/>
 }

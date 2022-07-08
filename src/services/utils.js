@@ -52,7 +52,9 @@ function deleteCookie(name) {
 }
 
 function setTokens(accessToken, refreshToken) {
+    deleteCookie('accessToken');
     setCookie('accessToken', accessToken);
+    localStorage.removeItem('refreshToken');
     localStorage.setItem('refreshToken', refreshToken);
 }
 
