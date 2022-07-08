@@ -3,7 +3,7 @@ import ingredientDetailsPageStyles from './ingredient-details-page.module.css'
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {CLOSE_DETAILS, OPEN_DETAILS} from "../../services/actions/ingredient-details";
+import {closeIngredientDetails, openIngredientDetails} from "../../services/reducers/ingredient-details";
 
 export default function IngredientDetailsPage() {
     const {ingredients} = useSelector(state => state.ingredientsList)
@@ -11,14 +11,9 @@ export default function IngredientDetailsPage() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch({
-            type: OPEN_DETAILS,
-            ingredient: ingredients.find((item) => item._id === id)
-        })
+        dispatch(openIngredientDetails(ingredients.find((item) => item._id === id)))
         return () => {
-            dispatch({
-                type: CLOSE_DETAILS,
-            })
+            dispatch(closeIngredientDetails())
         }
     })
 

@@ -1,7 +1,7 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import ingredientsReducer from "./burger-ingredients";
 import burgerConstructorReducer from "./burger-constructor";
-import {ingredientDetailsReducer} from "./ingredient-details";
+import ingredientDetailsReducer from "./ingredient-details";
 import {orderDetailsReducer} from "./order-details";
 import authReducer from "./auth-provider";
 import apiRequestsReducer from "./api-requests"

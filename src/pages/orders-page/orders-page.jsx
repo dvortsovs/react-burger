@@ -13,6 +13,8 @@ export default function OrdersPage() {
     const dispatch = useDispatch();
     const {messages} = useSelector(state => state.ws)
 
+    console.log(messages)
+
     useEffect(() => {
         dispatch({
             type: WS_AUTH_CONNECTION_START,

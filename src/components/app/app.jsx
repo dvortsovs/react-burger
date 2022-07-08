@@ -19,9 +19,12 @@ import {updateUserInfoRequest} from "../../services/actions/auth-provider";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import IngredientDetailsPage from "../../pages/ingredient-details-page/ingredient-details-page";
 import Modal from "../modal/modal";
-import {CLOSE_DETAILS, OPEN_DETAILS} from "../../services/actions/ingredient-details";
 import FeedDetails from "../feed-details/feed-details";
-import {closeFeedDetails as close, openFeedDetails} from "../../services/reducers/feed-details";
+import {closeFeedDetails as closeFeed, openFeedDetails} from "../../services/reducers/feed-details";
+import {
+    closeIngredientDetails as closeIngredient,
+    openIngredientDetails
+} from "../../services/reducers/ingredient-details";
 
 
 export default function App() {
@@ -37,24 +40,19 @@ export default function App() {
 
     const closeIngredientDetails = () => {
         navigate(background.pathname, {replace: true})
-        dispatch({
-            type: CLOSE_DETAILS
-        })
+        dispatch(closeIngredient())
     }
 
     const closeFeedDetails = () => {
         navigate(background.pathname, {replace: true})
-        dispatch(close())
+        dispatch(closeFeed())
     }
 
     React.useEffect(() => {
         dispatch(getIngredients());
         dispatch(updateUserInfoRequest());
         if (ingredient) {
-            dispatch({
-                type: OPEN_DETAILS,
-                ingredient: ingredient
-            })
+            dispatch(openIngredientDetails(ingredient))
         }
         if (order) {
             dispatch(openFeedDetails(order))

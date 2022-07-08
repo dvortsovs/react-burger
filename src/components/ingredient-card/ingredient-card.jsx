@@ -3,9 +3,9 @@ import ingredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {OPEN_DETAILS} from "../../services/actions/ingredient-details";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
+import {openIngredientDetails} from "../../services/reducers/ingredient-details";
 
 function IngredientCard({ingredient}) {
     const {ingredients, bun} = useSelector(state => state.constructorList);
@@ -33,10 +33,7 @@ function IngredientCard({ingredient}) {
     })
     const dispatch = useDispatch();
     const openDetails = (ingredient) => {
-        dispatch({
-            type: OPEN_DETAILS,
-            ingredient: ingredient
-        })
+        dispatch(openIngredientDetails(ingredient))
     }
 
     return (
