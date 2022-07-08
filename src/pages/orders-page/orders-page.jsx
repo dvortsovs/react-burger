@@ -32,20 +32,21 @@ export default function OrdersPage() {
     }, [dispatch])
     if (messages) {
         if (messages.success) {
-            return (//todo fail when reload page
-                    <section className={`${ordersPageStyles.main}`}>
-                        <ul className={`${ordersPageStyles.orders}`}>
-                            {
-                                messages.orders.map((order, index) => {
-                                    return (
-                                        <li key={index} className={`${ordersPageStyles.order}`}>
-                                            <OrderCard withStatus={true} order={order} to={`/profile/orders/${order.number}`}/>
-                                        </li>
-                                    )
-                                }).reverse()
-                            }
-                        </ul>
-                    </section>
+            return (
+                <section className={`${ordersPageStyles.main}`}>
+                    <ul className={`${ordersPageStyles.orders}`}>
+                        {
+                            messages.orders.map((order, index) => {
+                                return (
+                                    <li key={index} className={`${ordersPageStyles.order}`}>
+                                        <OrderCard withStatus={true} order={order}
+                                                   to={`/profile/orders/${order.number}`}/>
+                                    </li>
+                                )
+                            }).reverse()
+                        }
+                    </ul>
+                </section>
             )
         } else refreshSocketConnection()
     } else return <Loader stateDone={!messages}/>

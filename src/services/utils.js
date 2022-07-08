@@ -102,27 +102,33 @@ async function fetchWithRefresh(url, options) {
 
 function defineDay(createdAt) {
     const date = new Date()
+    date.setHours(0, 0, 0)
     const parsedCreatedDate = new Date(createdAt)
     const difference = Math.round((date.getTime() - parsedCreatedDate.getTime()) / 1000)
-    if (difference < timePieces.day) {
-        return 'Сегодня'
-    } else if (difference < timePieces.day * 2) {
-        return 'Вчера'
-    } else if ((difference < timePieces.day * 5) || (21 * timePieces.day < difference < 25 * timePieces.day)) {
+    console.log(difference)
+    if (difference < 0) return 'Сегодня'
+    if ((0 < difference) && (difference < timePieces.day)) return 'Вчера'
+    if ((difference < timePieces.day * 5)
+        || ((21 * timePieces.day < difference) && (difference < 25 * timePieces.day))) {
         return `${Math.floor(difference / timePieces.day)} дня назад`
-    } else if ((timePieces.day * 5 < difference < timePieces.day * 21)
-        || (25 * timePieces.day < difference < 31 * timePieces.day)) {
+    }
+    if (((timePieces.day * 5 < difference) && (difference < timePieces.day * 21))
+        || ((25 * timePieces.day < difference) && (difference < 31 * timePieces.day))) {
         return `${Math.floor(difference / timePieces.day)} дней назад`
-    } else if (timePieces.day * 21 < difference < timePieces.day * 22) {
+    }
+    if ((timePieces.day * 21 < difference) && (difference < timePieces.day * 22)) {
         return `${Math.floor(difference / timePieces.day)} день назад`
-    } else if (31 * timePieces.day < difference < 2 * timePieces.month) {
+    }
+    if ((31 * timePieces.day < difference) && (difference < 2 * timePieces.month)) {
         return `${Math.floor(difference / timePieces.month)} месяц назад`
-    } else if (2 * timePieces.month < difference < 5 * timePieces.month) {
+    }
+    if ((2 * timePieces.month < difference) && (difference < 5 * timePieces.month)) {
         return `${Math.floor(difference / timePieces.month)} месяца назад`
-    } else if (5 * timePieces.month < difference < 12 * timePieces.month) {
+    }
+    if ((5 * timePieces.month < difference) && (difference < 12 * timePieces.month)) {
         return `${Math.floor(difference / timePieces.month)} месяцев назад`
     } else return 'Более года назад'
-} //todo not valid days
+}
 
 export {
     validateForm,
