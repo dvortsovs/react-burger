@@ -8,8 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {CLOSE_ORDER_DETAILS} from "../../services/actions/order-details";
-import {RESET_CONSTRUCTOR_STATE} from "../../services/actions/burger-constructor";
 import Loader from "../../components/loader/loader";
+import {resetConstructorState} from "../../services/reducers/burger-constructor";
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -17,9 +17,7 @@ function HomePage() {
     const {orderVisible, orderRequest} = useSelector(state => state.order)
 
     const closeOrderDetails = () => {
-        dispatch({
-            type: RESET_CONSTRUCTOR_STATE
-        })
+        dispatch(resetConstructorState())
         dispatch({
             type: CLOSE_ORDER_DETAILS
         })

@@ -1,9 +1,7 @@
 import React, {useRef} from 'react';
 import constructorIngredientStyles from './constructor-ingredient.module.css'
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-    REMOVE_INGREDIENT, REPLACE_INGREDIENT,
-} from "../../services/actions/burger-constructor";
+import {removeIngredient as removeAction, replaceIngredient}  from "../../services/reducers/burger-constructor";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import ingredient from "../../constants/ingredient";
@@ -27,10 +25,7 @@ function ConstructorIngredient({ingredient, index}) {
         const newArr = [...ingredients]
         newArr.splice(dragIndex, 1)
         newArr.splice(hoverIndex, 0, ingredients[dragIndex])
-        dispatch({
-            type: REPLACE_INGREDIENT,
-            ingredients: [...newArr]
-        })
+        dispatch(replaceIngredient(newArr))
     }
 
     const [, drop] = useDrop({
@@ -61,10 +56,7 @@ function ConstructorIngredient({ingredient, index}) {
 
 
     const removeIngredient = (index) => {
-        dispatch({
-            type: REMOVE_INGREDIENT,
-            index: index
-        })
+        dispatch(removeAction(index))
     }
 
     const opacity = isDragging ? 0 : 1

@@ -1,6 +1,6 @@
-import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {ingredientsReducer} from "./burger-ingredients";
-import {burgerConstructorReducer} from "./burger-constructor";
+import burgerConstructorReducer from "./burger-constructor";
 import {ingredientDetailsReducer} from "./ingredient-details";
 import {orderDetailsReducer} from "./order-details";
 import {authReducer} from "./auth-provider";
@@ -23,7 +23,6 @@ import {
     WS_AUTH_GET_MESSAGE
 } from "../actions/web-socket";
 import socketMiddleware from "../middleware/socket-middleware";
-import thunk from "redux-thunk";
 import {api} from "../../constants/api";
 
 const wsActions = {
@@ -46,15 +45,6 @@ const wsWithAuthActions = {
     onMessage: WS_AUTH_GET_MESSAGE
 };
 
-const composeEnhancers =
-    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-        : compose;
-
-const enhancer = composeEnhancers(applyMiddleware(thunk,
-    socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions),
-    socketMiddleware(`${api.urls.wsUrl}${api.urls.orders}`, wsWithAuthActions)));
-
 const rootReducer = combineReducers({
     ingredientsList: ingredientsReducer,
     constructorList: burgerConstructorReducer,
@@ -65,5 +55,14 @@ const rootReducer = combineReducers({
     feedDetails: feedDetailsReducer
 })
 
-export const store = createStore(rootReducer, enhancer);
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: {
+            ignoreActions: [...Object.values(wsActions), ...Object.values(wsWithAuthActions)]
+        }
+    }).concat(socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions),
+        socketMiddleware(`${api.urls.wsUrl}${api.urls.orders}`, wsWithAuthActions)),
+    devTools: true
+});
 

@@ -2,14 +2,11 @@ import React, {useMemo} from 'react';
 import {ConstructorElement, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    ADD_BUN,
-    ADD_INGREDIENT,
-} from "../../services/actions/burger-constructor";
 import {getOrderDetails} from "../../services/actions/order-details";
 import {useDrop} from "react-dnd";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 import {useLocation, useNavigate} from "react-router-dom";
+import {addBun, addIngredients} from "../../services/reducers/burger-constructor";
 
 
 function BurgerConstructor() {
@@ -37,15 +34,9 @@ function BurgerConstructor() {
 
     const addIngredient = (ingredient) => {
         if (ingredient.type === 'bun') {
-            dispatch({
-                type: ADD_BUN,
-                bun: ingredient
-            })
+            dispatch(addBun(ingredient))
         } else {
-            dispatch({
-                type: ADD_INGREDIENT,
-                ingredient: [{id: counter, data: ingredient}]
-            })
+            dispatch(addIngredients({id: counter, data: ingredient}))
         }
     }
 
