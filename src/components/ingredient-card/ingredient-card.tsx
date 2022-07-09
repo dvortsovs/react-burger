@@ -1,14 +1,20 @@
-import React, {useMemo} from 'react';
-import ingredient from "../../constants/ingredient";
+import React, {FC, useMemo} from 'react';
+import TIngredient from "../../constants/ingredient";
 import ingredientCardStyle from './ingredient-card.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
 import {openIngredientDetails} from "../../services/reducers/ingredient-details";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import {TIngredientsContainer} from "../../services/reducers/burger-constructor";
 
-function IngredientCard({ingredient}) {
-    const {ingredients, bun} = useSelector(state => state.constructorList);
+interface IIngredientCardProps {
+    readonly ingredient: TIngredient
+}
+
+const IngredientCard: FC<IIngredientCardProps> = ({ingredient}) => {
+    const {ingredients, bun} = useAppSelector((state) => state.constructorList);
+    const dispatch = useAppDispatch();
     const location = useLocation();
 
     const count = useMemo(() => {
@@ -19,7 +25,7 @@ function IngredientCard({ingredient}) {
                 return 0
             }
         } else {
-            return ingredients.reduce((acc, item) => {
+            return ingredients.reduce((acc: number, item: TIngredientsContainer) => {
                 return item.data._id === ingredient._id
                     ? acc + 1
                     : acc
@@ -31,8 +37,8 @@ function IngredientCard({ingredient}) {
         type: 'ingredient',
         item: {ingredient},
     })
-    const dispatch = useDispatch();
-    const openDetails = (ingredient) => {
+
+    const openDetails = (ingredient: any) => {
         dispatch(openIngredientDetails(ingredient))
     }
 
@@ -51,10 +57,6 @@ function IngredientCard({ingredient}) {
             <p className={`text text_type_main-default mt-1`}>{ingredient.name}</p>
         </Link>
     )
-}
-
-IngredientCard.propTypes = {
-    ingredient: ingredient.isRequired,
 }
 
 export default IngredientCard

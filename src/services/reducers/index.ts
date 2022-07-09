@@ -60,10 +60,12 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: {
-            ignoreActions: [...Object.values(wsActions), ...Object.values(wsWithAuthActions)]
+            ignoreActions: <any>[...Object.values(wsActions), ...Object.values(wsWithAuthActions)]
         }
     }).concat(socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions),
         socketMiddleware(`${api.urls.wsUrl}${api.urls.orders}`, wsWithAuthActions)),
     devTools: true
 });
 
+export type TRootState = ReturnType<typeof store.getState>;
+export type TAppDispatch = typeof store.dispatch;

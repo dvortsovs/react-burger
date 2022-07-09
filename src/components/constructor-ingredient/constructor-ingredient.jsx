@@ -4,8 +4,6 @@ import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger
 import {removeIngredient as removeAction, replaceIngredient}  from "../../services/reducers/burger-constructor";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
-import ingredient from "../../constants/ingredient";
-import PropTypes from "prop-types";
 
 
 function ConstructorIngredient({ingredient, index}) {
@@ -75,11 +73,6 @@ function ConstructorIngredient({ingredient, index}) {
             />
         </li>
     )
-}
-
-ConstructorIngredient.propTypes = {
-    ingredient: ingredient.isRequired,
-    index: PropTypes.number.isRequired
 }
 
 export default ConstructorIngredient

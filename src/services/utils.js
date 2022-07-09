@@ -108,6 +108,10 @@ function defineDay(createdAt) {
     console.log(difference)
     if (difference < 0) return 'Сегодня'
     if ((0 < difference) && (difference < timePieces.day)) return 'Вчера'
+    if (Math.floor(difference / timePieces.day) === 1) return '1 день назад'
+    if (Math.floor(difference / timePieces.day) === 21) {
+        return `${Math.floor(difference / timePieces.day)} день назад`
+    }
     if ((difference < timePieces.day * 5)
         || ((21 * timePieces.day < difference) && (difference < 25 * timePieces.day))) {
         return `${Math.floor(difference / timePieces.day)} дня назад`
@@ -115,9 +119,6 @@ function defineDay(createdAt) {
     if (((timePieces.day * 5 < difference) && (difference < timePieces.day * 21))
         || ((25 * timePieces.day < difference) && (difference < 31 * timePieces.day))) {
         return `${Math.floor(difference / timePieces.day)} дней назад`
-    }
-    if ((timePieces.day * 21 < difference) && (difference < timePieces.day * 22)) {
-        return `${Math.floor(difference / timePieces.day)} день назад`
     }
     if ((31 * timePieces.day < difference) && (difference < 2 * timePieces.month)) {
         return `${Math.floor(difference / timePieces.month)} месяц назад`

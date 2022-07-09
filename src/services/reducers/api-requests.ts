@@ -1,12 +1,20 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
+type TApiRequestState = {
+    apiRequest: boolean;
+    apiRequestFailed: boolean;
+    error: null | object;
+}
+
+const initialState: TApiRequestState = {
+    apiRequest: false,
+    apiRequestFailed: false,
+    error: null
+}
 
 const apiRequestsReducer = createSlice({
     name: 'apiRequests',
-    initialState: {
-        apiRequest: false,
-        apiRequestFailed: false,
-        error: null
-    },
+    initialState,
     reducers: {
         apiRequest(state) {
             state.apiRequest = true
@@ -16,7 +24,7 @@ const apiRequestsReducer = createSlice({
             state.apiRequestFailed = false
             state.error = null
         },
-        apiRequestFailed(state, action) {
+        apiRequestFailed(state, action: PayloadAction<object>) {
             state.apiRequest = false
             state.apiRequestFailed = true
             state.error = action.payload
