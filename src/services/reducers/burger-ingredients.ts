@@ -1,17 +1,26 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import TIngredient from "../../constants/ingredient";
+
+type TIngredientsListState = {
+    ingredients: TIngredient[];
+    ingredientsRequest: boolean;
+    ingredientsRequestFailed: boolean;
+}
+
+const initialState: TIngredientsListState = {
+    ingredients: [],
+    ingredientsRequest: false,
+    ingredientsRequestFailed: false
+}
 
 const ingredientsReducer = createSlice({
     name: 'ingredientsList',
-    initialState: {
-        ingredients: [],
-        ingredientsRequest: false,
-        ingredientsRequestFailed: false
-    },
+    initialState,
     reducers: {
         ingredientsRequest(state) {
             state.ingredientsRequest = true
         },
-        ingredientsSuccess(state, action) {
+        ingredientsSuccess(state, action: PayloadAction<TIngredient[]>) {
             state.ingredients = action.payload
             state.ingredientsRequest = false
             state.ingredientsRequestFailed = false

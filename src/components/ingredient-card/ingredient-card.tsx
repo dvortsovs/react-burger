@@ -31,11 +31,11 @@ const IngredientCard: FC<IIngredientCardProps> = ({ingredient}) => {
                     : acc
             }, 0)
         }
-    }, [ingredients, bun])
+    }, [ingredients, bun, ingredient])
 
     const [, dragRef] = useDrag({
         type: 'ingredient',
-        item: {ingredient},
+        item: ingredient,
     })
 
     const openDetails = (ingredient: any) => {

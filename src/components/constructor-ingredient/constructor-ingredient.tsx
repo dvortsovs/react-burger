@@ -1,15 +1,20 @@
-import React, {useRef} from 'react';
+import React, {FC, useRef} from 'react';
 import constructorIngredientStyles from './constructor-ingredient.module.css'
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {removeIngredient as removeAction, replaceIngredient}  from "../../services/reducers/burger-constructor";
-import {useDispatch, useSelector} from "react-redux";
-import {useDrag, useDrop} from "react-dnd";
+import {removeIngredient as removeAction, replaceIngredient} from "../../services/reducers/burger-constructor";
+import {useDrag, useDrop, XYCoord} from "react-dnd";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import TIngredient from "../../constants/ingredient";
 
+interface IConstructorIngredientProps {
+    ingredient: TIngredient;
+    index: number;
+}
 
-function ConstructorIngredient({ingredient, index}) {
-    const {ingredients} = useSelector(state => state.constructorList)
-    const ref = useRef(null)
-    const dispatch = useDispatch();
+const ConstructorIngredient: FC<IConstructorIngredientProps> = ({ingredient, index}) => {
+    const {ingredients} = useAppSelector(state => state.constructorList)
+    const ref = useRef<HTMLLIElement>(null)
+    const dispatch = useAppDispatch();
 
     const [{isDragging}, drag] = useDrag({
         type: 'replaceItem',
@@ -19,7 +24,7 @@ function ConstructorIngredient({ingredient, index}) {
         }),
     })
 
-    const moveIngredient = (dragIndex, hoverIndex) => {
+    const moveIngredient = (dragIndex: number, hoverIndex: number) => {
         const newArr = [...ingredients]
         newArr.splice(dragIndex, 1)
         newArr.splice(hoverIndex, 0, ingredients[dragIndex])
@@ -28,7 +33,7 @@ function ConstructorIngredient({ingredient, index}) {
 
     const [, drop] = useDrop({
         accept: 'replaceItem',
-        hover(item, monitor) {
+        hover(item: IConstructorIngredientProps, monitor) {
             if (!ref.current) {
                 return
             }
@@ -40,7 +45,7 @@ function ConstructorIngredient({ingredient, index}) {
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
             }
@@ -53,7 +58,7 @@ function ConstructorIngredient({ingredient, index}) {
     })
 
 
-    const removeIngredient = (index) => {
+    const removeIngredient = (index: number) => {
         dispatch(removeAction(index))
     }
 

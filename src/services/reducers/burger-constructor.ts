@@ -7,7 +7,12 @@ export type TIngredientsContainer = {
 }
 
 type TBurgerConstructorState = {
-    bun: { price: 0, _id?: string } | TIngredient;
+    bun: {
+        price: 0,
+        _id?: string,
+        name?: string,
+        image?: any
+    } | TIngredient;
     ingredients: TIngredientsContainer[];
     counter: number;
 }

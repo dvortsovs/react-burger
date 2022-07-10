@@ -1,17 +1,28 @@
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-import {createSlice} from "@reduxjs/toolkit";
+export type TUser = {
+    name: string;
+    email: string;
+}
+
+type TAuthState = {
+    auth: boolean | null;
+    user: TUser | null;
+}
+
+const initialState: TAuthState = {
+    auth: null,
+    user: null,
+}
 
 const authReducer = createSlice({
     name: 'auth',
-    initialState: {
-        auth: null,
-        user: null,
-    },
+    initialState,
     reducers: {
-        changeUserInfo(state, action) {
+        changeUserInfo(state, action: PayloadAction<TUser>) {
             state.user = action.payload
         },
-        updateUserInfo(state, action) {
+        updateUserInfo(state, action: PayloadAction<TUser>) {
             state.auth = true
             state.user = action.payload
         },
@@ -22,7 +33,7 @@ const authReducer = createSlice({
             state.auth = false
             state.user = null
         },
-        login(state, action) {
+        login(state, action: PayloadAction<TUser>) {
             state.auth = true
             state.user = action.payload
         },
