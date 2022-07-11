@@ -1,16 +1,22 @@
-import React, {useMemo} from 'react';
+import React, {FC, useMemo} from 'react';
 import orderCardStyles from './order-card.module.css'
 import {Link, useLocation} from "react-router-dom";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientIcon from "../ingredient-icon/ingredient-icon";
-import {useDispatch, useSelector} from "react-redux";
 import {defineDay} from "../../services/utils";
-import {openFeedDetails} from "../../services/reducers/feed-details";
+import {openFeedDetails, TFeedDetailsOrder} from "../../services/reducers/feed-details";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
-export default function OrderCard({to, order, withStatus = false}) {
-    const {ingredients} = useSelector(state => state.ingredientsList);
+interface IOrderCardProps {
+    to: string;
+    order: TFeedDetailsOrder;
+    withStatus?: boolean;
+}
+
+const OrderCard: FC<IOrderCardProps> = ({to, order, withStatus = false}) => {
+    const {ingredients} = useAppSelector(state => state.ingredientsList);
     const location = useLocation();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const parsedCreatedDate = new Date(order.createdAt)
 
     const openDetails = () => {
@@ -21,9 +27,12 @@ export default function OrderCard({to, order, withStatus = false}) {
 
     const totalPrice = useMemo(() => {
         return order.ingredients.reduce((sum, current) => {
-            return ingredients.find(item => item._id === current).price + sum
+            const price = ingredients.find(item => item._id === current)
+            if (price) {
+                return price.price + sum
+            } else return sum
         }, 0)
-    }, [order.price])
+    }, [order, ingredients])
 
     const status = order.status === 'done'
         ? 'Выполнен'
@@ -61,7 +70,7 @@ export default function OrderCard({to, order, withStatus = false}) {
                         if (index === 0) {
                             return <IngredientIcon
                                 key={index}
-                                src={`${ingredients.find(item => item._id === ingredient).image}`}
+                                src={`${ingredients.find(item => item._id === ingredient)?.image}`}
                                 styles={{zIndex: `${array.length}`}}/>
                         }
 
@@ -70,12 +79,12 @@ export default function OrderCard({to, order, withStatus = false}) {
                                 return <IngredientIcon
                                     background={array.length - (index + 1)}
                                     key={index}
-                                    src={`${ingredients.find(item => item._id === ingredient).image}`}
+                                    src={`${ingredients.find(item => item._id === ingredient)?.image}`}
                                     styles={{marginLeft: '-16px', zIndex: `${array.length - index}`}}/>
                             }
                             return <IngredientIcon
                                 key={index}
-                                src={`${ingredients.find(item => item._id === ingredient).image}`}
+                                src={`${ingredients.find(item => item._id === ingredient)?.image}`}
                                 styles={{marginLeft: '-16px', zIndex: `${array.length - index}`}}/>
                         }
                     }
@@ -91,3 +100,5 @@ export default function OrderCard({to, order, withStatus = false}) {
         </Link>
     )
 }
+
+export default OrderCard

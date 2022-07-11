@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import profileLayoutStyles from './profile-layout.module.css'
-import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../services/actions/auth-provider";
 import Loader from "../loader/loader";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 
-export default function ProfileLayout() {
-    const {apiRequest} = useSelector(state => state.apiRequests);
-    const dispatch = useDispatch();
+const ProfileLayout: FC = () => {
+    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -57,3 +57,5 @@ export default function ProfileLayout() {
         </>
     )
 }
+
+export default ProfileLayout

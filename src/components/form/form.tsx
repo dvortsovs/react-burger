@@ -1,10 +1,23 @@
-import React from 'react';
+import React, {ChangeEvent, CSSProperties, FC} from 'react';
 import formStyles from './form.module.css'
 import {Link} from "react-router-dom";
 
-export default function Form({title, children, links, styles, onSubmit}) {
+type TFormLinksProp = {
+    title: string;
+    link: string;
+    linkCapture: string;
+}
+
+interface IFormProps {
+    title: string;
+    links: TFormLinksProp[];
+    styles: CSSProperties;
+    onSubmit: (e:ChangeEvent<HTMLFormElement>) => void;
+}
+
+const Form: FC<IFormProps> = ({title, children, links, styles, onSubmit}) => {
     return (
-        <div className={`${formStyles.container}`} style={styles ? {...styles} : null}>
+        <div className={`${formStyles.container}`} style={styles ? {...styles} : {}}>
             {title ? <h1 className={`text text_type_main-medium mb-6`}>
                 {title}
             </h1> : null}
@@ -20,7 +33,7 @@ export default function Form({title, children, links, styles, onSubmit}) {
                                 to={item.link}
                                 className={`${formStyles.link} text text_type_main-default ml-2`}
                             >
-                                {item.linkTitle}
+                                {item.linkCapture}
                             </Link>
                         </p>
                     )
@@ -32,7 +45,7 @@ export default function Form({title, children, links, styles, onSubmit}) {
                                 to={item.link}
                                 className={`${formStyles.link} text text_type_main-default ml-2`}
                             >
-                                {item.linkTitle}
+                                {item.linkCapture}
                             </Link>
                         </p>
                     )
@@ -41,3 +54,5 @@ export default function Form({title, children, links, styles, onSubmit}) {
         </div>
     )
 }
+
+export default Form

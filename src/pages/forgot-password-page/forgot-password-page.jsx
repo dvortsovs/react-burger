@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
             <Loader stateDone={apiRequest}/>
             <section className={`${forgotPasswordPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Восстановление пароля' links={[
-                    {title: 'Вспомнили пароль?', link: '/login', linkTitle: 'Войти'},
+                    {title: 'Вспомнили пароль?', link: '/login', linkCapture: 'Войти'},
                 ]}>
                     <Input
                         type='email'

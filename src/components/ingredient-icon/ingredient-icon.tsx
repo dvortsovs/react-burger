@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {CSSProperties, FC} from 'react';
 import ingredientIconStyles from './ingredient-icon.module.css'
 
-export default function IngredientIcon({src, styles, background = 0}) {
+interface IIngredientIconProps {
+    src: string;
+    styles: CSSProperties;
+    background?: number;
+}
+
+const IngredientIcon: FC<IIngredientIconProps> = ({src, styles, background = 0}) => {
 
     return (
         <div
@@ -11,3 +17,5 @@ export default function IngredientIcon({src, styles, background = 0}) {
         </div>
     )
 }
+
+export default IngredientIcon

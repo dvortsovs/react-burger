@@ -1,25 +1,32 @@
-import React from 'react';
+import React, {FC, useCallback} from 'react';
 import ReactDOM from "react-dom";
-import PropTypes from 'prop-types';
 import modalStyles from './modal.module.css'
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-function Modal(props) {
+interface IModalProps {
+    handleClose: () => void;
+    title: string
+}
 
+const reactModals = document.getElementById('react-modals') as HTMLElement
 
-    const handleKeyClose = (e) => {
+const Modal: FC<IModalProps> = (props) => {
+    const modalContainer: HTMLElement = document.createElement("div")
+    const handleKeyClose = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape') {
             props.handleClose();
         }
-    }
+    }, [props])
 
     React.useEffect(() => {
+        reactModals.appendChild(modalContainer)
         document.addEventListener('keydown', handleKeyClose)
         return (() => {
             document.removeEventListener('keydown', handleKeyClose)
+            reactModals.removeChild(modalContainer)
         })
-    }, [props.handleClose])
+    }, [props.handleClose, handleKeyClose, modalContainer])
 
 
     return ReactDOM.createPortal(
@@ -35,14 +42,8 @@ function Modal(props) {
                 </div>
             </ModalOverlay>
         ),
-        document.getElementById('react-modals')
+        modalContainer
     )
-}
-
-Modal.propTypes = {
-    handleClose: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired
 }
 
 export default Modal

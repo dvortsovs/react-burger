@@ -1,9 +1,17 @@
-import React, {useCallback} from 'react';
+import React, {FC, useCallback} from 'react';
 import buttonStyles from './nav-button.module.css'
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useMatch} from "react-router-dom";
 
-export default function NavButton({title, icon, to, personal=false, styles}) {
+interface INavButtonProps {
+    title: string;
+    icon: string;
+    to: string;
+    personal?: boolean;
+    styles: string;
+}
+
+const NavButton: FC<INavButtonProps> = ({title, icon, to, personal=false, styles}) => {
     const match = useMatch({path: to, end: !personal})
     const ingredientsMatch = useMatch({path: `${to}ingredients`, end: false})
 
@@ -27,3 +35,5 @@ export default function NavButton({title, icon, to, personal=false, styles}) {
         </Link>
     )
 }
+
+export default NavButton

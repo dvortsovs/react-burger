@@ -31,8 +31,8 @@ export default function LoginPage() {
             <Loader stateDone={apiRequest}/>
             <section className={`${loginPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Вход' links={[
-                    {title: 'Вы — новый пользователь?', link: '/register', linkTitle: 'Зарегистрироваться'},
-                    {title: 'Забыли пароль?', link: '/forgot-password', linkTitle: 'Восстановить пароль'}
+                    {title: 'Вы — новый пользователь?', link: '/register', linkCapture: 'Зарегистрироваться'},
+                    {title: 'Забыли пароль?', link: '/forgot-password', linkCapture: 'Восстановить пароль'}
                 ]}>
                     <Input
                         type='email'

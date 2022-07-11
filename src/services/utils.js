@@ -105,7 +105,6 @@ function defineDay(createdAt) {
     date.setHours(0, 0, 0)
     const parsedCreatedDate = new Date(createdAt)
     const difference = Math.round((date.getTime() - parsedCreatedDate.getTime()) / 1000)
-    console.log(difference)
     if (difference < 0) return 'Сегодня'
     if ((0 < difference) && (difference < timePieces.day)) return 'Вчера'
     if (Math.floor(difference / timePieces.day) === 1) return '1 день назад'
