@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React, {ChangeEvent, useState} from 'react';
 import {useNavigate, useLocation} from "react-router-dom";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import loginPageStyles from './login-page.module.css'
@@ -7,21 +6,24 @@ import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
 import {login} from "../../services/actions/auth-provider";
 import Loader from "../../components/loader/loader";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import {ILocationState} from "../../components/app/app";
 
 export default function LoginPage() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const {apiRequest} = useSelector(state => state.apiRequests);
+    const locationState = location.state as ILocationState
+    const {apiRequest} = useAppSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-    const [passwordHideState, setPasswordHideState] = useState('password');
+    const [passwordHideState, setPasswordHideState] = useState<'password' | 'text'>('password');
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
 
-    const fromPage = location.state?.from?.pathname === '/profile/logout' ? '/' : location.state?.from?.pathname || '/';
+    const fromPage = locationState?.from?.pathname === '/profile/logout' ? '/' : locationState?.from?.pathname || '/';
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
         dispatch(login(emailValue, passwordValue, () => navigate(fromPage, {replace: true})));
     }

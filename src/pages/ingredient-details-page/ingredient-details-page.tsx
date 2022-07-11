@@ -2,16 +2,18 @@ import React, {useEffect} from 'react';
 import ingredientDetailsPageStyles from './ingredient-details-page.module.css'
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {closeIngredientDetails, openIngredientDetails} from "../../services/reducers/ingredient-details";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 export default function IngredientDetailsPage() {
-    const {ingredients} = useSelector(state => state.ingredientsList)
-    const {id} = useParams()
-    const dispatch = useDispatch()
+    const {ingredients} = useAppSelector(state => state.ingredientsList);
+    const {id} = useParams();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(openIngredientDetails(ingredients.find((item) => item._id === id)))
+        const ingredient = ingredients.find((item) => item._id === id)
+        if (ingredient)
+            dispatch(openIngredientDetails(ingredient))
         return () => {
             dispatch(closeIngredientDetails())
         }
@@ -19,7 +21,7 @@ export default function IngredientDetailsPage() {
 
     return (
         <section className={ingredientDetailsPageStyles.main}>
-            <IngredientDetails />
+            <IngredientDetails/>
         </section>
     )
 }

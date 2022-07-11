@@ -1,27 +1,26 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import registerPageStyles from './register-page.module.css'
 import Form from "../../components/form/form";
-import {useDispatch, useSelector} from "react-redux";
 import {validateForm} from "../../services/utils";
 import {useNavigate} from "react-router-dom";
 import {getRegistration} from "../../services/actions/auth-provider";
 import Loader from "../../components/loader/loader";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
-    const {apiRequest} = useSelector(state => state.apiRequests);
+    const dispatch = useAppDispatch();
+    const {apiRequest} = useAppSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-    const [passwordHideState, setPasswordHideState] = useState('password');
+    const [passwordHideState, setPasswordHideState] = useState<'password' | 'text'>('password');
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
 
-    const dispatch = useDispatch();
-
-    const submitHandler = (e) => {
+    const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
         dispatch(getRegistration(nameValue, emailValue, passwordValue, () => navigate('/', {replace: true})));
     }
@@ -31,7 +30,7 @@ export default function RegisterPage() {
             <Loader stateDone={apiRequest}/>
             <section className={`${registerPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Регистрация' links={[
-                    {title: 'Уже зарегистрированы?', link: '/login', linkTitle: 'Войти'},
+                    {title: 'Уже зарегистрированы?', link: '/login', linkCapture: 'Войти'},
                 ]}>
                     <Input
                         type='text'

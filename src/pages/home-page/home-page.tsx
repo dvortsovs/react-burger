@@ -4,18 +4,18 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import Modal from "../../components/modal/modal";
 import BookingDetails from "../../components/booking-details/booking-details";
-import {useDispatch, useSelector} from "react-redux";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import Loader from "../../components/loader/loader";
 import {resetConstructorState} from "../../services/reducers/burger-constructor";
 import {closeBookingDetails as closeBooking} from "../../services/reducers/booking-details";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 function HomePage() {
-    const dispatch = useDispatch();
-    const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useSelector(state => state.ingredientsList);
-    const {bookingDetailsVisible} = useSelector(state => state.booking)
-    const {apiRequest} = useSelector(state => state.apiRequests)
+    const dispatch = useAppDispatch();
+    const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useAppSelector(state => state.ingredientsList);
+    const {bookingDetailsVisible} = useAppSelector(state => state.booking)
+    const {apiRequest} = useAppSelector(state => state.apiRequests)
 
     const closeBookingDetails = () => {
         dispatch(resetConstructorState())

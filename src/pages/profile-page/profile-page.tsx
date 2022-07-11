@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import Form from "../../components/form/form";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import profilePageStyles from './profile-page.module.css'
 import {validateForm} from "../../services/utils";
 import {changeUserInfoRequest, updateUserInfoRequest} from "../../services/actions/auth-provider";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 export default function ProfilePage() {
-    const dispatch = useDispatch();
-    const {user} = useSelector(state => state.auth)
+    const dispatch = useAppDispatch();
+    const {user} = useAppSelector(state => state.auth)
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -24,20 +24,24 @@ export default function ProfilePage() {
     }, [dispatch]);
 
     useEffect(() => {
-        setNameValue(user.name);
-        setEmailValue(user.email);
+        if (user) {
+            setNameValue(user.name);
+            setEmailValue(user.email);
+        }
     }, [user]);
 
     const cancelButtonHandler = () => {
-        setNameEdit(false);
-        setPassEdit(false);
-        setEmailEdit(false);
-        setNameValue(user.name);
-        setEmailValue(user.email);
-        setPasswordValue('');
+        if (user) {
+            setNameEdit(false);
+            setPassEdit(false);
+            setEmailEdit(false);
+            setNameValue(user.name);
+            setEmailValue(user.email);
+            setPasswordValue('');
+        }
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
         setNameEdit(false);
         setPassEdit(false);

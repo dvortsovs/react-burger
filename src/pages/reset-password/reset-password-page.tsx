@@ -1,24 +1,24 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import resetPasswordPageStyles from './reset-password-page.module.css'
 import {validateForm} from "../../services/utils";
 import Form from "../../components/form/form";
-import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {resetPasswordRequest} from "../../services/actions/auth-provider";
 import Loader from "../../components/loader/loader";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 export default function ResetPasswordPage() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const {apiRequest} = useSelector(state => state.apiRequests);
+    const {apiRequest} = useAppSelector(state => state.apiRequests);
     const [codeValue, setCodeValue] = useState('')
     const [codeError, setCodeError] = useState(false)
     const [passwordValue, setPasswordValue] = useState('')
     const [passwordError, setPasswordError] = useState(false)
-    const [passwordHideState, setPasswordHideState] = useState('password')
+    const [passwordHideState, setPasswordHideState] = useState<'password' | 'text'>('password')
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
         dispatch(resetPasswordRequest(passwordValue, codeValue, () => navigate('/login', {replace: true})))
     }
@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
             <Loader stateDone={apiRequest}/>
             <section className={`${resetPasswordPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Восстановление пароля' links={[
-                    {title: 'Вспомнили пароль?', link: '/login', linkTitle: 'Войти'},
+                    {title: 'Вспомнили пароль?', link: '/login', linkCapture: 'Войти'},
                 ]}>
                     <Input
                         type={passwordHideState}

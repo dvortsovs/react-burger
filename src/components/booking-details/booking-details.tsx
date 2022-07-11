@@ -4,7 +4,7 @@ import {useAppSelector} from "../../services/hooks";
 
 function BookingDetails() {
     const {bookingDetails} = useAppSelector(state => state.booking)
-    if (bookingDetails !== null)
+    if (bookingDetails !== null) {
         return (
             <div className={`${bookingDetailsStyles.card} mt-20 mb-20 ml-15 mr-15`}>
                 <h2 className={`${bookingDetailsStyles.title} text text_type_digits-large`}>{bookingDetails.order.number}</h2>
@@ -15,6 +15,7 @@ function BookingDetails() {
                     орбитальной станции</p>
             </div>
         )
+    } else return null
 }
 
 export default BookingDetails
