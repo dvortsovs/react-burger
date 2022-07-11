@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import feedDetailsPageStyles from './feed-details-page.module.css'
 import FeedDetails from "../../components/feed-details/feed-details";
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {
     WS_AUTH_CONNECTION_START,
     WS_CONNECTION_START
@@ -11,13 +10,14 @@ import {useLocation} from "react-router-dom";
 import {getCookie} from "../../services/utils";
 import {closeFeedDetails, openFeedDetails} from "../../services/reducers/feed-details";
 import {wsAuthConnectionClientClosed, wsConnectionClientClosed} from "../../services/reducers/web-socket";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
-export default function FeedDetailsPage() {
+const FeedDetailsPage = () => {
     const {id} = useParams()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const location = useLocation();
-    const {messages} = useSelector(state => state.ws)
-    const {isOpenDetails} = useSelector(state => state.feedDetails)
+    const {messages} = useAppSelector(state => state.ws)
+    const {isOpenDetails} = useAppSelector(state => state.feedDetails)
 
     useEffect(() => {
         if (location.pathname === `/feed/${id}`) {
@@ -40,20 +40,24 @@ export default function FeedDetailsPage() {
                 }
             }
         )
-    }, [dispatch])
+    }, [dispatch, id, location])
 
     useEffect(() => {
         if (messages) {
-            dispatch(openFeedDetails(messages.orders.find(item => item.number === Number(id))))
+            const order = messages.orders.find((item) => item.number === Number(id))
+            if (order)
+            dispatch(openFeedDetails(order))
         }
         return () => {
             dispatch(closeFeedDetails())
         }
-    }, [dispatch, messages])
+    }, [dispatch, messages, id])
 
-    return (isOpenDetails &&
+    return (isOpenDetails ?
         <section className={`${feedDetailsPageStyles.main}`}>
             <FeedDetails/>
-        </section>
+        </section> : null
     )
 }
+
+export default FeedDetailsPage
