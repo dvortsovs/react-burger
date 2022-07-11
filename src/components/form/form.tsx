@@ -11,7 +11,7 @@ type TFormLinksProp = {
 interface IFormProps {
     title: string;
     links: TFormLinksProp[];
-    styles: CSSProperties;
+    styles?: CSSProperties;
     onSubmit: (e:ChangeEvent<HTMLFormElement>) => void;
 }
 

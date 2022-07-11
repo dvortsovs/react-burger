@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import forgotPasswordPageStyles from './forgot-password-page.module.css'
 import Form from "../../components/form/form";
 import {validateForm} from "../../services/utils";
-import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
 import {forgotPasswordRequest} from "../../services/actions/auth-provider";
 import Loader from "../../components/loader/loader";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 
 export default function ForgotPasswordPage() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const {apiRequest} = useSelector(state => state.apiRequests);
+    const {apiRequest} = useAppSelector(state => state.apiRequests);
     const [emailValue, setEmailValue] = useState('');
     const [emailError, setEmailError] = useState(false);
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
-        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password', {state:{from: location}})));
+        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password', {state: {from: location}})));
     }
 
     return (
