@@ -1,5 +1,4 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
 import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import {
     HomePage,
@@ -20,30 +19,45 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import IngredientDetailsPage from "../../pages/ingredient-details-page/ingredient-details-page";
 import Modal from "../modal/modal";
 import FeedDetails from "../feed-details/feed-details";
-import {closeFeedDetails as closeFeed, openFeedDetails} from "../../services/reducers/feed-details";
+import {closeFeedDetails as closeFeed, openFeedDetails, TFeedDetailsOrder} from "../../services/reducers/feed-details";
 import {
     closeIngredientDetails as closeIngredient,
     openIngredientDetails
 } from "../../services/reducers/ingredient-details";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import TIngredient from "../../constants/ingredient";
 
+export type ILocationState = {
+    background?: {
+        pathname: string
+    };
+    ingredient?: TIngredient;
+    order?: TFeedDetailsOrder;
+    from?: {
+        pathname?: string
+    }
+}
 
-export default function App() {
-    const dispatch = useDispatch();
+const App = () => {
+    const dispatch = useAppDispatch();
     const location = useLocation();
+    const locationState = location.state as ILocationState
     const navigate = useNavigate();
-    const {auth} = useSelector(state => state.auth)
-    const {ingredients} = useSelector(state => state.ingredientsList)
-    const feedDetailsStore = useSelector(state => state.feedDetails)
-    const background = location.state?.background;
-    const ingredient = location.state?.ingredient;
-    const order = location.state?.order;
+    const {auth} = useAppSelector(state => state.auth)
+    const {ingredients} = useAppSelector(state => state.ingredientsList)
+    const feedDetailsStore = useAppSelector(state => state.feedDetails)
+    const background = locationState?.background;
+    const ingredient = locationState?.ingredient;
+    const order = locationState?.order;
 
     const closeIngredientDetails = () => {
+        if (background)
         navigate(background.pathname, {replace: true})
         dispatch(closeIngredient())
     }
 
     const closeFeedDetails = () => {
+        if (background)
         navigate(background.pathname, {replace: true})
         dispatch(closeFeed())
     }
@@ -107,11 +121,7 @@ export default function App() {
                                 <OrdersPage/>
                             </ProtectedRoute>
                         }/>
-                        <Route path='logout' element={
-                            <ProtectedRoute protectFromAuth={false}>
-                                {null}
-                            </ProtectedRoute>
-                        }/>
+                        <Route path='logout' />
                     </Route>
                     <Route path='*' element={<NotFoundPage/>}/>
                 </Route>
@@ -148,3 +158,5 @@ export default function App() {
         </>
     )
 }
+
+export default App

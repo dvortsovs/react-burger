@@ -1,16 +1,11 @@
 import {useLocation, Navigate} from "react-router-dom";
 import {useAppSelector} from "../../services/hooks";
+import {ILocationState} from "../app/app";
 
 interface IProtectedRouteProps {
     toResetPassword?: boolean;
     protectFromAuth: boolean;
     children: JSX.Element;
-}
-
-interface ILocationState {
-    from?: {
-        pathname?: string
-    }
 }
 
 const ProtectedRoute = ({children, protectFromAuth, toResetPassword=false}: IProtectedRouteProps ) => {

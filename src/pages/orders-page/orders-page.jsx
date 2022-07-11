@@ -9,7 +9,7 @@ import {getCookie} from "../../services/utils";
 import Loader from "../../components/loader/loader";
 import {wsAuthConnectionClientClosed} from "../../services/reducers/web-socket";
 
-export default function OrdersPage() {
+const OrdersPage = () => {
     const dispatch = useDispatch();
     const {messages} = useSelector(state => state.ws)
 
@@ -50,4 +50,7 @@ export default function OrdersPage() {
             )
         } else refreshSocketConnection()
     } else return <Loader stateDone={!messages}/>
+    return null
 }
+
+export default OrdersPage
