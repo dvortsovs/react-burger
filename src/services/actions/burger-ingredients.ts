@@ -1,22 +1,19 @@
 import {api} from "../../constants/api";
-import {ingredientsFailed, ingredientsRequest, ingredientsSuccess} from "../reducers/burger-ingredients";
-import {TAppDispatch} from "../reducers";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import TIngredient from "../../constants/ingredient";
 
-export const getIngredients = () => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(ingredientsRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
-            .then(res => {
-                dispatch(ingredientsSuccess(res.data))
-            })
-            .catch(() => {
-                dispatch(ingredientsFailed())
-            })
-    }
+type TResponseData = {
+    success: boolean;
+    data: TIngredient[]
 }
+
+export const getIngredients = createAsyncThunk<TIngredient[], undefined, {rejectValue: number}>(
+    'ingredientsList/getIngredients',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.ingredients}`);
+        if (response.ok) {
+            const data = await response.json() as TResponseData;
+            return data.data;
+        } else return rejectWithValue(response.status)
+    }
+);
