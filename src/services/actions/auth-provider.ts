@@ -8,9 +8,12 @@ import {
     changeUserInfo as changeUserInfoSuccess,
 } from "../reducers/auth-provider";
 import {apiRequest, apiRequestFailed, apiRequestSuccess} from "../reducers/api-requests";
+import {TAppDispatch} from "../reducers";
 
-export const login = (email, password, replaceToCallback) => {
-    return dispatch => {
+type TReplaceToCallback = () => void
+
+export const login = (email: string, password: string, replaceToCallback: TReplaceToCallback) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetch(`${api.urls.baseUrl}${api.urls.login}`, {
             method: 'POST',
@@ -33,8 +36,8 @@ export const login = (email, password, replaceToCallback) => {
     }
 }
 
-export const logout = (replaceCallback) => {
-    return dispatch => {
+export const logout = (replaceCallback: TReplaceToCallback) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetch(`${api.urls.baseUrl}${api.urls.logout}`, {
             method: 'POST',
@@ -54,8 +57,8 @@ export const logout = (replaceCallback) => {
     }
 }
 
-export const getRegistration = (name, email, password, replaceToCallback) => {
-    return dispatch => {
+export const getRegistration = (name: string, email: string, password: string, replaceToCallback: TReplaceToCallback) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetch(`${api.urls.baseUrl}${api.urls.registration}`, {
             method: 'POST',
@@ -79,8 +82,8 @@ export const getRegistration = (name, email, password, replaceToCallback) => {
     }
 }
 
-export const forgotPasswordRequest = (email, replaceToCallback) => {
-    return dispatch => {
+export const forgotPasswordRequest = (email: string, replaceToCallback: TReplaceToCallback) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}`, {
             method: 'POST',
@@ -98,8 +101,8 @@ export const forgotPasswordRequest = (email, replaceToCallback) => {
     }
 }
 
-export const resetPasswordRequest = (password, token, replaceToCallback) => {
-    return dispatch => {
+export const resetPasswordRequest = (password: string, token: string, replaceToCallback: TReplaceToCallback) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}${api.urls.resetPassword}`, {
             method: 'POST',
@@ -121,7 +124,7 @@ export const resetPasswordRequest = (password, token, replaceToCallback) => {
 }
 
 export const updateUserInfoRequest = () => {
-    return dispatch => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
             method: 'GET',
@@ -141,8 +144,8 @@ export const updateUserInfoRequest = () => {
     }
 }
 
-export const changeUserInfoRequest = (name, email, password) => {
-    return dispatch => {
+export const changeUserInfoRequest = (name: string, email: string, password: string) => {
+    return (dispatch: TAppDispatch) => {
         dispatch(apiRequest())
         fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
             method: 'PATCH',

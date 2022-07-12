@@ -52,13 +52,13 @@ const App = () => {
 
     const closeIngredientDetails = () => {
         if (background)
-        navigate(background.pathname, {replace: true})
+            navigate(background.pathname, {replace: true})
         dispatch(closeIngredient())
     }
 
     const closeFeedDetails = () => {
         if (background)
-        navigate(background.pathname, {replace: true})
+            navigate(background.pathname, {replace: true})
         dispatch(closeFeed())
     }
 
@@ -74,7 +74,7 @@ const App = () => {
     }, [dispatch]);
 
     return (
-        (auth === false || auth === true) && <>
+        (auth === false || auth === true) ? <>
             <Routes location={background || location}>
                 <Route path='/' element={<Layout/>}>
                     <Route index element={<HomePage/>}/>
@@ -121,7 +121,7 @@ const App = () => {
                                 <OrdersPage/>
                             </ProtectedRoute>
                         }/>
-                        <Route path='logout' />
+                        <Route path='logout'/>
                     </Route>
                     <Route path='*' element={<NotFoundPage/>}/>
                 </Route>
@@ -155,7 +155,7 @@ const App = () => {
                     </ProtectedRoute>
                 }/>
             </Routes>}
-        </>
+        </> : null
     )
 }
 

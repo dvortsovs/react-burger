@@ -1,8 +1,9 @@
 import {api} from "../../constants/api";
 import {ingredientsFailed, ingredientsRequest, ingredientsSuccess} from "../reducers/burger-ingredients";
+import {TAppDispatch} from "../reducers";
 
 export const getIngredients = () => {
-    return dispatch => {
+    return (dispatch: TAppDispatch) => {
         dispatch(ingredientsRequest())
         fetch(`${api.urls.baseUrl}${api.urls.ingredients}`)
             .then((res) => {

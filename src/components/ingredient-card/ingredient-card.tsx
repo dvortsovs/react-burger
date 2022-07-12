@@ -19,11 +19,12 @@ const IngredientCard: FC<IIngredientCardProps> = ({ingredient}) => {
 
     const count = useMemo(() => {
         if (ingredient.type === 'bun') {
-            if (ingredient._id === bun._id) {
-                return 1
-            } else {
-                return 0
-            }
+            if (bun)
+                if (ingredient._id === bun._id) {
+                    return 1
+                } else {
+                    return 0
+                }
         } else {
             return ingredients.reduce((acc: number, item: TIngredientsContainer) => {
                 return item.data._id === ingredient._id

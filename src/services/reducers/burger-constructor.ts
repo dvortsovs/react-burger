@@ -7,20 +7,13 @@ export type TIngredientsContainer = {
 }
 
 type TBurgerConstructorState = {
-    bun: {
-        price: 0,
-        _id?: string,
-        name?: string,
-        image?: any
-    } | TIngredient;
+    bun: TIngredient | null;
     ingredients: TIngredientsContainer[];
     counter: number;
 }
 
 const initialState: TBurgerConstructorState = {
-    bun: {
-        price: 0
-    },
+    bun: null,
     ingredients: [],
     counter: 0
 }

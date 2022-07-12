@@ -30,7 +30,9 @@ function BurgerConstructor() {
     const openBookingDetails = () => {
         if (!auth) {
             navigate('/login', {state: {from: location}})
-        } else dispatch(getBookingDetails(ingredients, bun))
+        } else {
+            dispatch(getBookingDetails(ingredients, bun))
+        }
     }
 
     const addIngredient = (ingredient: TIngredient) => {
@@ -42,16 +44,17 @@ function BurgerConstructor() {
     }
 
     const totalPrice = useMemo(() => {
+        const bunPrice = bun ? bun.price : 0
         return ingredients.reduce((acc, item) => {
             return acc + item.data.price
-        }, 0) + bun.price * 2
+        }, 0) + bunPrice * 2
     }, [ingredients, bun])
 
     return (
         <section className={`${burgerConstructorStyles.content} mt-25`}>
-            {!!ingredients.length || bun.price ?
+            {!!ingredients.length || bun ?
                 <ul ref={dropRef} className={`${burgerConstructorStyles.ingredients}`}>
-                    {bun.price ?
+                    {bun ?
                         <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                             <ConstructorElement
                                 type="top"
@@ -90,7 +93,7 @@ function BurgerConstructor() {
                             </h3>
                         </div>
                     }
-                    {bun.price ?
+                    {bun ?
                         <li className={`${burgerConstructorStyles.ingredient} pl-8`}>
                             <ConstructorElement
                                 type="bottom"
