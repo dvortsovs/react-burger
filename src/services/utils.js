@@ -1,5 +1,6 @@
 import {api} from "../constants/api";
 import {timePieces} from "../constants/time-pieces";
+// import {AnyAction} from "@reduxjs/toolkit";
 
 const validateForm = (e, type, setValue, setError) => {
     switch (type) {
@@ -63,17 +64,18 @@ function removeTokens() {
     localStorage.removeItem('refreshToken');
 }
 
-function checkResponse(res) {
-    return res.ok ? res.json() : Promise.reject(res)
-}
-
 function refreshToken() {
     return fetch(`${api.urls.baseUrl}${api.urls.updateToken}`, {
         method: 'POST',
         headers: api.headers,
         body: JSON.stringify({"token": `${localStorage.getItem('refreshToken')}`})
     })
-        .then(checkResponse)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            return Promise.reject(res)
+        })
         .then((refreshData) => {
             if (refreshData.success) {
                 setTokens(refreshData.accessToken.split('Bearer ')[1], refreshData.refreshToken);
@@ -86,19 +88,23 @@ function refreshToken() {
 async function fetchWithRefresh(url, options) {
     try {
         const res = await fetch(url, options);
-        return await checkResponse(res);
+        return res
     } catch (error) {
         const errorPayload = await error.json()
         if (errorPayload.message === 'jwt expired') {
             const refreshData = await refreshToken();
             options.headers.Authorization = refreshData.accessToken;
             const res = await fetch(url, options)
-            return await checkResponse(res)
+            return res
         } else {
             return Promise.reject(error)
         }
     }
 }
+
+// const isRequestError = (action: AnyAction) => {
+//     return action.type.endsWith('rejected')
+// }
 
 function defineDay(createdAt) {
     const date = new Date()
@@ -136,7 +142,6 @@ export {
     deleteCookie,
     getCookie,
     setTokens,
-    checkResponse,
     fetchWithRefresh,
     removeTokens,
     defineDay

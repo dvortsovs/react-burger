@@ -1,66 +1,83 @@
 import {api} from "../../constants/api";
-import {getCookie, fetchWithRefresh, removeTokens, checkResponse, setTokens} from "../utils";
-import {
-    updateUserInfoFailed,
-    updateUserInfo as updateUserInfoSuccess,
-    login as loginSuccess,
-    logout as logoutSuccess,
-    changeUserInfo as changeUserInfoSuccess,
-} from "../reducers/auth-provider";
-import {apiRequest, apiRequestFailed, apiRequestSuccess} from "../reducers/api-requests";
+import {getCookie, fetchWithRefresh, removeTokens, setTokens} from "../utils";
+import {loginAction, logoutAction, TUser} from "../reducers/auth-provider";
 import {TAppDispatch} from "../reducers";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
 type TReplaceToCallback = () => void
 
-export const login = (email: string, password: string, replaceToCallback: TReplaceToCallback) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.login}`, {
+type TLoginPayload = {
+    email: string;
+    password: string;
+    replaceToCallback: TReplaceToCallback;
+}
+
+type TRegistrationPayload = TLoginPayload & {
+    name: string
+}
+
+type TChangeUserInfoPayload = Omit<TRegistrationPayload, 'replaceToCallback'>
+
+type TResetPasswordPayload = Omit<TLoginPayload, 'email'> & {
+    token: string;
+}
+
+type TLoginResponseData = {
+    success: boolean;
+    refreshToken: string;
+    accessToken: string;
+    user: TUser
+}
+
+type TChangeUserInfoResponseData = Omit<TLoginResponseData, 'refreshToken' | 'accessToken'>
+
+type TLogoutResponseData = {
+    success: boolean;
+    message: string;
+}
+
+type TForgotPasswordResponseData = TLogoutResponseData
+
+export const login = createAsyncThunk<void, TLoginPayload, { rejectValue: number, dispatch: TAppDispatch }>(
+    'auth/login',
+    async ({email, password, replaceToCallback}, {rejectWithValue, dispatch}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.login}`, {
             method: 'POST',
             headers: api.headers,
             body: JSON.stringify({
                 "email": email,
                 "password": password,
             })
-        })
-            .then(checkResponse)
-            .then((res) => {
-                dispatch(apiRequestSuccess())
-                dispatch(loginSuccess(res.user))
-                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken);
-                replaceToCallback();
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        });
+        if (response.ok) {
+            const data = await response.json() as TLoginResponseData;
+            setTokens(data.accessToken.split('Bearer ')[1], data.refreshToken);
+            dispatch(loginAction(data.user))
+            replaceToCallback();
+        } else return rejectWithValue(response.status)
     }
-}
+)
 
-export const logout = (replaceCallback: TReplaceToCallback) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.logout}`, {
+export const logout = createAsyncThunk<void, Omit<TLoginPayload, 'email' | 'password'>, { rejectValue: number, dispatch: TAppDispatch  }>(
+    'auth/logout',
+    async ({replaceToCallback}, {rejectWithValue, dispatch}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.logout}`, {
             method: 'POST',
             headers: api.headers,
             body: JSON.stringify({"token": `${localStorage.getItem('refreshToken')}`})
-        })
-            .then(checkResponse)
-            .then(() => {
-                dispatch(apiRequestSuccess())
-                dispatch(logoutSuccess())
-                removeTokens();
-                replaceCallback();
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        });
+        if (response.ok) {
+            removeTokens();
+            dispatch(logoutAction());
+            replaceToCallback();
+        } else return rejectWithValue(response.status)
     }
-}
+)
 
-export const getRegistration = (name: string, email: string, password: string, replaceToCallback: TReplaceToCallback) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.registration}`, {
+export const getRegistration = createAsyncThunk<void, TRegistrationPayload, { rejectValue: number, dispatch: TAppDispatch   }>(
+    'auth/getRegistration',
+    async ({name, password, email, replaceToCallback}, {rejectWithValue, dispatch}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.registration}`, {
             method: 'POST',
             headers: api.headers,
             body: JSON.stringify({
@@ -68,86 +85,73 @@ export const getRegistration = (name: string, email: string, password: string, r
                 "password": password,
                 "name": name
             })
-        })
-            .then(checkResponse)
-            .then((res) => {
-                dispatch(apiRequestSuccess())
-                dispatch(loginSuccess(res.user))
-                setTokens(res.accessToken.split('Bearer ')[1], res.refreshToken)
-                replaceToCallback()
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        });
+        if (response.ok) {
+            const data = await response.json() as TLoginResponseData;
+            setTokens(data.accessToken.split('Bearer ')[1], data.refreshToken)
+            dispatch(loginAction(data.user));
+            replaceToCallback();
+        } else return rejectWithValue(response.status)
     }
-}
+)
 
-export const forgotPasswordRequest = (email: string, replaceToCallback: TReplaceToCallback) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}`, {
+export const forgotPasswordRequest = createAsyncThunk<TForgotPasswordResponseData, Omit<TLoginPayload, 'password'>, { rejectValue: number }>(
+    'auth/forgotPasswordRequest',
+    async ({email, replaceToCallback}, {rejectWithValue}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}`, {
             method: 'POST',
             headers: api.headers,
             body: JSON.stringify({"email": email})
-        })
-            .then(checkResponse)
-            .then(() => {
-                dispatch(apiRequestSuccess())
-                replaceToCallback()
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        });
+        if (response.ok) {
+            const data = await response.json() as TForgotPasswordResponseData;
+            replaceToCallback();
+            return data;
+        } else return rejectWithValue(response.status)
     }
-}
+)
 
-export const resetPasswordRequest = (password: string, token: string, replaceToCallback: TReplaceToCallback) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}${api.urls.resetPassword}`, {
+export const resetPasswordRequest = createAsyncThunk<TForgotPasswordResponseData, TResetPasswordPayload, { rejectValue: number }>(
+    'auth/resetPasswordRequest',
+    async ({password, token, replaceToCallback}, {rejectWithValue}) => {
+        const response = await fetch(`${api.urls.baseUrl}${api.urls.forgotPassword}${api.urls.resetPassword}`, {
             method: 'POST',
             headers: api.headers,
             body: JSON.stringify({
                 "password": password,
                 "token": token
             })
-        })
-            .then(checkResponse)
-            .then(() => {
-                dispatch(apiRequestSuccess())
-                replaceToCallback()
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        });
+        if (response.ok) {
+            const data = await response.json() as TForgotPasswordResponseData;
+            replaceToCallback();
+            return data;
+        } else return rejectWithValue(response.status)
     }
-}
+)
 
-export const updateUserInfoRequest = () => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
+export const updateUserInfoRequest = createAsyncThunk<TUser, undefined, { rejectValue: string }>(
+    'auth/updateUserInfoRequest',
+    async (_, {rejectWithValue}) => {
+        const response = await fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
             method: 'GET',
             headers: {
                 ...api.headers,
                 Authorization: `Bearer ${getCookie('accessToken')}`
             }
-        })
-            .then((res) => {
-                dispatch(apiRequestSuccess())
-                dispatch(updateUserInfoSuccess(res.user))
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-                dispatch(updateUserInfoFailed())
-            })
-    }
-}
 
-export const changeUserInfoRequest = (name: string, email: string, password: string) => {
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
+        })
+        if (response.ok) {
+            const data = await response.json() as TLoginResponseData;
+            return data.user;
+        } else return rejectWithValue('cantGetUser')
+    }
+)
+
+export const changeUserInfoRequest = createAsyncThunk<TUser, TChangeUserInfoPayload, { rejectValue: string }>(
+    'auth/changeUserInfoRequest',
+    async ({name, email, password}, {rejectWithValue}) => {
+        const response = await fetchWithRefresh(`${api.urls.baseUrl}${api.urls.user}`, {
             method: 'PATCH',
             headers: {
                 ...api.headers,
@@ -159,12 +163,9 @@ export const changeUserInfoRequest = (name: string, email: string, password: str
                 "password": password
             })
         })
-            .then((res) => {
-                dispatch(apiRequestSuccess())
-                dispatch(changeUserInfoSuccess(res.user))
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        if (response.ok) {
+            const data = await response.json() as TChangeUserInfoResponseData;
+            return data.user;
+        } else return rejectWithValue('cantGetUser')
     }
-}
+)

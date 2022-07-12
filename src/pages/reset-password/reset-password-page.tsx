@@ -11,7 +11,7 @@ import {useAppDispatch, useAppSelector} from "../../services/hooks";
 export default function ResetPasswordPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const {request} = useAppSelector(state => state.auth);
     const [codeValue, setCodeValue] = useState('')
     const [codeError, setCodeError] = useState(false)
     const [passwordValue, setPasswordValue] = useState('')
@@ -20,12 +20,16 @@ export default function ResetPasswordPage() {
 
     const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
-        dispatch(resetPasswordRequest(passwordValue, codeValue, () => navigate('/login', {replace: true})))
+        dispatch(resetPasswordRequest({
+            password: passwordValue,
+            token: codeValue,
+            replaceToCallback: () => navigate('/login', {replace: true})
+        }))
     }
 
     return (
         <>
-            <Loader stateDone={apiRequest}/>
+            <Loader stateDone={request}/>
             <section className={`${resetPasswordPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Восстановление пароля' links={[
                     {title: 'Вспомнили пароль?', link: '/login', linkCapture: 'Войти'},

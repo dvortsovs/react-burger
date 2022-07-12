@@ -4,7 +4,6 @@ import burgerConstructorReducer from "./burger-constructor";
 import ingredientDetailsReducer from "./ingredient-details";
 import bookingDetailsReducer from "./booking-details";
 import authReducer from "./auth-provider";
-import apiRequestsReducer from "./api-requests"
 import wsReducer, {
     wsAuthConnectionClientClosed,
     wsAuthConnectionClosed,
@@ -54,7 +53,6 @@ export const store = configureStore({
         details: ingredientDetailsReducer,
         booking: bookingDetailsReducer,
         auth: authReducer,
-        apiRequests: apiRequestsReducer,
         ws: wsReducer,
         feedDetails: feedDetailsReducer
     },

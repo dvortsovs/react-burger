@@ -31,7 +31,7 @@ function BurgerConstructor() {
         if (!auth) {
             navigate('/login', {state: {from: location}})
         } else {
-            dispatch(getBookingDetails(ingredients, bun))
+            dispatch(getBookingDetails({ingredientsList: ingredients, bun: bun}))
         }
     }
 

@@ -11,7 +11,7 @@ import {useAppDispatch, useAppSelector} from "../../services/hooks";
 export default function RegisterPage() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const {request} = useAppSelector(state => state.auth);
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -22,12 +22,17 @@ export default function RegisterPage() {
 
     const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
-        dispatch(getRegistration(nameValue, emailValue, passwordValue, () => navigate('/', {replace: true})));
+        dispatch(getRegistration({
+            name: nameValue,
+            email: emailValue,
+            password: passwordValue,
+            replaceToCallback: () => navigate('/', {replace: true})
+        }));
     }
 
     return (
         <>
-            <Loader stateDone={apiRequest}/>
+            <Loader stateDone={request}/>
             <section className={`${registerPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Регистрация' links={[
                     {title: 'Уже зарегистрированы?', link: '/login', linkCapture: 'Войти'},

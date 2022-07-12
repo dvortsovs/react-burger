@@ -7,18 +7,19 @@ import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 
 const ProfileLayout: FC = () => {
-    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const {request} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
     const logoutHandler = () => {
-        dispatch(logout(() => navigate('/login', {replace: true})))
+        dispatch(logout({replaceToCallback :() => navigate('/login', {replace: true})
+    }))
     }
 
     return (
         <>
-            <Loader stateDone={apiRequest}/>
+            <Loader stateDone={request}/>
             <section className={`${profileLayoutStyles.main}`}>
                 <div>
                     <nav className={`mr-15`}>

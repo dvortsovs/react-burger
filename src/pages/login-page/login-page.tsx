@@ -14,7 +14,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const locationState = location.state as ILocationState
-    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const {request} = useAppSelector(state => state.auth);
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordHideState, setPasswordHideState] = useState<'password' | 'text'>('password');
@@ -25,12 +25,18 @@ export default function LoginPage() {
 
     const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
-        dispatch(login(emailValue, passwordValue, () => navigate(fromPage, {replace: true})));
+
+        dispatch(login({
+                email: emailValue,
+                password: passwordValue,
+                replaceToCallback: () => navigate(fromPage, {replace: true})
+            })
+        );
     }
 //todo: add on login error modal
     return (
         <>
-            <Loader stateDone={apiRequest}/>
+            <Loader stateDone={request}/>
             <section className={`${loginPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Вход' links={[
                     {title: 'Вы — новый пользователь?', link: '/register', linkCapture: 'Зарегистрироваться'},

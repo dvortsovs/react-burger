@@ -1,6 +1,7 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AnyAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import TIngredient from "../../constants/ingredient";
 import {TUser} from "./auth-provider";
+import {getBookingDetails} from "../actions/booking-details";
 
 export type TOwner = TUser & {
     createdAt: string;
@@ -27,27 +28,51 @@ export type TBookingDetails = {
 
 type TBookingDetailsState = {
     bookingDetails: TBookingDetails | null;
+    bookingDetailsRequest: boolean;
+    bookingDetailsRequestFailed: boolean;
     bookingDetailsVisible: boolean;
+    errorStatus: number | null;
 }
 
 const initialState: TBookingDetailsState = {
     bookingDetails: null,
-    bookingDetailsVisible: false
+    bookingDetailsVisible: false,
+    bookingDetailsRequest: false,
+    bookingDetailsRequestFailed: false,
+    errorStatus: null
 }
 const bookingDetailsReducer = createSlice({
     name: 'bookingDetails',
     initialState,
     reducers: {
-        bookingSuccess(state, action: PayloadAction<TBookingDetails>) {
-            state.bookingDetails = action.payload
-            state.bookingDetailsVisible = true
-        },
         closeBookingDetails(state) {
             state.bookingDetails = null
             state.bookingDetailsVisible = false
         },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(getBookingDetails.pending, (state) => {
+                state.bookingDetailsRequest = true;
+            })
+            .addCase(getBookingDetails.fulfilled, (state, action) => {
+                state.bookingDetailsRequest = false;
+                state.bookingDetailsRequestFailed = false;
+                state.errorStatus = null;
+                state.bookingDetails = action.payload;
+                state.bookingDetailsVisible = true;
+            })
+            .addMatcher(isRequestError, (state, action: PayloadAction<number>) => {
+                state.bookingDetailsRequest = false;
+                state.bookingDetailsRequestFailed = true;
+                state.errorStatus = action.payload;
+            })
     }
 })
 
+const isRequestError = (action: AnyAction) => {
+    return action.type.endsWith('rejected')
+}
+
 export default bookingDetailsReducer.reducer
-export const {bookingSuccess, closeBookingDetails} = bookingDetailsReducer.actions
+export const {closeBookingDetails} = bookingDetailsReducer.actions

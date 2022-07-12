@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import {
     HomePage,
@@ -62,15 +62,29 @@ const App = () => {
         dispatch(closeFeed())
     }
 
+    useEffect(() => {
+        if ((auth === false || auth === true)) {
+            if (ingredients.length === 0) {
+                dispatch(getIngredients());
+            }
+            if (ingredient) {
+                dispatch(openIngredientDetails(ingredient))
+            }
+            if (order) {
+                dispatch(openFeedDetails(order))
+            }
+        }
+    }, [auth, dispatch])
+
     React.useEffect(() => {
-        dispatch(getIngredients());
         dispatch(updateUserInfoRequest());
-        if (ingredient) {
-            dispatch(openIngredientDetails(ingredient))
-        }
-        if (order) {
-            dispatch(openFeedDetails(order))
-        }
+        // dispatch(getIngredients());
+        // if (ingredient) {
+        //     dispatch(openIngredientDetails(ingredient))
+        // }
+        // if (order) {
+        //     dispatch(openFeedDetails(order))
+        // }
     }, [dispatch]);
 
     return (

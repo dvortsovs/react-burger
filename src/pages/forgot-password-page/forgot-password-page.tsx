@@ -13,18 +13,21 @@ export default function ForgotPasswordPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const {apiRequest} = useAppSelector(state => state.apiRequests);
+    const {request} = useAppSelector(state => state.auth);
     const [emailValue, setEmailValue] = useState('');
     const [emailError, setEmailError] = useState(false);
 
     const submitHandler = (e: ChangeEvent) => {
         e.preventDefault();
-        dispatch(forgotPasswordRequest(emailValue, () => navigate('/reset-password', {state: {from: location}})));
+        dispatch(forgotPasswordRequest({
+            email: emailValue,
+            replaceToCallback: () => navigate('/reset-password', {state: {from: location}})
+        }));
     }
 
     return (
         <>
-            <Loader stateDone={apiRequest}/>
+            <Loader stateDone={request}/>
             <section className={`${forgotPasswordPageStyles.main}`}>
                 <Form onSubmit={submitHandler} title='Восстановление пароля' links={[
                     {title: 'Вспомнили пароль?', link: '/login', linkCapture: 'Войти'},

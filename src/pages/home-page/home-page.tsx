@@ -14,29 +14,27 @@ import {useAppDispatch, useAppSelector} from "../../services/hooks";
 function HomePage() {
     const dispatch = useAppDispatch();
     const {ingredients, ingredientsRequest, ingredientsRequestFailed} = useAppSelector(state => state.ingredientsList);
-    const {bookingDetailsVisible} = useAppSelector(state => state.booking)
-    const {apiRequest} = useAppSelector(state => state.apiRequests)
+    const {bookingDetailsVisible, bookingDetailsRequest} = useAppSelector(state => state.booking)
 
     const closeBookingDetails = () => {
         dispatch(resetConstructorState())
         dispatch(closeBooking())
     }
 
-    return (
-        <>
-            <Loader stateDone={apiRequest}/>
-            {bookingDetailsVisible &&
-                <Modal handleClose={closeBookingDetails} title={""}><BookingDetails/></Modal>}
+    return (ingredientsRequest ? <Loader stateDone={ingredientsRequest}/> :
+            <><Loader stateDone={bookingDetailsRequest}/>
+                {bookingDetailsVisible &&
+                    <Modal handleClose={closeBookingDetails} title={""}><BookingDetails/></Modal>}
 
-            <DndProvider backend={HTML5Backend}>
-                <div className={`${appStyle.main}`}>
-                    {!ingredientsRequest && !ingredientsRequestFailed &&
-                        <BurgerIngredients/>}
-                    {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
-                        <BurgerConstructor/>}
-                </div>
-            </DndProvider>
-        </>
+                <DndProvider backend={HTML5Backend}>
+                    <div className={`${appStyle.main}`}>
+                        {!ingredientsRequest && !ingredientsRequestFailed &&
+                            <BurgerIngredients/>}
+                        {!ingredientsRequest && !ingredientsRequestFailed && !!ingredients.length &&
+                            <BurgerConstructor/>}
+                    </div>
+                </DndProvider>
+            </>
     );
 }
 

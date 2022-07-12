@@ -1,21 +1,24 @@
 import {api} from "../../constants/api";
 import {fetchWithRefresh, getCookie} from "../utils";
-import {apiRequest, apiRequestFailed, apiRequestSuccess} from "../reducers/api-requests";
-import {bookingSuccess} from "../reducers/booking-details";
+import {TBookingDetails} from "../reducers/booking-details";
 import TIngredient from "../../constants/ingredient";
 import {TIngredientsContainer} from "../reducers/burger-constructor";
-import {TAppDispatch} from "../reducers";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const getBookingDetails = (ingredientsList: TIngredientsContainer[], bun: TIngredient | null) => {
-    const ingredients = ingredientsList.map(item => item.data)
-    if (bun) {
-        ingredients.unshift(bun)
-        ingredients.push(bun)
-    }
+type TGetBookingDetails = {
+    ingredientsList: TIngredientsContainer[];
+    bun: TIngredient | null;
+}
 
-    return (dispatch: TAppDispatch) => {
-        dispatch(apiRequest())
-        fetchWithRefresh(`${api.urls.baseUrl}${api.urls.orders}`, {
+export const getBookingDetails = createAsyncThunk<TBookingDetails, TGetBookingDetails, { rejectValue: number }>(
+    'bookingDetails/getBookingDetails',
+    async ({ingredientsList, bun}, {rejectWithValue}) => {
+        const ingredients = ingredientsList.map(item => item.data)
+        if (bun) {
+            ingredients.unshift(bun)
+            ingredients.push(bun)
+        }
+        const response = await fetchWithRefresh(`${api.urls.baseUrl}${api.urls.orders}`, {
             method: 'POST',
             headers: {
                 ...api.headers,
@@ -23,12 +26,8 @@ export const getBookingDetails = (ingredientsList: TIngredientsContainer[], bun:
             },
             body: JSON.stringify({"ingredients": ingredients})
         })
-            .then((res) => {
-                dispatch(bookingSuccess(res))
-                dispatch(apiRequestSuccess())
-            })
-            .catch((err) => {
-                dispatch(apiRequestFailed(err))
-            })
+        if (response.ok) {
+            return await response.json() as TBookingDetails;
+        } else return rejectWithValue(response.status)
     }
-}
+)

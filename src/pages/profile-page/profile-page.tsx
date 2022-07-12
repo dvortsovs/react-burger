@@ -5,10 +5,11 @@ import profilePageStyles from './profile-page.module.css'
 import {validateForm} from "../../services/utils";
 import {changeUserInfoRequest, updateUserInfoRequest} from "../../services/actions/auth-provider";
 import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import Loader from "../../components/loader/loader";
 
 export default function ProfilePage() {
     const dispatch = useAppDispatch();
-    const {user} = useAppSelector(state => state.auth)
+    const {user, request} = useAppSelector(state => state.auth)
     const [emailValue, setEmailValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -46,11 +47,15 @@ export default function ProfilePage() {
         setNameEdit(false);
         setPassEdit(false);
         setEmailEdit(false);
-        dispatch(changeUserInfoRequest(nameValue, emailValue, passwordValue));
+        dispatch(changeUserInfoRequest({
+            name: nameValue,
+            email: emailValue,
+            password: passwordValue
+        }));
     }
 
     return (
-        <>
+        <> <Loader stateDone={request}/>
             <Form onSubmit={submitHandler} styles={{justifyContent: 'start'}}>
                 <Input
                     type='text'
@@ -92,7 +97,7 @@ export default function ProfilePage() {
                     ? <div className={`${profilePageStyles.container}`}>
                         <Button onClick={cancelButtonHandler} type='secondary'>Отмена</Button>
                         <Button>Сохранить</Button>
-                </div>
+                    </div>
                     : null}
             </Form>
         </>
