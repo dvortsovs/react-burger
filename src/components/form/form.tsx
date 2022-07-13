@@ -1,4 +1,4 @@
-import React, {ChangeEvent, CSSProperties, FC} from 'react';
+import React, {CSSProperties, FC, FormEvent} from 'react';
 import formStyles from './form.module.css'
 import {Link} from "react-router-dom";
 
@@ -12,7 +12,7 @@ interface IFormProps {
     title?: string;
     links?: TFormLinksProp[];
     styles?: CSSProperties;
-    onSubmit: (e:ChangeEvent<HTMLFormElement>) => void;
+    onSubmit: (e:FormEvent<HTMLFormElement>) => void;
 }
 
 const Form: FC<IFormProps> = ({title, children, links, styles, onSubmit}) => {

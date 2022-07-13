@@ -39,7 +39,7 @@ const IngredientCard: FC<IIngredientCardProps> = ({ingredient}) => {
         item: ingredient,
     })
 
-    const openDetails = (ingredient: any) => {
+    const openDetails = (ingredient: TIngredient) => {
         dispatch(openIngredientDetails(ingredient))
     }
 

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import Form from "../../components/form/form";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import profilePageStyles from './profile-page.module.css'
@@ -42,7 +42,7 @@ export default function ProfilePage() {
         }
     }
 
-    const submitHandler = (e: ChangeEvent) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
         setNameEdit(false);
         setPassEdit(false);

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import registerPageStyles from './register-page.module.css'
 import Form from "../../components/form/form";
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
 
-    const submitHandler = (e: ChangeEvent) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
         dispatch(getRegistration({
             name: nameValue,

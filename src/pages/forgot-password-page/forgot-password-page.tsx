@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import forgotPasswordPageStyles from './forgot-password-page.module.css'
 import Form from "../../components/form/form";
@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
     const [emailValue, setEmailValue] = useState('');
     const [emailError, setEmailError] = useState(false);
 
-    const submitHandler = (e: ChangeEvent) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
         dispatch(forgotPasswordRequest({
             email: emailValue,

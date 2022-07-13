@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import resetPasswordPageStyles from './reset-password-page.module.css'
 import {validateForm} from "../../services/utils";
@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
     const [passwordError, setPasswordError] = useState(false)
     const [passwordHideState, setPasswordHideState] = useState<'password' | 'text'>('password')
 
-    const submitHandler = (e: ChangeEvent) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
         dispatch(resetPasswordRequest({
             password: passwordValue,

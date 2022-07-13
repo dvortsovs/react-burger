@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import {useNavigate, useLocation} from "react-router-dom";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import loginPageStyles from './login-page.module.css'
@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     const fromPage = locationState?.from?.pathname === '/profile/logout' ? '/' : locationState?.from?.pathname || '/';
 
-    const submitHandler = (e: ChangeEvent) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
 
         dispatch(login({
