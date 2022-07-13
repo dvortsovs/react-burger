@@ -141,6 +141,7 @@ export const updateUserInfoRequest = createAsyncThunk<TUser, undefined, { reject
             }
 
         })
+            .catch(err => err)
         if (response.ok) {
             const data = await response.json() as TLoginResponseData;
             return data.user;
@@ -163,6 +164,7 @@ export const changeUserInfoRequest = createAsyncThunk<TUser, TChangeUserInfoPayl
                 "password": password
             })
         })
+            .catch(err => err)
         if (response.ok) {
             const data = await response.json() as TChangeUserInfoResponseData;
             return data.user;

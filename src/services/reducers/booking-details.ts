@@ -71,9 +71,5 @@ const bookingDetailsReducer = createSlice({
     }
 })
 
-// const isRequestError = (action: AnyAction) => {
-//     return action.type.endsWith('rejected')
-// }
-
 export default bookingDetailsReducer.reducer
 export const {closeBookingDetails} = bookingDetailsReducer.actions

@@ -118,10 +118,6 @@ const authReducer = createSlice({
     }
 })
 
-// const isRequestError = (action: AnyAction) => {
-//     return action.type.endsWith('rejected')
-// }
-
 export default authReducer.reducer
 export const {
     loginAction,

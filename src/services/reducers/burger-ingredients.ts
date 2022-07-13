@@ -40,8 +40,4 @@ const ingredientsReducer = createSlice({
     }
 })
 
-// const isRequestError = (action: AnyAction) => {
-//     return action.type.endsWith('rejected')
-// }
-
 export default ingredientsReducer.reducer
