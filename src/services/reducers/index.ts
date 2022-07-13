@@ -49,13 +49,20 @@ export const store = configureStore({
         feedDetails: feedDetailsReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: {
-            ignoreActions: <any>[...Object.values(wsActions), ...Object.values(wsWithAuthActions)]
-        }
+        serializableCheck: false
     }).concat(socketMiddleware(`${api.urls.wsUrl}${api.urls.allOrders}`, wsActions),
         socketMiddleware(`${api.urls.wsUrl}${api.urls.orders}`, wsWithAuthActions)),
     devTools: true
 });
+
+export type TWsActions = {
+    wsInit: string;
+    wsClose: typeof wsConnectionClientClosed;
+    onOpen: typeof wsConnectionSuccess;
+    onClose: typeof wsConnectionClosed;
+    onError: typeof wsConnectionError;
+    onMessage: typeof wsConnectionGetMessage;
+}
 
 export type TRootState = ReturnType<typeof store.getState>;
 export type TAppDispatch = typeof store.dispatch;

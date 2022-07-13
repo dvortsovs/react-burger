@@ -90,7 +90,6 @@ async function fetchWithRefresh(url: string, options: TOptionsForFetch) {
         }
         return res
     } catch (error) {
-        console.log(error)
         const err = error as Response
         const errorPayload = await err.json()
         if (errorPayload.message === 'jwt expired') {

@@ -1,7 +1,10 @@
-export default function socketMiddleware(wsUrl, wsActions) {
-    return store => {
-        let socket = null
-        return next => action => {
+import {Middleware, MiddlewareAPI} from "redux";
+import {TWsActions} from "../reducers";
+
+export default function socketMiddleware(wsUrl: string, wsActions: TWsActions): Middleware {
+    return (store : MiddlewareAPI) => {
+        let socket: WebSocket | null = null
+        return (next) => action => {
             const {dispatch} = store;
             const {type, payload} = action;
             const {wsInit, wsClose, onOpen, onClose, onError, onMessage} = wsActions;
@@ -29,7 +32,6 @@ export default function socketMiddleware(wsUrl, wsActions) {
                     socket.close(1000, '')
                 }
             }
-
             next(action);
         }
     }
