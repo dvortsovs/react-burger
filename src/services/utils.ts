@@ -1,8 +1,22 @@
 import {api} from "../constants/api";
 import {timePieces} from "../constants/time-pieces";
-// import {AnyAction} from "@reduxjs/toolkit";
+import {AnyAction} from "@reduxjs/toolkit";
+import {ChangeEvent} from "react";
 
-const validateForm = (e, type, setValue, setError) => {
+type TOptionsForFetch = RequestInit & {
+
+    headers: {
+        [key: string]: string
+    }
+}
+
+type TRefreshTokensResponse = {
+    success: boolean;
+    refreshToken: string;
+    accessToken: string;
+}
+
+const validateForm = (e: ChangeEvent<HTMLInputElement>, type: string, setValue: (arg: string) => void, setError: (arg: boolean) => void) => {
     switch (type) {
         case 'email':
             setValue(e.target.value)
@@ -18,41 +32,24 @@ const validateForm = (e, type, setValue, setError) => {
     }
 }
 
-function getCookie(name) {
+function getCookie(name: string) {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-function setCookie(name, value, props) {
-    props = props || {};
-    let exp = props.expires;
-    if (typeof exp == 'number' && exp) {
-        const d = new Date();
-        d.setTime(d.getTime() + exp * 1000);
-        exp = props.expires = d;
-    }
-    if (exp && exp.toUTCString) {
-        props.expires = exp.toUTCString();
-    }
+function setCookie(name: string, value: string) {
     value = encodeURIComponent(value);
-    let updatedCookie = name + '=' + value;
-    for (const propName in props) {
-        updatedCookie += '; ' + propName;
-        const propValue = props[propName];
-        if (propValue !== true) {
-            updatedCookie += '=' + propValue;
-        }
-    }
-    document.cookie = updatedCookie;
+    document.cookie = name + '=' + value;
 }
 
-function deleteCookie(name) {
-    setCookie(name, null, {expires: -1});
+function deleteCookie(name: string) {
+    const value = getCookie(name)
+    document.cookie = `${name}=${value}; max-age=-1`
 }
 
-function setTokens(accessToken, refreshToken) {
+function setTokens(accessToken: string, refreshToken: string) {
     deleteCookie('accessToken');
     setCookie('accessToken', accessToken);
     localStorage.removeItem('refreshToken');
@@ -70,7 +67,7 @@ function refreshToken() {
         headers: api.headers,
         body: JSON.stringify({"token": `${localStorage.getItem('refreshToken')}`})
     })
-        .then(res => {
+        .then((res): Promise<TRefreshTokensResponse> => {
             if (res.ok) {
                 return res.json()
             }
@@ -85,15 +82,16 @@ function refreshToken() {
         })
 }
 
-async function fetchWithRefresh(url, options) {
+async function fetchWithRefresh(url: string, options: TOptionsForFetch) {
     try {
         const res = await fetch(url, options);
         return res
     } catch (error) {
-        const errorPayload = await error.json()
+        const errorPayload = await (error as Response).json()
         if (errorPayload.message === 'jwt expired') {
             const refreshData = await refreshToken();
-            options.headers.Authorization = refreshData.accessToken;
+            if (options.headers)
+                options.headers.Authorization = refreshData.accessToken;
             const res = await fetch(url, options)
             return res
         } else {
@@ -102,14 +100,14 @@ async function fetchWithRefresh(url, options) {
     }
 }
 
-// const isRequestError = (action: AnyAction) => {
-//     return action.type.endsWith('rejected')
-// }
+const isRequestError = (action: AnyAction) => {
+    return action.type.endsWith('rejected')
+}
 
-function defineDay(createdAt) {
+function defineDay(createdAt: string | undefined): string {
     const date = new Date()
     date.setHours(0, 0, 0)
-    const parsedCreatedDate = new Date(createdAt)
+    const parsedCreatedDate = new Date(createdAt ? createdAt : '')
     const difference = Math.round((date.getTime() - parsedCreatedDate.getTime()) / 1000)
     if (difference < 0) return 'Сегодня'
     if ((0 < difference) && (difference < timePieces.day)) return 'Вчера'
@@ -144,5 +142,6 @@ export {
     setTokens,
     fetchWithRefresh,
     removeTokens,
-    defineDay
+    defineDay,
+    isRequestError
 }

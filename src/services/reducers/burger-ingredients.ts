@@ -1,6 +1,7 @@
-import {AnyAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import TIngredient from "../../constants/ingredient";
 import {getIngredients} from "../actions/burger-ingredients";
+import {isRequestError} from "../utils";
 
 type TIngredientsListState = {
     ingredients: TIngredient[];
@@ -39,8 +40,8 @@ const ingredientsReducer = createSlice({
     }
 })
 
-const isRequestError = (action: AnyAction) => {
-    return action.type.endsWith('rejected')
-}
+// const isRequestError = (action: AnyAction) => {
+//     return action.type.endsWith('rejected')
+// }
 
 export default ingredientsReducer.reducer

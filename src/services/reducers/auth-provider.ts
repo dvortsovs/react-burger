@@ -1,4 +1,4 @@
-import {AnyAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     changeUserInfoRequest,
     forgotPasswordRequest,
@@ -8,6 +8,7 @@ import {
     resetPasswordRequest,
     updateUserInfoRequest
 } from "../actions/auth-provider";
+import {isRequestError} from "../utils";
 
 export type TUser = {
     name: string;
@@ -56,7 +57,7 @@ const authReducer = createSlice({
             .addCase(getRegistration.pending, (state) => {
                 state.request = true;
             })
-            .addCase(getRegistration.fulfilled, (state, action) => {
+            .addCase(getRegistration.fulfilled, (state) => {
                 state.request = false;
                 state.requestFailed = false;
                 state.errorStatus = null;
@@ -117,9 +118,9 @@ const authReducer = createSlice({
     }
 })
 
-const isRequestError = (action: AnyAction) => {
-    return action.type.endsWith('rejected')
-}
+// const isRequestError = (action: AnyAction) => {
+//     return action.type.endsWith('rejected')
+// }
 
 export default authReducer.reducer
 export const {

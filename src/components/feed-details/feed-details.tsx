@@ -11,15 +11,15 @@ export default function FeedDetails() {
     const parsedCreatedDate = order ? new Date(order.createdAt) : null
     const totalPrice = useMemo(() => {
         if (order)
-        return order.ingredients.reduce((sum, current) => {
-            const price = ingredients.find(item => item._id === current)
-            if (price) {
-                return price.price + sum
-            } else return sum
-        }, 0)
+            return order.ingredients.reduce((sum, current) => {
+                const price = ingredients.find(item => item._id === current)
+                if (price) {
+                    return price.price + sum
+                } else return sum
+            }, 0)
     }, [order, ingredients])
 
-    const day = defineDay(parsedCreatedDate)
+    const day = defineDay(order?.createdAt)
 
     const status = order ? order.status === 'done'
         ? 'Выполнен'

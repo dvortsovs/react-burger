@@ -1,7 +1,8 @@
-import {AnyAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import TIngredient from "../../constants/ingredient";
 import {TUser} from "./auth-provider";
 import {getBookingDetails} from "../actions/booking-details";
+import {isRequestError} from "../utils";
 
 export type TOwner = TUser & {
     createdAt: string;
@@ -70,9 +71,9 @@ const bookingDetailsReducer = createSlice({
     }
 })
 
-const isRequestError = (action: AnyAction) => {
-    return action.type.endsWith('rejected')
-}
+// const isRequestError = (action: AnyAction) => {
+//     return action.type.endsWith('rejected')
+// }
 
 export default bookingDetailsReducer.reducer
 export const {closeBookingDetails} = bookingDetailsReducer.actions

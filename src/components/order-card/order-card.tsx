@@ -23,7 +23,7 @@ const OrderCard: FC<IOrderCardProps> = ({to, order, withStatus = false}) => {
         dispatch(openFeedDetails(order))
     }
 
-    const day = defineDay(parsedCreatedDate)
+    const day = defineDay(order.createdAt)
 
     const totalPrice = useMemo(() => {
         return order.ingredients.reduce((sum, current) => {
