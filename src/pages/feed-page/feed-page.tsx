@@ -1,11 +1,8 @@
 import React, {useEffect} from 'react';
 import feedPageStyles from './feed-page.module.css'
-import {
-    WS_CONNECTION_START
-} from "../../services/actions/web-socket";
 import OrderCard from "../../components/order-card/order-card";
 import Loader from "../../components/loader/loader";
-import {wsConnectionClientClosed} from "../../services/reducers/web-socket";
+import {wsConnectionClientClosed, wsConnectionStart} from "../../services/reducers/web-socket";
 import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 
@@ -14,9 +11,7 @@ export default function FeedPage() {
     const {messages} = useAppSelector(state => state.ws)
 
     useEffect(() => {
-        dispatch({
-            type: WS_CONNECTION_START
-        })
+        dispatch(wsConnectionStart())
         return (() => {
                 dispatch(wsConnectionClientClosed())
             }

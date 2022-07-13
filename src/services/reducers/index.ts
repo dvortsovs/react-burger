@@ -17,18 +17,11 @@ import wsReducer, {
     wsConnectionSuccess
 } from "./web-socket";
 import feedDetailsReducer from "./feed-details";
-import {
-    WS_CONNECTION_START,
-    WS_SEND_MESSAGE,
-    WS_AUTH_CONNECTION_START,
-    WS_AUTH_SEND_MESSAGE,
-} from "../actions/web-socket";
 import socketMiddleware from "../middleware/socket-middleware";
 import {api} from "../../constants/api";
 
 const wsActions = {
-    wsInit: WS_CONNECTION_START,
-    wsSendMessage: WS_SEND_MESSAGE,
+    wsInit: 'wsReducer/wsConnectionStart',
     wsClose: wsConnectionClientClosed,
     onOpen: wsConnectionSuccess,
     onClose: wsConnectionClosed,
@@ -37,8 +30,7 @@ const wsActions = {
 };
 
 const wsWithAuthActions = {
-    wsInit: WS_AUTH_CONNECTION_START,
-    wsSendMessage: WS_AUTH_SEND_MESSAGE,
+    wsInit: 'wsReducer/wsAuthConnectionStart',
     wsClose: wsAuthConnectionClientClosed,
     onOpen: wsAuthConnectionSuccess,
     onClose: wsAuthConnectionClosed,

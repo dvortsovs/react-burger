@@ -2,14 +2,14 @@ import React, {useEffect} from "react";
 import feedDetailsPageStyles from './feed-details-page.module.css'
 import FeedDetails from "../../components/feed-details/feed-details";
 import {useParams} from "react-router-dom";
-import {
-    WS_AUTH_CONNECTION_START,
-    WS_CONNECTION_START
-} from "../../services/actions/web-socket";
 import {useLocation} from "react-router-dom";
 import {getCookie} from "../../services/utils";
 import {closeFeedDetails, openFeedDetails} from "../../services/reducers/feed-details";
-import {wsAuthConnectionClientClosed, wsConnectionClientClosed} from "../../services/reducers/web-socket";
+import {
+    wsAuthConnectionClientClosed, wsAuthConnectionStart,
+    wsConnectionClientClosed,
+    wsConnectionStart
+} from "../../services/reducers/web-socket";
 import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 const FeedDetailsPage = () => {
@@ -21,15 +21,10 @@ const FeedDetailsPage = () => {
 
     useEffect(() => {
         if (location.pathname === `/feed/${id}`) {
-            dispatch({
-                type: WS_CONNECTION_START
-            })
+            dispatch(wsConnectionStart())
         }
         if (location.pathname === `/profile/orders/${id}`) {
-            dispatch({
-                type: WS_AUTH_CONNECTION_START,
-                payload: `?token=${getCookie('accessToken')}`
-            })
+            dispatch(wsAuthConnectionStart(`?token=${getCookie('accessToken')}`))
         }
         return (() => {
                 if (location.pathname === `/feed/${id}`) {

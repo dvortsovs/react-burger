@@ -16,23 +16,32 @@ type TWsReducerState = {
     wsConnected: boolean;
     messages: TWsMessages | null;
     payload: TWsPayload | null;
+    wsConnectRequest: boolean;
 }
 
 const initialState: TWsReducerState = {
     wsConnected: false,
     messages: null,
-    payload: null
+    payload: null,
+    wsConnectRequest: false
 }
 
 const wsReducer = createSlice({
     name: 'wsReducer',
     initialState,
     reducers: {
+        wsAuthConnectionStart(state, action: PayloadAction<string>) {
+            state.wsConnectRequest = true
+        },
+        wsConnectionStart(state) {
+            state.wsConnectRequest = true
+        },
         wsConnectionClientClosed(state) {
             state.wsConnected = false
             state.messages = null
         },
         wsConnectionSuccess(state, action: PayloadAction<TWsPayload>) {
+            state.wsConnectRequest = false
             state.wsConnected = true
             state.payload = {...action.payload}
         },
@@ -48,6 +57,7 @@ const wsReducer = createSlice({
             state.payload = {...action.payload}
         },
         wsAuthConnectionClientClosed(state) {
+            state.wsConnectRequest = false
             state.wsConnected = false
             state.messages = null
         },
@@ -80,5 +90,7 @@ export const {
     wsConnectionError,
     wsConnectionSuccess,
     wsAuthConnectionError,
-    wsAuthConnectionClientClosed
+    wsAuthConnectionClientClosed,
+    wsConnectionStart,
+    wsAuthConnectionStart
 } = wsReducer.actions
